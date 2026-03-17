@@ -1,16 +1,16 @@
-import { AlertTriangle, Archive, Clock, RotateCcw, ArrowUpCircle } from "lucide-react";
+import { AlertTriangle, Archive, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SourcePanel } from "./SourcePanel";
 import { ChatPanel } from "./ChatPanel";
 
 type Props = {
-  variant: "warning" | "archived";
+  variant: "warning" | "final-reminder" | "dual-trigger" | "archived";
 };
 
 export function RetentionWarningScreen({ variant }: Props) {
   return (
     <div className="flex flex-col h-screen">
-      {/* Retention Banner */}
+      {/* Retention Banners */}
       {variant === "warning" && (
         <div className="bg-warning/10 border-b border-warning/20 px-4 py-2.5 flex items-center gap-2 text-xs text-warning">
           <Clock className="w-4 h-4 shrink-0" />
@@ -19,6 +19,35 @@ export function RetentionWarningScreen({ variant }: Props) {
           </span>
         </div>
       )}
+
+      {/* US-012: Final reminder (second warning stage) */}
+      {variant === "final-reminder" && (
+        <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
+          <AlertTriangle className="w-4 h-4 shrink-0 animate-pulse" />
+          <span>
+            <strong>Final reminder:</strong> Your Knowledge Base sources will be archived in <strong>3 days</strong> (March 20, 2026) due to inactivity. Submit a query now to prevent archival.
+          </span>
+        </div>
+      )}
+
+      {/* US-012 S4: Both triggers active — shows earliest date */}
+      {variant === "dual-trigger" && (
+        <div className="space-y-0">
+          <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
+            <AlertTriangle className="w-4 h-4 shrink-0" />
+            <span>
+              <strong>Subscription expired:</strong> Your sources will be archived on <strong>March 25, 2026</strong> unless your subscription is renewed. This is the earlier of two active countdowns.
+            </span>
+          </div>
+          <div className="bg-warning/10 border-b border-warning/20 px-4 py-2 flex items-center gap-2 text-xs text-warning">
+            <Clock className="w-4 h-4 shrink-0" />
+            <span>
+              <strong>Also active:</strong> Inactivity countdown — archival on April 15, 2026 unless KB activity resumes.
+            </span>
+          </div>
+        </div>
+      )}
+
       {variant === "archived" && (
         <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
           <Archive className="w-4 h-4 shrink-0" />
