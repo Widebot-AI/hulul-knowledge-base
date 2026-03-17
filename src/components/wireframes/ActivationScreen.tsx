@@ -1,7 +1,11 @@
-import { BookOpen, Sparkles } from "lucide-react";
+import { BookOpen, Sparkles, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function ActivationScreen() {
+type Props = {
+  variant?: "default" | "error";
+};
+
+export function ActivationScreen({ variant = "default" }: Props) {
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="max-w-md text-center space-y-6 px-6">
@@ -27,8 +31,17 @@ export function ActivationScreen() {
             <span>Get AI answers grounded in your content with citations</span>
           </div>
         </div>
+
+        {/* US-002 S2: Activation failure with retry */}
+        {variant === "error" && (
+          <div className="flex items-center gap-2 px-4 py-3 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>Activation failed. Please try again. If the problem persists, contact support.</span>
+          </div>
+        )}
+
         <Button size="lg" className="w-full">
-          Activate Knowledge Base
+          {variant === "error" ? "Retry Activation" : "Activate Knowledge Base"}
         </Button>
         <p className="text-[11px] text-muted-foreground">
           One-time activation for your workspace. All team members will gain access.
