@@ -283,6 +283,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       resetChat, sessionTokenPercent,
       retrySource, deleteSource, addMockSource,
       isDark, toggleTheme: () => setIsDark(!isDark),
+      lang, setLang,
       devDrawerOpen, setDevDrawerOpen,
     }}>
       {children}
