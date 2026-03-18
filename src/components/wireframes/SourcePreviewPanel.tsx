@@ -2,153 +2,31 @@ import { X, Download, ExternalLink, FileText, Globe, RotateCcw, AlertTriangle, A
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SourceAvatar } from "@/components/wireframes/SourcePanel";
+import { useKB } from "./KBContext";
 
-type Props = {
-  type: "file" | "url" | "failed" | "fallback" | "unavailable";
-};
+export function SourcePreviewPanel() {
+  const { modal, closeModal, sources } = useKB();
+  if (modal?.kind !== "source-preview") return null;
 
-export function SourcePreviewPanel({ type }: Props) {
-  // US-009 S3: Failed source — show failure reason + retry
-  if (type === "failed") {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-foreground/30 p-4">
-        <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-            <div className="flex items-center gap-2">
-              <SourceAvatar type="PDF" size="md" />
-              <h3 className="text-sm font-semibold text-foreground">Old Policy.pdf</h3>
-              <Badge variant="secondary" className="text-[10px] h-4">PDF</Badge>
-              <span className="text-[10px] bg-destructive/10 text-destructive px-1.5 py-0.5 rounded-full font-medium">Failed</span>
-            </div>
-            <Button size="icon" variant="ghost" className="h-7 w-7">
-              <X className="w-3.5 h-3.5" />
-            </Button>
-          </div>
-          <div className="p-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center">
-              <AlertTriangle className="w-7 h-7 text-destructive" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Processing Failed</h4>
-              <p className="text-xs text-muted-foreground mt-1.5 max-w-xs mx-auto leading-relaxed">
-                This source could not be indexed. The file may be corrupted or contain unsupported content structures.
-              </p>
-            </div>
-            <Button size="sm" className="gap-1">
-              <RotateCcw className="w-3.5 h-3.5" /> Retry Processing
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const source = sources.find(s => s.id === modal.sourceId);
+  if (!source) return null;
 
-  // US-009 S4: Non-renderable file — fallback with download
-  if (type === "fallback") {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-foreground/30 p-4">
-        <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-            <div className="flex items-center gap-2">
-              <SourceAvatar avatar="https://upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg" type="DOCX" size="md" />
-              <h3 className="text-sm font-semibold text-foreground">Employee Handbook.docx</h3>
-              <Badge variant="secondary" className="text-[10px] h-4">DOCX</Badge>
-              <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-7 w-7">
-                <Download className="w-3.5 h-3.5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7">
-                <X className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-          <div className="px-5 py-2.5 border-b border-border flex gap-6 text-xs">
-            <div>
-              <span className="text-muted-foreground">Uploaded: </span>
-              <span className="text-foreground">Mar 8, 2026</span>
-            </div>
-          </div>
-          <div className="p-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full bg-accent flex items-center justify-center">
-              <FileWarning className="w-7 h-7 text-muted-foreground" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Preview Not Available</h4>
-              <p className="text-xs text-muted-foreground mt-1.5 max-w-xs mx-auto leading-relaxed">
-                This file type cannot be previewed in the browser. Download the file to view its contents.
-              </p>
-            </div>
-            <Button size="sm" variant="outline" className="gap-1">
-              <Download className="w-3.5 h-3.5" /> Download File
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // US-009 S5: Preview unavailable (load error)
-  if (type === "unavailable") {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-foreground/30 p-4">
-        <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-            <div className="flex items-center gap-2">
-              <SourceAvatar avatar="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" type="PDF" size="md" />
-              <h3 className="text-sm font-semibold text-foreground">Q3 Strategy Deck.pdf</h3>
-              <Badge variant="secondary" className="text-[10px] h-4">PDF</Badge>
-              <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Button size="icon" variant="ghost" className="h-7 w-7">
-                <Download className="w-3.5 h-3.5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7">
-                <X className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-          <div className="p-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full bg-warning/10 flex items-center justify-center">
-              <AlertCircle className="w-7 h-7 text-warning" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Preview Unavailable</h4>
-              <p className="text-xs text-muted-foreground mt-1.5 max-w-xs mx-auto leading-relaxed">
-                The preview content could not be loaded. This source is still indexed and queryable.
-              </p>
-            </div>
-            <Button size="sm" variant="outline" className="gap-1">
-              <Download className="w-3.5 h-3.5" /> Download Instead
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // US-009 S1, S6: Normal file/URL preview
-  const previewAvatar = type === "url"
-    ? undefined
-    : "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg";
+  const isUrl = source.type === "URL";
+  const isBinary = ["DOCX", "XLSX", "PPTX"].includes(source.type);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-foreground/30 p-4">
-      <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl max-h-[80vh] flex flex-col">
+    <div className="fixed inset-0 bg-foreground/30 flex items-center justify-center z-50 p-4" onClick={closeModal}>
+      <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
           <div className="flex items-center gap-2">
-            <SourceAvatar avatar={previewAvatar} type={type === "url" ? "URL" : "PDF"} size="md" />
-            <h3 className="text-sm font-semibold text-foreground">
-              {type === "url" ? "Getting Started Guide" : "Q3 Strategy Deck.pdf"}
-            </h3>
-            <Badge variant="secondary" className="text-[10px] h-4">{type === "url" ? "URL" : "PDF"}</Badge>
+            <SourceAvatar avatar={source.avatar} type={source.type} size="md" />
+            <h3 className="text-sm font-semibold text-foreground">{source.name}</h3>
+            <Badge variant="secondary" className="text-[10px] h-4">{source.type}</Badge>
             <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
           </div>
           <div className="flex items-center gap-1">
-            {type === "url" && (
+            {isUrl && (
               <Button size="icon" variant="ghost" className="h-7 w-7">
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
@@ -156,7 +34,7 @@ export function SourcePreviewPanel({ type }: Props) {
             <Button size="icon" variant="ghost" className="h-7 w-7">
               <Download className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-7 w-7">
+            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={closeModal}>
               <X className="w-3.5 h-3.5" />
             </Button>
           </div>
@@ -165,34 +43,49 @@ export function SourcePreviewPanel({ type }: Props) {
         {/* Metadata */}
         <div className="px-5 py-2.5 border-b border-border flex gap-6 text-xs shrink-0">
           <div>
-            <span className="text-muted-foreground">Uploaded: </span>
+            <span className="text-muted-foreground">Added: </span>
             <span className="text-foreground">Mar 10, 2026</span>
           </div>
-          {type === "url" && (
+          {isUrl && (
             <div>
               <span className="text-muted-foreground">Source: </span>
-              <a className="text-primary hover:underline">https://docs.example.com/guide</a>
+              <a className="text-primary hover:underline" href={source.name} target="_blank" rel="noopener">{source.name}</a>
             </div>
           )}
-          <div className="flex gap-1">
-            <span className="text-[10px] bg-accent text-accent-foreground px-1.5 py-0.5 rounded">department: strategy</span>
-          </div>
+          {source.tags.length > 0 && (
+            <div className="flex gap-1">
+              {source.tags.map((t, i) => (
+                <span key={i} className="text-[10px] bg-accent text-accent-foreground px-1.5 py-0.5 rounded">{t.key}: {t.value}</span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Preview Content */}
         <div className="flex-1 overflow-y-auto p-5">
-          {type === "url" ? (
+          {isBinary ? (
+            <div className="p-8 text-center space-y-4">
+              <div className="mx-auto w-14 h-14 rounded-full bg-accent flex items-center justify-center">
+                <FileWarning className="w-7 h-7 text-muted-foreground" />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-foreground">Preview Not Available</h4>
+                <p className="text-xs text-muted-foreground mt-1.5 max-w-xs mx-auto leading-relaxed">
+                  This file type cannot be previewed in the browser. Download the file to view its contents.
+                </p>
+              </div>
+              <Button size="sm" variant="outline" className="gap-1">
+                <Download className="w-3.5 h-3.5" /> Download File
+              </Button>
+            </div>
+          ) : isUrl ? (
             <div className="prose prose-sm max-w-none text-foreground">
               <h1 className="text-lg font-semibold">Getting Started Guide</h1>
               <p className="text-muted-foreground text-xs mb-4">Content fetched on Mar 10, 2026</p>
               <h2>Introduction</h2>
-              <p>Welcome to the platform. This guide walks you through the initial setup process, from creating your workspace to inviting team members.</p>
+              <p>Welcome to the platform. This guide walks you through the initial setup process.</p>
               <h2>Step 1: Create Your Workspace</h2>
               <p>Navigate to the dashboard and click "New Workspace". Enter your workspace name and select your plan tier.</p>
-              <h2>Step 2: Invite Team Members</h2>
-              <p>From Settings → Team, enter email addresses to invite collaborators. Each member can be assigned a role: Owner, Admin, Editor, or Viewer.</p>
-              <h2>Step 3: Configure Integrations</h2>
-              <p>Connect your existing tools from the Integrations panel. Supported integrations include Slack, Jira, and GitHub.</p>
             </div>
           ) : (
             <div className="space-y-3">
