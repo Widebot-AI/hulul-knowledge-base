@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useRef } from "react";
+import type { Lang } from "./translations";
 
 /* ─── Source Model ─── */
 export type SourceStatus = "fetching" | "uploading" | "pending" | "indexing" | "ready" | "failed" | "archived" | "pending_cleanup";
