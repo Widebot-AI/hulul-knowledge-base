@@ -123,32 +123,34 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           </Sheet>
         )}
 
-        {/* Breadcrumb */}
-        <Breadcrumb className="flex-1 min-w-0 overflow-hidden">
-          <BreadcrumbList className="text-xs flex-nowrap">
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
-                Hulul
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
-                Knowledge Base
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {breadcrumb.length > 2 && (
-              <>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
-                    {breadcrumb[2]}
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </>
-            )}
-          </BreadcrumbList>
-        </Breadcrumb>
+        {/* Logo + Breadcrumb */}
+        <div className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
+          <img
+            src={lang === "ar" ? hululLogoAr : hululLogoEng}
+            alt="Hulul"
+            className="h-6 shrink-0"
+          />
+          <span className="text-border mx-1">|</span>
+          <Breadcrumb className="min-w-0 overflow-hidden">
+            <BreadcrumbList className="text-xs flex-nowrap">
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
+                  Knowledge Base
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              {breadcrumb.length > 2 && (
+                <>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
+                      {breadcrumb[2]}
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
+                </>
+              )}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
 
         {/* Search (desktop only) */}
         {!isMobile && (
