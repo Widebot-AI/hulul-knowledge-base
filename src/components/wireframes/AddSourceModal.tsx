@@ -179,11 +179,11 @@ function UrlTab({ onClose, onAddSource }: { onClose: () => void; onAddSource: (n
           />
         </div>
         {error ? (
-          <p className="text-[11px] text-destructive mt-1.5 flex items-center gap-1">
+          <p className="text-xs text-destructive mt-1.5 flex items-center gap-1">
             <AlertCircle className="w-3 h-3" /> {error}
           </p>
         ) : (
-          <p className="text-[11px] text-muted-foreground mt-1.5">Only publicly accessible pages are supported.</p>
+          <p className="text-xs text-muted-foreground mt-1.5">Only publicly accessible pages are supported.</p>
         )}
       </div>
       <div className="flex justify-end gap-2 pt-2">

@@ -114,7 +114,7 @@ export function ChatPanel() {
                           key={c.id}
                           onClick={() => openCitation(c.id, c.deleted)}
                           className={cn(
-                            "inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded cursor-pointer transition-colors",
+                            "inline-flex items-center gap-1 text-xs font-medium px-1.5 py-0.5 rounded cursor-pointer transition-colors",
                             c.deleted
                               ? "bg-muted text-muted-foreground line-through"
                               : msg.role === "user"

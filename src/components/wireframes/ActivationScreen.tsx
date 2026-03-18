@@ -97,7 +97,7 @@ export function ActivationScreen() {
           </div>
 
           {/* Footer hint */}
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <Sparkles className="w-3 h-3" />
             <span>Sources are indexed for AI-powered search and citation</span>
           </div>
