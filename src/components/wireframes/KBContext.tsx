@@ -81,7 +81,7 @@ const initialSources: Source[] = [
   { id: "3", name: "Employee Handbook.docx", type: "DOCX", status: "ready", selected: false, tags: [], avatar: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg" },
   { id: "4", name: "Sales Pipeline.xlsx", type: "XLSX", status: "indexing", selected: false, tags: [], avatar: "https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg" },
   { id: "5", name: "Release Notes v2.1.txt", type: "TXT", status: "pending", selected: false, tags: [] },
-  { id: "6", name: "https://docs.example.com/guide", type: "URL", status: "fetching", selected: false, tags: [] },
+  { id: "6", name: "https://docs.example.com/guide", type: "URL", status: "fetching", selected: false, tags: [], avatar: "https://www.google.com/s2/favicons?domain=example.com&sz=64" },
   { id: "7", name: "Old Policy.pdf", type: "PDF", status: "failed", selected: false, tags: [] },
 ];
 
