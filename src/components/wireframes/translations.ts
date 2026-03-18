@@ -9,6 +9,7 @@ const translations = {
   "nav.kb": { en: "Knowledge Base", ar: "قاعدة المعرفة" },
   "nav.settings": { en: "Settings", ar: "الإعدادات" },
   "nav.kb.short": { en: "KB", ar: "المعرفة" },
+  "nav.menu": { en: "Menu", ar: "القائمة" },
   "header.search": { en: "Search...", ar: "بحث..." },
   "header.energy": { en: "Energy", ar: "الطاقة" },
   "header.devScreens": { en: "Dev — Wireframe Screens", ar: "المطور — شاشات العرض" },
