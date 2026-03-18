@@ -16,7 +16,7 @@ export function SourcePreviewPanel() {
   const isBinary = ["DOCX", "XLSX", "PPTX"].includes(source.type);
 
   return (
-    <div className="fixed inset-0 bg-foreground/30 flex items-center justify-center z-[60] p-4" onClick={(e) => { e.stopPropagation(); closeModal(); }}>
+    <div className="fixed inset-0 bg-foreground/30 flex items-center justify-center z-[60] p-4" style={{ pointerEvents: 'auto' }} onClick={(e) => { e.stopPropagation(); closeModal(); }}>
       <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
@@ -32,7 +32,7 @@ export function SourcePreviewPanel() {
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             )}
-            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={closeModal}>
+            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={(e) => { e.stopPropagation(); e.preventDefault(); closeModal(); }}>
               <X className="w-3.5 h-3.5" />
             </Button>
           </div>
