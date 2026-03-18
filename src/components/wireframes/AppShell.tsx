@@ -2,8 +2,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
-  Bell, Folder, Bookmark, Puzzle, Settings, Sun, Moon, Code2,
-  Search, Home, Inbox, MessageSquare, Menu as MenuIcon,
+  Home, Search, BookOpen, Plus, Settings, Sun, Moon, Code2,
+  Menu as MenuIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -21,20 +21,20 @@ import {
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
-  { icon: Bell, label: "Notifications", badge: true },
-  { icon: Folder, label: "Files" },
-  { icon: Bookmark, label: "Saved" },
-  { icon: Puzzle, label: "Integrations" },
+  { icon: Home, label: "Home" },
+  { icon: Search, label: "Search" },
+  { icon: BookOpen, label: "Notebook", active: true },
+  { icon: Plus, label: "Create" },
   { icon: Settings, label: "Settings" },
 ];
 
 /* ─── Mobile bottom-nav items ─── */
 const bottomNavItems = [
   { icon: Home, label: "Home", id: "home" as const },
-  { icon: Inbox, label: "Inbox", id: "inbox" as const },
   { icon: Search, label: "Search", id: "search" as const },
-  { icon: MessageSquare, label: "KB", id: "kb" as const },
-  { icon: MenuIcon, label: "Menu", id: "menu" as const },
+  { icon: BookOpen, label: "KB", id: "kb" as const },
+  { icon: Plus, label: "New", id: "new" as const },
+  { icon: Settings, label: "Settings", id: "settings" as const },
 ];
 
 /* ─── Breadcrumb helper ─── */
