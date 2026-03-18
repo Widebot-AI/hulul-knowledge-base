@@ -97,25 +97,6 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
     <div className="flex flex-col h-screen overflow-hidden bg-background">
       {/* ─── Top Header ─── */}
       <header className="h-12 shrink-0 border-b border-border flex items-center gap-2 px-3 bg-card">
-        {/* Hamburger (mobile only — opens screen list) */}
-        {isMobile && (
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <button className="p-1.5 rounded-md hover:bg-accent transition-colors">
-                <MenuIcon className="w-4 h-4 text-foreground" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side={isRtl ? "right" : "left"} className="w-72 p-0">
-              <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
-                {t("header.kbWireframes", lang)}
-              </SheetTitle>
-              <div onClick={() => setMobileMenuOpen(false)}>
-                {DevScreenList}
-              </div>
-            </SheetContent>
-          </Sheet>
-        )}
-
         {/* Logo + Breadcrumb */}
         <div className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
           <img
