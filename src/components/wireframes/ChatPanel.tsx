@@ -87,7 +87,7 @@ export function ChatPanel() {
                   className={cn(
                     "max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed",
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-primary/15 text-foreground"
                       : "bg-secondary text-secondary-foreground",
                     msg.isError && "border border-destructive/30"
                   )}
