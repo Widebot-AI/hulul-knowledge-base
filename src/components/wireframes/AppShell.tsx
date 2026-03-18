@@ -32,9 +32,10 @@ const sidebarIcons = [
 /* ─── Mobile bottom-nav items ─── */
 const bottomNavItems = [
   { icon: Home, label: "Home", id: "home" as const },
-  { icon: Search, label: "Search", id: "search" as const },
+  { icon: Inbox, label: "Inbox", id: "inbox" as const },
+  { icon: Users, label: "CRM", id: "crm" as const },
+  { icon: Bot, label: "AI Agent", id: "agent" as const },
   { icon: BookOpen, label: "KB", id: "kb" as const },
-  { icon: Plus, label: "New", id: "new" as const },
   { icon: Settings, label: "Settings", id: "settings" as const },
 ];
 
