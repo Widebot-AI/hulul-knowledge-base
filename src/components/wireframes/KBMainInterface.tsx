@@ -15,8 +15,9 @@ export function KBMainInterface() {
 
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
 
-  // Reset expanded state when sheet closes
+  // Prevent sheet close when preview is open
   const handleSheetChange = (open: boolean) => {
+    if (!open && modal?.kind === "source-preview") return;
     setSourcesOpen(open);
     if (!open) setSheetExpanded(false);
   };
