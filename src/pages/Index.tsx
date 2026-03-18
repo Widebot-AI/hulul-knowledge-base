@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WireframeNav } from "@/components/wireframes/WireframeNav";
 import { ActivationScreen } from "@/components/wireframes/ActivationScreen";
 import { NoAccessScreen } from "@/components/wireframes/NoAccessScreen";
@@ -128,6 +128,11 @@ const screens: { id: Screen; label: string; group: string }[] = [
 
 const Index = () => {
   const [activeScreen, setActiveScreen] = useState<Screen>("activation");
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [isDark]);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -135,6 +140,8 @@ const Index = () => {
         screens={screens}
         activeScreen={activeScreen}
         onSelect={setActiveScreen}
+        isDark={isDark}
+        onToggleTheme={() => setIsDark(!isDark)}
       />
       <main className="flex-1 overflow-auto bg-background">
         {/* Onboarding */}
