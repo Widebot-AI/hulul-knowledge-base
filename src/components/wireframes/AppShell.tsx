@@ -2,8 +2,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
-  Home, Search, BookOpen, Plus, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon,
+  Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
+  Menu as MenuIcon, Zap,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
