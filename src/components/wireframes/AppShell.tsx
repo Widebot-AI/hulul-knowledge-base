@@ -350,6 +350,23 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           })}
         </nav>
       )}
+
+      {/* Sources bottom sheet — mobile */}
+      {isMobile && (
+        <Sheet open={sourcesOpen} onOpenChange={handleSourceSheetChange}>
+          <SheetContent
+            side="bottom"
+            className={`p-0 rounded-t-2xl transition-[height] duration-300 ease-in-out ${
+              sheetExpanded ? "h-[100dvh] rounded-t-none" : "h-[75vh]"
+            }`}
+          >
+            <SheetTitle className="sr-only">{t("sources.title", lang)}</SheetTitle>
+            <div className="h-full">
+              <SourcePanel isMobileSheet onExpand={() => setSheetExpanded(true)} />
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   );
 }
