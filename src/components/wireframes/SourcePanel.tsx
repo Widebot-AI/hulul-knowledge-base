@@ -1,3 +1,4 @@
+import { useState, useRef, useCallback } from "react";
 import { Plus, FileText, Globe, Check, Loader2, AlertTriangle, Upload, RotateCcw, Archive, Clock, Lock, Trash2, MoreVertical, Eye, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -37,44 +38,44 @@ function getStatusConfig(lang: "en" | "ar"): Record<SourceStatus, { label: strin
   };
 }
 
-export function SourcePanel() {
+interface SourcePanelProps {
+  isMobileSheet?: boolean;
+  onExpand?: () => void;
+}
+
+export function SourcePanel({ isMobileSheet = false, onExpand }: SourcePanelProps) {
   const { sources, toggleSourceSelection, openModal, retrySource, lang } = useKB();
   const statusConfig = getStatusConfig(lang);
+  const [expanded, setExpanded] = useState(false);
 
   const totalFiles = sources.length;
   const storagePercent = Math.min(100, Math.round((totalFiles / 50) * 100) * 4.6);
 
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    if (!isMobileSheet || expanded) return;
+    const el = e.currentTarget;
+    if (el.scrollTop > 10) {
+      setExpanded(true);
+      onExpand?.();
+    }
+  }, [isMobileSheet, expanded, onExpand]);
+
   return (
-    <div className="w-full h-full flex flex-col bg-panel border-e border-border">
+    <div className={cn("w-full h-full flex flex-col bg-panel", !isMobileSheet && "border-e border-border")}>
       {/* Header */}
       <div className="px-4 py-3 border-b border-border space-y-2">
         <h2 className="text-sm font-semibold text-foreground">{t("sources.title", lang)}</h2>
-        <Button
-          size="sm"
-          className="w-full h-8 text-xs gap-1.5 font-medium bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={() => openModal({ kind: "add-source", tab: "file" })}
-        >
-          <Plus className="w-3.5 h-3.5" /> {t("sources.add", lang)}
-        </Button>
-      </div>
-
-      {/* Storage Metrics */}
-      <div className="px-4 py-3 border-b border-border space-y-2.5">
-        <div>
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-muted-foreground">{t("sources.storageUsed", lang)}</span>
-            <span className="font-medium text-foreground">{Math.round(storagePercent)}%</span>
-          </div>
-          <Progress value={storagePercent} className="h-1.5" />
-        </div>
-        <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">{t("sources.filesAdded", lang)}</span>
-          <span className="font-medium text-foreground">{totalFiles} / 50</span>
+        {/* Storage Metrics — compact single line */}
+        <div className="flex items-center gap-2">
+          <Progress value={storagePercent} className="h-1.5 flex-1" />
+          <span className="text-[11px] text-muted-foreground whitespace-nowrap font-medium">
+            {Math.round(storagePercent)}% · {totalFiles}/50
+          </span>
         </div>
       </div>
 
       {/* Source List */}
-      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }} onScroll={handleScroll}>
         {sources.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full px-6 text-center">
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-3">
@@ -214,6 +215,32 @@ export function SourcePanel() {
           </div>
         )}
       </div>
+
+      {/* Add sources button — pinned to bottom in mobile sheet */}
+      {isMobileSheet && (
+        <div className="px-4 py-3 border-t border-border bg-panel">
+          <Button
+            size="sm"
+            className="w-full h-10 text-xs gap-1.5 font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            onClick={() => openModal({ kind: "add-source", tab: "file" })}
+          >
+            <Plus className="w-3.5 h-3.5" /> {t("sources.add", lang)}
+          </Button>
+        </div>
+      )}
+
+      {/* Add sources button — inline in desktop */}
+      {!isMobileSheet && (
+        <div className="px-4 py-3 border-t border-border">
+          <Button
+            size="sm"
+            className="w-full h-8 text-xs gap-1.5 font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            onClick={() => openModal({ kind: "add-source", tab: "file" })}
+          >
+            <Plus className="w-3.5 h-3.5" /> {t("sources.add", lang)}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

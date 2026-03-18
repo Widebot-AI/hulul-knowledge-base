@@ -11,9 +11,15 @@ export function KBMainInterface() {
   const isMobile = useIsMobile();
   const { sources, lang } = useKB();
   const [sourcesOpen, setSourcesOpen] = useState(false);
+  const [sheetExpanded, setSheetExpanded] = useState(false);
 
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
-  const totalSources = sources.length;
+
+  // Reset expanded state when sheet closes
+  const handleSheetChange = (open: boolean) => {
+    setSourcesOpen(open);
+    if (!open) setSheetExpanded(false);
+  };
 
   if (isMobile) {
     return (
@@ -23,11 +29,11 @@ export function KBMainInterface() {
           <ChatPanel />
         </div>
 
-        {/* Floating pill bar — inspired by Lovable queue */}
-        <div className="absolute bottom-[72px] inset-x-0 flex justify-center z-10 pointer-events-none">
+        {/* Floating pill bar */}
+        <div className="absolute bottom-[76px] inset-x-0 flex justify-center z-10 pointer-events-none">
           <button
             onClick={() => setSourcesOpen(true)}
-            className="pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-card border border-border shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+            className="pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
           >
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-foreground" />
@@ -43,11 +49,16 @@ export function KBMainInterface() {
         </div>
 
         {/* Bottom sheet for sources */}
-        <Sheet open={sourcesOpen} onOpenChange={setSourcesOpen}>
-          <SheetContent side="bottom" className="h-[75vh] p-0 rounded-t-2xl">
+        <Sheet open={sourcesOpen} onOpenChange={handleSheetChange}>
+          <SheetContent
+            side="bottom"
+            className={`p-0 rounded-t-2xl transition-[height] duration-300 ease-in-out ${
+              sheetExpanded ? "h-[100dvh] rounded-t-none" : "h-[75vh]"
+            }`}
+          >
             <SheetTitle className="sr-only">{t("sources.title", lang)}</SheetTitle>
             <div className="h-full">
-              <SourcePanel />
+              <SourcePanel isMobileSheet onExpand={() => setSheetExpanded(true)} />
             </div>
           </SheetContent>
         </Sheet>
