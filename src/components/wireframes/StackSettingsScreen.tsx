@@ -16,8 +16,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
 
       {/* US-010 S2: Non-admin read-only banner */}
       {readOnly && (
-        <div role="alert" className="flex items-center gap-2 px-4 py-2.5 bg-accent border border-accent-foreground/10 rounded-lg text-xs text-muted-foreground">
-          <Lock className="w-4 h-4 shrink-0" />
+        <div role="alert" className="flex items-center gap-2 px-4 py-2.5 bg-muted border border-border rounded-lg text-xs text-foreground">
+          <Lock className="w-4 h-4 shrink-0 text-muted-foreground" />
           <span>You have view-only access. Contact your workspace Owner or Admin to make changes.</span>
         </div>
       )}
@@ -53,8 +53,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
                 </Badge>
               ))}
             </div>
-            <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground">
-              <Info className="w-3 h-3" />
+            <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+              <Info className="w-3 h-3 shrink-0" />
               All enabled channels are auto-connected. Per-channel opt-out coming soon.
             </div>
           </div>
@@ -78,8 +78,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
               readOnly
               disabled={readOnly}
             />
-            <div className="flex items-center gap-1 mt-1.5 text-[10px] text-muted-foreground">
-              <Info className="w-3 h-3" />
+            <div className="flex items-center gap-1 mt-1.5 text-xs text-muted-foreground">
+              <Info className="w-3 h-3 shrink-0" />
               A platform-level system prompt is always prepended and cannot be edited.
             </div>
           </div>
@@ -87,8 +87,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
       </div>
 
       {/* Disable warning */}
-      <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 text-xs text-muted-foreground">
-        <strong className="text-warning">Note:</strong> Disabling the KB stack will route subsequent channel queries to the previously active stack. If no fallback stack exists, channels will stop receiving AI responses.
+      <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 text-xs text-warning">
+        <strong>Note:</strong> Disabling the KB stack will route subsequent channel queries to the previously active stack. If no fallback stack exists, channels will stop receiving AI responses.
       </div>
     </div>
   );
