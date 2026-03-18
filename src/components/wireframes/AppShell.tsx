@@ -63,6 +63,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
   const breadcrumb = getBreadcrumb(activeScreen, screens);
 
   const groups = screens.reduce<Record<string, typeof screens>>((acc, s) => {
