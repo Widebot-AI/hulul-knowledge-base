@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Search, BatteryMedium, Languages,
+  Menu as MenuIcon, Search, BatteryMedium, Languages, User, ChevronRight,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -56,6 +56,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [menuDevView, setMenuDevView] = useState(false);
   const { lang, setLang } = useKB();
   const isRtl = lang === "ar";
 
@@ -126,25 +127,29 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
         {/* Header actions */}
         <div className="flex items-center gap-1">
-          {/* Language toggle */}
-          <button
-            onClick={() => setLang(lang === "en" ? "ar" : "en")}
-            className="p-1.5 rounded-md hover:bg-accent transition-colors"
-            title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
-          >
-            <Languages className="w-3.5 h-3.5 text-foreground" />
-          </button>
+          {/* Language toggle — desktop only */}
+          {!isMobile && (
+            <button
+              onClick={() => setLang(lang === "en" ? "ar" : "en")}
+              className="p-1.5 rounded-md hover:bg-accent transition-colors"
+              title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
+            >
+              <Languages className="w-3.5 h-3.5 text-foreground" />
+            </button>
+          )}
 
-          {/* Dark mode toggle */}
-          <button
-            onClick={onToggleTheme}
-            className="p-1.5 rounded-md hover:bg-accent transition-colors"
-            title={isDark ? "Light mode" : "Dark mode"}
-          >
-            {isDark
-              ? <Sun className="w-3.5 h-3.5 text-foreground" />
-              : <Moon className="w-3.5 h-3.5 text-foreground" />}
-          </button>
+          {/* Dark mode toggle — desktop only */}
+          {!isMobile && (
+            <button
+              onClick={onToggleTheme}
+              className="p-1.5 rounded-md hover:bg-accent transition-colors"
+              title={isDark ? "Light mode" : "Dark mode"}
+            >
+              {isDark
+                ? <Sun className="w-3.5 h-3.5 text-foreground" />
+                : <Moon className="w-3.5 h-3.5 text-foreground" />}
+            </button>
+          )}
 
           {/* Dev screens drawer (desktop) */}
           {!isMobile && (
@@ -234,14 +239,71 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                   </SheetTrigger>
                   <SheetContent side={isRtl ? "right" : "left"} className="w-72 p-0">
                     <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
-                      {t("nav.menu", lang)}
+                      {menuDevView ? t("menu.devScreens", lang) : t("nav.menu", lang)}
                     </SheetTitle>
-                    <div className="p-4 space-y-1">
-                      <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
-                        <Settings className="w-4 h-4" />
-                        {t("nav.settings", lang)}
-                      </button>
-                    </div>
+                    {menuDevView ? (
+                      <div>
+                        <button
+                          onClick={() => setMenuDevView(false)}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-accent transition-colors border-b border-border"
+                        >
+                          <ChevronRight className={cn("w-3.5 h-3.5", isRtl ? "" : "rotate-180")} />
+                          {t("nav.menu", lang)}
+                        </button>
+                        <div onClick={() => { setMobileMenuOpen(false); setMenuDevView(false); }}>
+                          {DevScreenList}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-3 space-y-0.5">
+                        {/* Profile */}
+                        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors">
+                          <User className="w-4 h-4 text-muted-foreground" />
+                          {t("menu.profile", lang)}
+                        </button>
+                        {/* Language */}
+                        <button
+                          onClick={() => setLang(lang === "en" ? "ar" : "en")}
+                          className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors"
+                        >
+                          <span className="flex items-center gap-3">
+                            <Languages className="w-4 h-4 text-muted-foreground" />
+                            {t("menu.language", lang)}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{lang === "en" ? "العربية" : "English"}</span>
+                        </button>
+                        {/* Dark mode */}
+                        <button
+                          onClick={onToggleTheme}
+                          className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors"
+                        >
+                          <span className="flex items-center gap-3">
+                            {isDark
+                              ? <Sun className="w-4 h-4 text-muted-foreground" />
+                              : <Moon className="w-4 h-4 text-muted-foreground" />}
+                            {isDark ? t("menu.lightMode", lang) : t("menu.darkMode", lang)}
+                          </span>
+                        </button>
+                        {/* Settings */}
+                        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors">
+                          <Settings className="w-4 h-4 text-muted-foreground" />
+                          {t("nav.settings", lang)}
+                        </button>
+                        {/* Dev screens */}
+                        <div className="border-t border-border mt-2 pt-2">
+                          <button
+                            onClick={() => setMenuDevView(true)}
+                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+                          >
+                            <span className="flex items-center gap-3">
+                              <Code2 className="w-4 h-4" />
+                              {t("menu.devScreens", lang)}
+                            </span>
+                            <ChevronRight className={cn("w-4 h-4", isRtl && "rotate-180")} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </SheetContent>
                 </Sheet>
               );
