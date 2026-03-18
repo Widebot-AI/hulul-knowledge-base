@@ -46,7 +46,7 @@ export function ChatPanel() {
           <span>This conversation is getting long. Consider resetting to maintain response quality.</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-[10px] text-warning hover:text-warning gap-1"
+            className="h-6 text-xs text-warning hover:text-warning gap-1"
             onClick={() => openModal({ kind: "reset-confirm" })}
           >
             <RotateCcw className="w-3 h-3" /> Reset
@@ -58,7 +58,7 @@ export function ChatPanel() {
           <span>Session limit reached. Please reset your conversation to continue chatting.</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-[10px] text-destructive hover:text-destructive gap-1"
+            className="h-6 text-xs text-destructive hover:text-destructive gap-1"
             onClick={resetChat}
           >
             <RotateCcw className="w-3 h-3" /> Reset Session
@@ -114,7 +114,7 @@ export function ChatPanel() {
                           key={c.id}
                           onClick={() => openCitation(c.id, c.deleted)}
                           className={cn(
-                            "inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded cursor-pointer transition-colors",
+                            "inline-flex items-center gap-1 text-xs font-medium px-1.5 py-0.5 rounded cursor-pointer transition-colors",
                             c.deleted
                               ? "bg-muted text-muted-foreground line-through"
                               : msg.role === "user"

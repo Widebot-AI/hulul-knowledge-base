@@ -27,7 +27,7 @@ export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; t
 const statusConfig: Record<SourceStatus, { label: string; color: string; icon: React.ReactNode }> = {
   fetching: { label: "Fetching", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
   uploading: { label: "Uploading", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
-  pending: { label: "Pending", color: "bg-warning/10 text-warning", icon: <Clock className="w-3 h-3" /> },
+  pending: { label: "Pending", color: "bg-warning/10 text-warning", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
   indexing: { label: "Indexing", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
   ready: { label: "Ready", color: "bg-success/10 text-success", icon: <Check className="w-3 h-3" /> },
   failed: { label: "Failed", color: "bg-destructive/10 text-destructive", icon: <AlertTriangle className="w-3 h-3" /> },
@@ -59,13 +59,13 @@ export function SourcePanel() {
       {/* Storage Metrics */}
       <div className="px-4 py-3 border-b border-border space-y-2.5">
         <div>
-          <div className="flex justify-between text-[11px] mb-1">
+          <div className="flex justify-between text-xs mb-1">
             <span className="text-muted-foreground">Storage Used</span>
             <span className="font-medium text-foreground">{Math.round(storagePercent)}%</span>
           </div>
           <Progress value={storagePercent} className="h-1.5" />
         </div>
-        <div className="flex justify-between text-[11px]">
+        <div className="flex justify-between text-xs">
           <span className="text-muted-foreground">Files Added</span>
           <span className="font-medium text-foreground">{totalFiles} / 50</span>
         </div>
@@ -130,7 +130,7 @@ export function SourcePanel() {
                       </div>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="secondary" className="text-[10px] h-4 px-1.5 font-normal">{source.type}</Badge>
-                        <span className={cn("inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full font-medium", sc.color)}>
+                        <span className={cn("inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full font-medium", sc.color)}>
                           {sc.icon}
                           {sc.label}
                         </span>
@@ -149,7 +149,7 @@ export function SourcePanel() {
                         <div className="flex items-center gap-2 mt-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); retrySource(source.id); }}
-                            className="text-[10px] text-primary hover:underline flex items-center gap-1"
+                            className="text-xs text-primary hover:underline flex items-center gap-1"
                           >
                             <RotateCcw className="w-2.5 h-2.5" /> Retry
                           </button>
@@ -160,16 +160,16 @@ export function SourcePanel() {
                         <div className="mt-1.5 space-y-1">
                           <p className="text-xs text-warning">No longer queryable — partial deletion</p>
                           {source.retryLocked ? (
-                            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <Lock className="w-2.5 h-2.5" />
                               <span>Max retries reached — contact support</span>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <button onClick={(e) => e.stopPropagation()} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+                              <button onClick={(e) => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
                                 <RotateCcw className="w-2.5 h-2.5" /> Retry cleanup
                               </button>
-                              <span className="text-[10px] text-muted-foreground">({source.retryCount}/3 attempts)</span>
+                              <span className="text-xs text-muted-foreground">({source.retryCount}/3 attempts)</span>
                             </div>
                           )}
                         </div>
