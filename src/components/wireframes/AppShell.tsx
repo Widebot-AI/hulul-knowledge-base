@@ -222,20 +222,43 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
       {/* ─── Mobile bottom nav ─── */}
       {isMobile && (
         <nav className="h-14 shrink-0 border-t border-border bg-card flex items-stretch">
-          {bottomNavKeys.map(({ icon: Icon, labelKey, id }) => (
-            <button
-              key={id}
-              className={cn(
-                "flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors",
-                id === "kb"
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              )}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
-            </button>
-          ))}
+          {bottomNavKeys.map(({ icon: Icon, labelKey, id }) => {
+            if (id === "menu") {
+              return (
+                <Sheet key={id} open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                  <SheetTrigger asChild>
+                    <button className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground">
+                      <Icon className="w-5 h-5" />
+                      <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent side={isRtl ? "right" : "left"} className="w-72 p-0">
+                    <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
+                      {t("nav.menu", lang)}
+                    </SheetTitle>
+                    <div className="p-4 space-y-1">
+                      <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
+                        <Settings className="w-4 h-4" />
+                        {t("nav.settings", lang)}
+                      </button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              );
+            }
+            return (
+              <button
+                key={id}
+                className={cn(
+                  "flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors",
+                  id === "kb" ? "text-primary" : "text-muted-foreground"
+                )}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
+              </button>
+            );
+          })}
         </nav>
       )}
     </div>
