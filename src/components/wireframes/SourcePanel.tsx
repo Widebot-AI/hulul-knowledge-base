@@ -129,7 +129,7 @@ export function SourcePanel({ variant = "normal", storagePercent = 65, fileCount
       </div>
 
       {/* Source List */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent" style={{ scrollbarWidth: 'thin' }}>
         {variant === "loading" ? (
           <div className="p-2 space-y-2">
             {[1, 2, 3].map((i) => (

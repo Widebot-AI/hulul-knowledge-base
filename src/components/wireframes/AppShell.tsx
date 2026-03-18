@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Zap,
+  Menu as MenuIcon, Zap, Search,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
