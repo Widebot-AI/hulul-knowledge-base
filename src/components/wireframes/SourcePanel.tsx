@@ -166,7 +166,7 @@ export function SourcePanel() {
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <button onClick={(e) => e.stopPropagation()} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+                              <button onClick={(e) => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
                                 <RotateCcw className="w-2.5 h-2.5" /> Retry cleanup
                               </button>
                               <span className="text-[10px] text-muted-foreground">({source.retryCount}/3 attempts)</span>
