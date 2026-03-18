@@ -58,7 +58,7 @@ export function ChatPanel() {
           <span>Session limit reached. Please reset your conversation to continue chatting.</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-[10px] text-destructive hover:text-destructive gap-1"
+            className="h-6 text-xs text-destructive hover:text-destructive gap-1"
             onClick={resetChat}
           >
             <RotateCcw className="w-3 h-3" /> Reset Session
