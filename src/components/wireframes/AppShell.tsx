@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Zap, Search,
+  Menu as MenuIcon, Search, BatteryMedium,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -211,13 +211,11 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             {/* Spacer */}
             <div className="flex-1" />
 
-            {/* Consumption / Energy */}
-            <button
-              className="w-8 h-8 flex items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              title="Energy consumption"
-            >
-              <Zap className="w-4 h-4" />
-            </button>
+            {/* Energy / Battery indicator */}
+            <div className="flex flex-col items-center gap-0.5 cursor-pointer group" title="Energy: 100%">
+              <BatteryMedium className="w-5 h-5 text-primary group-hover:text-primary/80 transition-colors" />
+              <span className="text-[9px] font-medium text-muted-foreground">100%</span>
+            </div>
 
             {/* User avatar */}
             <Avatar className="w-7 h-7 rounded-md cursor-pointer">
