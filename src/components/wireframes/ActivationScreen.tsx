@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { KBMainInterface } from "./KBMainInterface";
 
 export function ActivationScreen() {
-  const { setPhase, addSource } = useKB();
+  const { setPhase, addMockSource } = useKB();
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
