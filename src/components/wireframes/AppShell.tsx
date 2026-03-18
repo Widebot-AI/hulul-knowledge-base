@@ -57,8 +57,17 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
   const [menuDevView, setMenuDevView] = useState(false);
-  const { lang, setLang } = useKB();
+  const [sourcesOpen, setSourcesOpen] = useState(false);
+  const [sheetExpanded, setSheetExpanded] = useState(false);
+  const { lang, setLang, sources, modal } = useKB();
   const isRtl = lang === "ar";
+  const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
+
+  const handleSourceSheetChange = (open: boolean) => {
+    if (!open && modal?.kind === "source-preview") return;
+    setSourcesOpen(open);
+    if (!open) setSheetExpanded(false);
+  };
 
   const groups = screens.reduce<Record<string, typeof screens>>((acc, s) => {
     (acc[s.group] ??= []).push(s);
