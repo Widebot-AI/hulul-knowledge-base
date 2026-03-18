@@ -166,25 +166,27 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
               : <Moon className="w-3.5 h-3.5 text-foreground" />}
           </button>
 
-          {/* Dev screens popover (desktop) */}
+          {/* Dev screens drawer (desktop) */}
           {!isMobile && (
-            <Popover>
-              <PopoverTrigger asChild>
+            <Sheet open={devDrawerOpen} onOpenChange={setDevDrawerOpen}>
+              <SheetTrigger asChild>
                 <button
                   className="p-1.5 rounded-md hover:bg-accent transition-colors border border-dashed border-border"
                   title="Dev: Switch wireframe screen"
                 >
                   <Code2 className="w-3.5 h-3.5 text-muted-foreground" />
                 </button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-72 p-0">
-                <div className="px-3 py-2 border-b border-border">
-                  <p className="text-xs font-semibold text-foreground">Dev — Wireframe Screens</p>
-                  <p className="text-[10px] text-muted-foreground">US-001 → US-012</p>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 p-0">
+                <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
+                  Dev — Wireframe Screens
+                  <p className="text-[10px] text-muted-foreground font-normal mt-0.5">US-001 → US-012</p>
+                </SheetTitle>
+                <div onClick={() => setDevDrawerOpen(false)}>
+                  {DevScreenList}
                 </div>
-                {DevScreenList}
-              </PopoverContent>
-            </Popover>
+              </SheetContent>
+            </Sheet>
           )}
         </div>
       </header>
