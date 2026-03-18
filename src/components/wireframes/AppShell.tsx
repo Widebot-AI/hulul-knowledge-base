@@ -229,7 +229,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         )}
 
         {/* Main content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-hidden">
           {children}
         </main>
       </div>

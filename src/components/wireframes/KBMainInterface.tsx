@@ -30,7 +30,7 @@ export function KBMainInterface({
   sourceVariant,
 }: Props) {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       {/* Global Alert Banners */}
       {alertType === "warning-80" && (
         <div className="bg-warning/10 border-b border-warning/20 px-4 py-2 flex items-center justify-between">
