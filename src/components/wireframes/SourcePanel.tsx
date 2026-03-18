@@ -1,4 +1,4 @@
-import { Plus, FileText, Globe, Check, Loader2, AlertTriangle, Upload, RotateCcw, Archive, Clock, Lock, Trash2, Eye } from "lucide-react";
+import { Plus, FileText, Globe, Check, Loader2, AlertTriangle, Upload, RotateCcw, Archive, Clock, Lock, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -94,18 +94,23 @@ export function SourcePanel() {
                 <div
                   key={source.id}
                   className={cn(
-                    "rounded-lg px-3 py-2.5 border transition-colors group",
+                    "rounded-lg px-3 py-2.5 border transition-colors group cursor-pointer",
                     source.selected
                       ? "border-primary/30 bg-accent"
                       : "border-transparent hover:bg-secondary",
                     (source.status === "archived" || source.status === "pending_cleanup") && "opacity-60"
                   )}
+                  onClick={() => {
+                    if (source.status === "ready") {
+                      openModal({ kind: "source-preview", sourceId: source.id });
+                    }
+                  }}
                 >
                   <div className="flex items-start gap-2">
                     {/* Selection checkbox — only for ready sources */}
                     {source.status === "ready" && (
                       <button
-                        onClick={() => toggleSourceSelection(source.id)}
+                        onClick={(e) => { e.stopPropagation(); toggleSourceSelection(source.id); }}
                         className={cn(
                           "mt-0.5 w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
                           source.selected ? "border-primary bg-primary" : "border-border hover:border-primary/50"
@@ -140,17 +145,9 @@ export function SourcePanel() {
                       )}
                       {/* Actions row */}
                       <div className="flex items-center gap-2 mt-1.5">
-                        {source.status === "ready" && (
-                          <button
-                            onClick={() => openModal({ kind: "source-preview", sourceId: source.id })}
-                            className="text-[10px] text-primary hover:underline flex items-center gap-1"
-                          >
-                            <Eye className="w-2.5 h-2.5" /> Preview
-                          </button>
-                        )}
                         {source.status === "failed" && (
                           <button
-                            onClick={() => retrySource(source.id)}
+                            onClick={(e) => { e.stopPropagation(); retrySource(source.id); }}
                             className="text-[10px] text-primary hover:underline flex items-center gap-1"
                           >
                             <RotateCcw className="w-2.5 h-2.5" /> Retry
@@ -158,7 +155,7 @@ export function SourcePanel() {
                         )}
                         {isTerminal && (
                           <button
-                            onClick={() => openModal({ kind: "delete-confirm", sourceId: source.id, sourceName: source.name })}
+                            onClick={(e) => { e.stopPropagation(); openModal({ kind: "delete-confirm", sourceId: source.id, sourceName: source.name }); }}
                             className="text-[10px] text-muted-foreground hover:text-destructive flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                           >
                             <Trash2 className="w-2.5 h-2.5" /> Delete
@@ -176,7 +173,7 @@ export function SourcePanel() {
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <button className="text-[10px] text-primary hover:underline flex items-center gap-1">
+                              <button onClick={(e) => e.stopPropagation()} className="text-[10px] text-primary hover:underline flex items-center gap-1">
                                 <RotateCcw className="w-2.5 h-2.5" /> Retry cleanup
                               </button>
                               <span className="text-[10px] text-muted-foreground">({source.retryCount}/3 attempts)</span>
