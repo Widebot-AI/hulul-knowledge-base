@@ -57,6 +57,8 @@ type Props = {
   children: React.ReactNode;
 };
 
+type Lang = "en" | "ar";
+
 export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleTheme, children }: Props) {
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
