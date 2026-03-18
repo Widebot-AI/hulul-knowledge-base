@@ -78,8 +78,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
               readOnly
               disabled={readOnly}
             />
-            <div className="flex items-center gap-1 mt-1.5 text-[10px] text-muted-foreground">
-              <Info className="w-3 h-3" />
+            <div className="flex items-center gap-1 mt-1.5 text-xs text-muted-foreground">
+              <Info className="w-3 h-3 shrink-0" />
               A platform-level system prompt is always prepended and cannot be edited.
             </div>
           </div>
