@@ -44,10 +44,10 @@ export function KBMainInterface() {
 
         {/* Bottom sheet for sources */}
         <Sheet open={sourcesOpen} onOpenChange={setSourcesOpen}>
-          <SheetContent side="bottom" className="h-[75vh] p-0 rounded-t-2xl">
+          <SheetContent side="bottom" className="h-[75vh] data-[state=open]:has-[:scrolled]:h-[100dvh] p-0 rounded-t-2xl transition-[height] duration-300">
             <SheetTitle className="sr-only">{t("sources.title", lang)}</SheetTitle>
             <div className="h-full">
-              <SourcePanel />
+              <SourcePanel isMobileSheet />
             </div>
           </SheetContent>
         </Sheet>
