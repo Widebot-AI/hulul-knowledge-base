@@ -30,7 +30,7 @@ export function KBMainInterface() {
         </div>
 
         {/* Floating pill bar */}
-        <div className="absolute bottom-[76px] inset-x-0 flex justify-center z-10 pointer-events-none">
+        <div className="absolute bottom-[84px] inset-x-0 flex justify-center z-10 pointer-events-none">
           <button
             onClick={() => setSourcesOpen(true)}
             className="pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
