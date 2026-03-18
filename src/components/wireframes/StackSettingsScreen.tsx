@@ -53,8 +53,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
                 </Badge>
               ))}
             </div>
-            <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground">
-              <Info className="w-3 h-3" />
+            <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+              <Info className="w-3 h-3 shrink-0" />
               All enabled channels are auto-connected. Per-channel opt-out coming soon.
             </div>
           </div>
