@@ -1,11 +1,12 @@
-import { X, Download, ExternalLink, FileText, Globe, RotateCcw, AlertTriangle, AlertCircle, FileWarning } from "lucide-react";
+import { X, Download, ExternalLink, FileText, FileWarning } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SourceAvatar } from "@/components/wireframes/SourcePanel";
 import { useKB } from "./KBContext";
+import { t } from "./translations";
 
 export function SourcePreviewPanel() {
-  const { modal, closeModal, sources } = useKB();
+  const { modal, closeModal, sources, lang } = useKB();
   if (modal?.kind !== "source-preview") return null;
 
   const source = sources.find(s => s.id === modal.sourceId);
@@ -19,11 +20,11 @@ export function SourcePreviewPanel() {
       <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <SourceAvatar avatar={source.avatar} type={source.type} size="md" />
-            <h3 className="text-sm font-semibold text-foreground">{source.name}</h3>
+            <h3 className="text-sm font-semibold text-foreground truncate">{source.name}</h3>
             <Badge variant="secondary" className="text-[10px] h-4">{source.type}</Badge>
-            <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
+            <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">{t("status.ready", lang)}</span>
           </div>
           <div className="flex items-center gap-1">
             {isUrl && (
@@ -38,21 +39,21 @@ export function SourcePreviewPanel() {
         </div>
 
         {/* Metadata */}
-        <div className="px-5 py-2.5 border-b border-border flex gap-6 text-xs shrink-0">
+        <div className="px-5 py-2.5 border-b border-border flex flex-wrap gap-4 sm:gap-6 text-xs shrink-0">
           <div>
-            <span className="text-muted-foreground">Added: </span>
+            <span className="text-muted-foreground">{t("preview.added", lang)}: </span>
             <span className="text-foreground">Mar 10, 2026</span>
           </div>
           {isUrl && (
-            <div>
-              <span className="text-muted-foreground">Source: </span>
-              <a className="text-primary hover:underline" href={source.name} target="_blank" rel="noopener">{source.name}</a>
+            <div className="min-w-0">
+              <span className="text-muted-foreground">{t("chat.source", lang)}: </span>
+              <a className="text-primary hover:underline truncate" href={source.name} target="_blank" rel="noopener">{source.name}</a>
             </div>
           )}
           {source.tags.length > 0 && (
             <div className="flex gap-1">
-              {source.tags.map((t, i) => (
-                <span key={i} className="text-[10px] bg-accent text-accent-foreground px-1.5 py-0.5 rounded">{t.key}: {t.value}</span>
+              {source.tags.map((tag, i) => (
+                <span key={i} className="text-[10px] bg-accent text-accent-foreground px-1.5 py-0.5 rounded">{tag.key}: {tag.value}</span>
               ))}
             </div>
           )}
@@ -66,13 +67,13 @@ export function SourcePreviewPanel() {
                 <FileWarning className="w-7 h-7 text-muted-foreground" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-foreground">Preview Not Available</h4>
+                <h4 className="text-sm font-semibold text-foreground">{t("preview.notAvailable", lang)}</h4>
                 <p className="text-xs text-muted-foreground mt-1.5 max-w-xs mx-auto leading-relaxed">
-                  This file type cannot be previewed in the browser. Download the file to view its contents.
+                  {t("preview.notAvailableDesc", lang)}
                 </p>
               </div>
               <Button size="sm" variant="outline" className="gap-1">
-                <Download className="w-3.5 h-3.5" /> Download File
+                <Download className="w-3.5 h-3.5" /> {t("preview.download", lang)}
               </Button>
             </div>
           ) : isUrl ? (
@@ -89,13 +90,13 @@ export function SourcePreviewPanel() {
               <div className="flex items-center justify-center h-64 bg-secondary rounded-lg">
                 <div className="text-center">
                   <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">PDF preview rendering area</p>
-                  <p className="text-xs text-muted-foreground mt-1">Inline PDF viewer for browser-renderable files</p>
+                  <p className="text-sm text-muted-foreground">{t("preview.pdfArea", lang)}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t("preview.pdfViewer", lang)}</p>
                 </div>
               </div>
               <div className="flex justify-end">
                 <Button size="sm" variant="outline" className="gap-1.5">
-                  <Download className="w-3.5 h-3.5" /> Download File
+                  <Download className="w-3.5 h-3.5" /> {t("preview.download", lang)}
                 </Button>
               </div>
             </div>

@@ -20,33 +20,28 @@ import {
 import hululLogoIcon from "@/assets/hulul-logo-icon.svg";
 import hululLogoEng from "@/assets/hulul-logo-eng.svg";
 import hululLogoAr from "@/assets/hulul-logo-ar.svg";
+import { useKB } from "./KBContext";
+import { t } from "./translations";
 
 /* ─── Icon sidebar items ─── */
-const sidebarIcons = [
-  { icon: Home, label: "Home" },
-  { icon: Inbox, label: "Inbox" },
-  { icon: Users, label: "CRM" },
-  { icon: Bot, label: "AI Agent" },
-  { icon: BookOpen, label: "Knowledge Base", active: true },
-  { icon: Settings, label: "Settings" },
+const sidebarKeys = [
+  { icon: Home, labelKey: "nav.home" as const },
+  { icon: Inbox, labelKey: "nav.inbox" as const },
+  { icon: Users, labelKey: "nav.crm" as const },
+  { icon: Bot, labelKey: "nav.agent" as const },
+  { icon: BookOpen, labelKey: "nav.kb" as const, active: true },
+  { icon: Settings, labelKey: "nav.settings" as const },
 ];
 
 /* ─── Mobile bottom-nav items ─── */
-const bottomNavItems = [
-  { icon: Home, label: "Home", id: "home" as const },
-  { icon: Inbox, label: "Inbox", id: "inbox" as const },
-  { icon: Users, label: "CRM", id: "crm" as const },
-  { icon: Bot, label: "AI Agent", id: "agent" as const },
-  { icon: BookOpen, label: "KB", id: "kb" as const },
-  { icon: Settings, label: "Settings", id: "settings" as const },
+const bottomNavKeys = [
+  { icon: Home, labelKey: "nav.home" as const, id: "home" as const },
+  { icon: Inbox, labelKey: "nav.inbox" as const, id: "inbox" as const },
+  { icon: Users, labelKey: "nav.crm" as const, id: "crm" as const },
+  { icon: Bot, labelKey: "nav.agent" as const, id: "agent" as const },
+  { icon: BookOpen, labelKey: "nav.kb.short" as const, id: "kb" as const },
+  { icon: Settings, labelKey: "nav.settings" as const, id: "settings" as const },
 ];
-
-/* ─── Breadcrumb helper ─── */
-function getBreadcrumb(screen: Screen, screens: { id: Screen; label: string; group: string }[]) {
-  const s = screens.find((x) => x.id === screen);
-  if (!s) return ["Hulul", "Knowledge Base"];
-  return ["Hulul", "Knowledge Base", s.label];
-}
 
 type Props = {
   screens: { id: Screen; label: string; group: string }[];
@@ -57,14 +52,12 @@ type Props = {
   children: React.ReactNode;
 };
 
-type Lang = "en" | "ar";
-
 export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleTheme, children }: Props) {
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
-  const [lang, setLang] = useState<Lang>("en");
-  const breadcrumb = getBreadcrumb(activeScreen, screens);
+  const { lang, setLang } = useKB();
+  const isRtl = lang === "ar";
 
   const groups = screens.reduce<Record<string, typeof screens>>((acc, s) => {
     (acc[s.group] ??= []).push(s);
@@ -85,7 +78,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                 key={s.id}
                 onClick={() => onSelect(s.id)}
                 className={cn(
-                  "w-full text-left px-3 py-1.5 rounded-md text-xs transition-colors",
+                  "w-full text-start px-3 py-1.5 rounded-md text-xs transition-colors",
                   activeScreen === s.id
                     ? "bg-accent text-accent-foreground font-medium"
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
@@ -112,9 +105,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                 <MenuIcon className="w-4 h-4 text-foreground" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-72 p-0">
+            <SheetContent side={isRtl ? "right" : "left"} className="w-72 p-0">
               <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
-                KB Wireframes
+                {t("header.kbWireframes", lang)}
               </SheetTitle>
               <div onClick={() => setMobileMenuOpen(false)}>
                 {DevScreenList}
@@ -135,19 +128,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             <BreadcrumbList className="text-xs flex-nowrap">
               <BreadcrumbItem>
                 <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
-                  Knowledge Base
+                  {t("nav.kb", lang)}
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {breadcrumb.length > 2 && (
-                <>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
-                      {breadcrumb[2]}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </>
-              )}
             </BreadcrumbList>
           </Breadcrumb>
         </div>
@@ -156,7 +139,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         {!isMobile && (
           <div className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60">
             <Search className="w-3.5 h-3.5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Search...</span>
+            <span className="text-xs text-muted-foreground">{t("header.search", lang)}</span>
           </div>
         )}
 
@@ -193,9 +176,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                   <Code2 className="w-3.5 h-3.5 text-muted-foreground" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0">
+              <SheetContent side={isRtl ? "left" : "right"} className="w-80 p-0">
                 <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
-                  Dev — Wireframe Screens
+                  {t("header.devScreens", lang)}
                   <p className="text-[10px] text-muted-foreground font-normal mt-0.5">US-001 → US-012</p>
                 </SheetTitle>
                 <div onClick={() => setDevDrawerOpen(false)}>
@@ -211,22 +194,21 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
       <div className="flex flex-1 overflow-hidden">
         {/* Icon sidebar — desktop only */}
         {!isMobile && (
-          <aside className="w-12 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-1">
+          <aside className="w-12 shrink-0 border-e border-border bg-card flex flex-col items-center py-3 gap-1">
             {/* Hulul icon logo */}
             <div className="w-8 h-8 flex items-center justify-center mb-1">
               <img src={hululLogoIcon} alt="Hulul" className="w-7 h-7" />
             </div>
-            {sidebarIcons.map(({ icon: Icon, label, active }) => (
+            {sidebarKeys.map(({ icon: Icon, labelKey, active }) => (
               <button
-
-                key={label}
+                key={labelKey}
                 className={cn(
                   "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
                   active
                     ? "bg-accent text-foreground"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 )}
-                title={label}
+                title={t(labelKey, lang)}
               >
                 <Icon className="w-4 h-4" />
               </button>
@@ -236,7 +218,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             <div className="flex-1" />
 
             {/* Energy / Battery indicator */}
-            <div className="flex flex-col items-center gap-0.5 cursor-pointer group" title="Energy: 100%">
+            <div className="flex flex-col items-center gap-0.5 cursor-pointer group" title={`${t("header.energy", lang)}: 100%`}>
               <BatteryMedium className="w-5 h-5 text-primary group-hover:text-primary/80 transition-colors" />
               <span className="text-[9px] font-medium text-muted-foreground">100%</span>
             </div>
@@ -259,7 +241,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
       {/* ─── Mobile bottom nav ─── */}
       {isMobile && (
         <nav className="h-14 shrink-0 border-t border-border bg-card flex items-stretch">
-          {bottomNavItems.map(({ icon: Icon, label, id }) => (
+          {bottomNavKeys.map(({ icon: Icon, labelKey, id }) => (
             <button
               key={id}
               className={cn(
@@ -270,7 +252,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
               )}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
             </button>
           ))}
         </nav>

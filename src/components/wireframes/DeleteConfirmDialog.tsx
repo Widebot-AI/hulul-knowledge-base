@@ -1,9 +1,10 @@
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useKB } from "./KBContext";
+import { t } from "./translations";
 
 export function DeleteConfirmDialog() {
-  const { modal, closeModal, deleteSource } = useKB();
+  const { modal, closeModal, deleteSource, lang } = useKB();
   if (modal?.kind !== "delete-confirm") return null;
 
   return (
@@ -14,14 +15,14 @@ export function DeleteConfirmDialog() {
             <AlertTriangle className="w-6 h-6 text-destructive" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-foreground">Delete Source</h3>
+            <h3 className="text-base font-semibold text-foreground">{t("delete.title", lang)}</h3>
             <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-              Are you sure you want to delete <strong>{modal.sourceName}</strong>? This action is permanent and cannot be undone.
+              {t("delete.confirm", lang)} <strong>{modal.sourceName}</strong>? {t("delete.permanent", lang)}
             </p>
           </div>
           <div className="flex gap-2 pt-2">
-            <Button variant="outline" className="flex-1" onClick={closeModal}>Cancel</Button>
-            <Button variant="destructive" className="flex-1" onClick={() => deleteSource(modal.sourceId)}>Delete</Button>
+            <Button variant="outline" className="flex-1" onClick={closeModal}>{t("chat.cancel", lang)}</Button>
+            <Button variant="destructive" className="flex-1" onClick={() => deleteSource(modal.sourceId)}>{t("sources.delete", lang)}</Button>
           </div>
         </div>
       </div>

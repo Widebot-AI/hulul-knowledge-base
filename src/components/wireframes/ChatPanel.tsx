@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, RotateCcw, Loader2, AlertTriangle, AlertCircle, BookmarkPlus, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, RotateCcw, Loader2, AlertTriangle, BookmarkPlus, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useKB } from "./KBContext";
+import { t } from "./translations";
 
 export function ChatPanel() {
   const {
     messages, sendMessage, isStreaming, sources,
     citationDrawer, openCitation, closeCitation,
     sessionTokenPercent, resetChat, openModal, modal,
+    lang,
   } = useKB();
 
   const [input, setInput] = useState("");
@@ -43,39 +45,39 @@ export function ChatPanel() {
       {/* Session warnings */}
       {sessionWarning && (
         <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
-          <span>This conversation is getting long. Consider resetting to maintain response quality.</span>
+          <span>{t("chat.sessionWarning", lang)}</span>
           <Button
             size="sm" variant="ghost"
             className="h-6 text-xs text-warning hover:text-warning gap-1"
             onClick={() => openModal({ kind: "reset-confirm" })}
           >
-            <RotateCcw className="w-3 h-3" /> Reset
+            <RotateCcw className="w-3 h-3" /> {t("chat.reset", lang)}
           </Button>
         </div>
       )}
       {sessionCeiling && (
         <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
-          <span>Session limit reached. Please reset your conversation to continue chatting.</span>
+          <span>{t("chat.sessionLimit", lang)}</span>
           <Button
             size="sm" variant="ghost"
             className="h-6 text-xs text-destructive hover:text-destructive gap-1"
             onClick={resetChat}
           >
-            <RotateCcw className="w-3 h-3" /> Reset Session
+            <RotateCcw className="w-3 h-3" /> {t("chat.resetSession", lang)}
           </Button>
         </div>
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
         {isEmpty ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                {hasSelectedReady ? "Ask a question about your sources" : "Add sources to start chatting"}
+                {hasSelectedReady ? t("chat.askAboutSources", lang) : t("chat.addSourcesToStart", lang)}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                {hasSelectedReady ? "Your selected sources will be used to ground AI responses" : "Upload files or add URLs to your Knowledge Base"}
+                {hasSelectedReady ? t("chat.sourcesGroundAI", lang) : t("chat.uploadFilesOrUrls", lang)}
               </p>
             </div>
           </div>
@@ -92,7 +94,7 @@ export function ChatPanel() {
                     msg.isError && "border border-destructive/30"
                   )}
                 >
-                  {/* Thinking indicator before content appears */}
+                  {/* Thinking indicator */}
                   {msg.role === "assistant" && msg.isStreaming && !msg.content && (
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <div className="flex gap-1">
@@ -100,12 +102,12 @@ export function ChatPanel() {
                         <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:150ms]" />
                         <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:300ms]" />
                       </div>
-                      <span className="text-xs">Thinking...</span>
+                      <span className="text-xs">{t("chat.thinking", lang)}</span>
                     </div>
                   )}
                   {msg.content && <div className="whitespace-pre-line">{msg.content}</div>}
                   {msg.isStreaming && msg.content && (
-                    <span className="inline-block w-1.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />
+                    <span className="inline-block w-1.5 h-4 bg-primary/60 animate-pulse ms-0.5 align-middle" />
                   )}
                   {msg.citations && msg.citations.length > 0 && !msg.isStreaming && (
                     <div className="mt-2 flex flex-wrap gap-1">
@@ -123,7 +125,7 @@ export function ChatPanel() {
                           )}
                         >
                           [{c.id}] {c.source}
-                          {c.deleted && " (deleted)"}
+                          {c.deleted && ` (${t("chat.deleted", lang)})`}
                         </button>
                       ))}
                     </div>
@@ -131,16 +133,16 @@ export function ChatPanel() {
                   {msg.isError && (
                     <div className="mt-2 flex items-center gap-1 text-xs text-destructive">
                       <AlertTriangle className="w-3 h-3" />
-                      <span>Response interrupted — partial content shown</span>
-                      <button className="underline ml-1 font-medium">Retry</button>
+                      <span>{t("chat.interrupted", lang)}</span>
+                      <button className="underline ms-1 font-medium">{t("sources.retry", lang)}</button>
                     </div>
                   )}
                 </div>
                 {/* Action buttons for completed assistant messages */}
                 {msg.role === "assistant" && !msg.isStreaming && msg.content && (
-                  <div className="flex items-center gap-1 mt-1.5 ml-1">
+                  <div className="flex items-center gap-1 mt-1.5 ms-1">
                     <button className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground px-2 py-1 rounded-md hover:bg-secondary transition-colors">
-                      <BookmarkPlus className="w-3.5 h-3.5" /> Add note
+                      <BookmarkPlus className="w-3.5 h-3.5" /> {t("chat.addNote", lang)}
                     </button>
                     <button className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
                       <Copy className="w-3.5 h-3.5" />
@@ -162,14 +164,14 @@ export function ChatPanel() {
 
       {/* Citation Drawer */}
       {citationDrawer && (
-        <div className="absolute right-0 top-0 h-full w-80 bg-background border-l border-border shadow-lg z-10 overflow-y-auto">
+        <div className="absolute end-0 top-0 h-full w-72 sm:w-80 bg-background border-s border-border shadow-lg z-10 overflow-y-auto">
           <div className="p-4 border-b border-border flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Citation [{citationDrawer.citationId}]</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("chat.citation", lang)} [{citationDrawer.citationId}]</h3>
             <button onClick={closeCitation} className="text-xs text-muted-foreground hover:text-foreground">✕</button>
           </div>
           <div className="p-4 space-y-3">
             <div className="space-y-1.5">
-              <div className="text-[11px] text-muted-foreground">Source</div>
+              <div className="text-[11px] text-muted-foreground">{t("chat.source", lang)}</div>
               <div className="text-sm font-medium text-foreground">
                 {citationDrawer.deleted ? "Sales Pipeline.xlsx" : "Q3 Strategy Deck.pdf"}
               </div>
@@ -177,29 +179,29 @@ export function ChatPanel() {
             {citationDrawer.deleted && (
               <div role="alert" className="flex items-center gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning">
                 <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                This source is no longer available.
+                {t("chat.sourceDeleted", lang)}
               </div>
             )}
             <div className="flex gap-4">
               <div>
-                <div className="text-[11px] text-muted-foreground">Type</div>
+                <div className="text-[11px] text-muted-foreground">{t("chat.type", lang)}</div>
                 <div className="text-xs text-foreground">{citationDrawer.deleted ? "XLSX" : "PDF"}</div>
               </div>
               <div>
-                <div className="text-[11px] text-muted-foreground">Status</div>
+                <div className="text-[11px] text-muted-foreground">{t("chat.status", lang)}</div>
                 {citationDrawer.deleted ? (
-                  <span className="text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">Deleted</span>
+                  <span className="text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">{t("chat.deleted", lang)}</span>
                 ) : (
-                  <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full">Ready</span>
+                  <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full">{t("status.ready", lang)}</span>
                 )}
               </div>
               <div>
-                <div className="text-[11px] text-muted-foreground">Uploaded</div>
+                <div className="text-[11px] text-muted-foreground">{t("chat.uploaded", lang)}</div>
                 <div className="text-xs text-foreground">Mar 10, 2026</div>
               </div>
             </div>
             <div>
-              <div className="text-[11px] text-muted-foreground mb-1">Excerpt</div>
+              <div className="text-[11px] text-muted-foreground mb-1">{t("chat.excerpt", lang)}</div>
               <div className="text-xs text-foreground bg-accent rounded-lg p-3 leading-relaxed border border-accent-foreground/10">
                 "Revenue target exceeded by 12%, driven primarily by enterprise segment growth. The sales team closed 14 new enterprise accounts..."
               </div>
@@ -210,22 +212,22 @@ export function ChatPanel() {
 
       {/* Reset confirm overlay */}
       {modal?.kind === "reset-confirm" && (
-        <div className="absolute inset-0 bg-foreground/30 flex items-center justify-center z-20">
+        <div className="absolute inset-0 bg-foreground/30 flex items-center justify-center z-20 p-4">
           <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-sm">
             <div className="p-6 text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
                 <RotateCcw className="w-6 h-6 text-warning" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-foreground">Reset Conversation</h3>
+                <h3 className="text-base font-semibold text-foreground">{t("chat.resetConversation", lang)}</h3>
                 <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                  Your conversation history will be cleared and a fresh session will begin. Selected sources will remain unchanged.
+                  {t("chat.resetConfirmMsg", lang)}
                 </p>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button variant="outline" className="flex-1" onClick={() => openModal(null)}>Cancel</Button>
+                <Button variant="outline" className="flex-1" onClick={() => openModal(null)}>{t("chat.cancel", lang)}</Button>
                 <Button className="flex-1 gap-1" onClick={resetChat}>
-                  <RotateCcw className="w-3.5 h-3.5" /> Reset
+                  <RotateCcw className="w-3.5 h-3.5" /> {t("chat.reset", lang)}
                 </Button>
               </div>
             </div>
@@ -240,12 +242,12 @@ export function ChatPanel() {
             <div className="flex items-center gap-2 px-4 py-3 bg-secondary rounded-xl">
               <span className="text-xs text-muted-foreground flex-1">
                 {sessionCeiling
-                  ? "Session limit reached. Reset to continue."
-                  : "Add and select sources to start chatting."}
+                  ? t("chat.sessionLimitShort", lang)
+                  : t("chat.addAndSelect", lang)}
               </span>
               {sessionCeiling && (
                 <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={resetChat}>
-                  <RotateCcw className="w-3 h-3" /> Reset
+                  <RotateCcw className="w-3 h-3" /> {t("chat.reset", lang)}
                 </Button>
               )}
             </div>
@@ -254,7 +256,8 @@ export function ChatPanel() {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Ask a question about your sources..."
+                dir="auto"
+                placeholder={t("chat.askQuestion", lang)}
                 className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
