@@ -144,25 +144,17 @@ export function SourcePanel() {
                           ))}
                         </div>
                       )}
-                      {/* Actions row */}
-                      <div className="flex items-center gap-2 mt-1.5">
-                        {source.status === "failed" && (
+                      {/* Failed retry action */}
+                      {source.status === "failed" && (
+                        <div className="flex items-center gap-2 mt-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); retrySource(source.id); }}
                             className="text-[10px] text-primary hover:underline flex items-center gap-1"
                           >
                             <RotateCcw className="w-2.5 h-2.5" /> Retry
                           </button>
-                        )}
-                        {isTerminal && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); openModal({ kind: "delete-confirm", sourceId: source.id, sourceName: source.name }); }}
-                            className="text-[10px] text-muted-foreground hover:text-destructive flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <Trash2 className="w-2.5 h-2.5" /> Delete
-                          </button>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       {/* Pending cleanup */}
                       {source.status === "pending_cleanup" && (
                         <div className="mt-1.5 space-y-1">
@@ -183,6 +175,36 @@ export function SourcePanel() {
                         </div>
                       )}
                     </div>
+                    {/* More options dropdown */}
+                    {isTerminal && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <button className="mt-0.5 p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent text-muted-foreground">
+                            <MoreVertical className="w-3.5 h-3.5" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-36">
+                          <DropdownMenuItem
+                            onClick={(e) => { e.stopPropagation(); openModal({ kind: "source-preview", sourceId: source.id }); }}
+                            className="text-xs gap-2"
+                          >
+                            <Eye className="w-3.5 h-3.5" /> Preview
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs gap-2"
+                          >
+                            <Pencil className="w-3.5 h-3.5" /> Rename
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(e) => { e.stopPropagation(); openModal({ kind: "delete-confirm", sourceId: source.id, sourceName: source.name }); }}
+                            className="text-xs gap-2 text-destructive focus:text-destructive"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </div>
                 </div>
               );
