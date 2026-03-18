@@ -9,14 +9,14 @@ import { useKB, type SourceStatus } from "./KBContext";
 
 /** Reusable source avatar */
 export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; type: string; size?: "sm" | "md" }) {
-  const dim = size === "sm" ? "w-5 h-5" : "w-6 h-6";
-  const iconDim = size === "sm" ? "w-3 h-3" : "w-3.5 h-3.5";
+  const dim = size === "sm" ? "w-7 h-7" : "w-8 h-8";
+  const iconDim = size === "sm" ? "w-3.5 h-3.5" : "w-4 h-4";
   const FallbackIcon = type === "URL" ? Globe : FileText;
 
   return (
-    <Avatar className={cn(dim, "rounded shrink-0")}>
-      {avatar && <AvatarImage src={avatar} alt={type} className="object-contain rounded p-0.5" />}
-      <AvatarFallback className="rounded bg-accent text-muted-foreground">
+    <Avatar className={cn(dim, "rounded-lg shrink-0 border border-border")}>
+      {avatar && <AvatarImage src={avatar} alt={type} className="object-contain rounded-lg p-1" />}
+      <AvatarFallback className="rounded-lg bg-accent text-muted-foreground">
         <FallbackIcon className={iconDim} />
       </AvatarFallback>
     </Avatar>
