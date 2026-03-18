@@ -54,7 +54,7 @@ export function ChatPanel() {
         </div>
       )}
       {sessionCeiling && (
-        <div className="mx-4 mt-3 px-3 py-2 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
           <span>Session limit reached. Please reset your conversation to continue chatting.</span>
           <Button
             size="sm" variant="ghost"
