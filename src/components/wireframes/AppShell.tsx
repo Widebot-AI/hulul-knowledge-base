@@ -3,13 +3,21 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Bell, Folder, Bookmark, Puzzle, Settings, Sun, Moon, Code2,
-  Search, Home, Inbox, MessageSquare, Menu as MenuIcon, ChevronRight,
+  Search, Home, Inbox, MessageSquare, Menu as MenuIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
