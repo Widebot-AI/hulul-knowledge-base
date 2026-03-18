@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Search, BatteryMedium,
+  Menu as MenuIcon, Search, BatteryMedium, Languages,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +17,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import hululLogoIcon from "@/assets/hulul-logo-icon.svg";
+import hululLogoEng from "@/assets/hulul-logo-eng.svg";
+import hululLogoAr from "@/assets/hulul-logo-ar.svg";
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
@@ -54,10 +57,13 @@ type Props = {
   children: React.ReactNode;
 };
 
+type Lang = "en" | "ar";
+
 export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleTheme, children }: Props) {
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
   const breadcrumb = getBreadcrumb(activeScreen, screens);
 
   const groups = screens.reduce<Record<string, typeof screens>>((acc, s) => {
@@ -117,32 +123,34 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           </Sheet>
         )}
 
-        {/* Breadcrumb */}
-        <Breadcrumb className="flex-1 min-w-0 overflow-hidden">
-          <BreadcrumbList className="text-xs flex-nowrap">
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
-                Hulul
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
-                Knowledge Base
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {breadcrumb.length > 2 && (
-              <>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
-                    {breadcrumb[2]}
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </>
-            )}
-          </BreadcrumbList>
-        </Breadcrumb>
+        {/* Logo + Breadcrumb */}
+        <div className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
+          <img
+            src={lang === "ar" ? hululLogoAr : hululLogoEng}
+            alt="Hulul"
+            className="h-6 shrink-0"
+          />
+          <span className="text-border mx-1">|</span>
+          <Breadcrumb className="min-w-0 overflow-hidden">
+            <BreadcrumbList className="text-xs flex-nowrap">
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
+                  Knowledge Base
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              {breadcrumb.length > 2 && (
+                <>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
+                      {breadcrumb[2]}
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
+                </>
+              )}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
 
         {/* Search (desktop only) */}
         {!isMobile && (
@@ -154,6 +162,15 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
         {/* Header actions */}
         <div className="flex items-center gap-1">
+          {/* Language toggle */}
+          <button
+            onClick={() => setLang(lang === "en" ? "ar" : "en")}
+            className="p-1.5 rounded-md hover:bg-accent transition-colors"
+            title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
+          >
+            <Languages className="w-3.5 h-3.5 text-foreground" />
+          </button>
+
           {/* Dark mode toggle */}
           <button
             onClick={onToggleTheme}
@@ -195,8 +212,13 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         {/* Icon sidebar — desktop only */}
         {!isMobile && (
           <aside className="w-12 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-1">
+            {/* Hulul icon logo */}
+            <div className="w-8 h-8 flex items-center justify-center mb-1">
+              <img src={hululLogoIcon} alt="Hulul" className="w-7 h-7" />
+            </div>
             {sidebarIcons.map(({ icon: Icon, label, active }) => (
               <button
+
                 key={label}
                 className={cn(
                   "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
