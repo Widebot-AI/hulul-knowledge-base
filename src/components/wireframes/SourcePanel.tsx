@@ -1,4 +1,4 @@
-import { Plus, FileText, Globe, Check, Loader2, AlertTriangle, Upload, RotateCcw, Archive, Clock, Lock, Trash2, Eye } from "lucide-react";
+import { Plus, FileText, Globe, Check, Loader2, AlertTriangle, Upload, RotateCcw, Archive, Clock, Lock, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
