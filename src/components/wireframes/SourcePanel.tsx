@@ -130,7 +130,7 @@ export function SourcePanel() {
                       </div>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="secondary" className="text-[10px] h-4 px-1.5 font-normal">{source.type}</Badge>
-                        <span className={cn("inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full font-medium", sc.color)}>
+                        <span className={cn("inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full font-medium", sc.color)}>
                           {sc.icon}
                           {sc.label}
                         </span>
