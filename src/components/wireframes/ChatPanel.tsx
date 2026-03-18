@@ -118,7 +118,7 @@ export function ChatPanel() {
                             c.deleted
                               ? "bg-muted text-muted-foreground line-through"
                               : msg.role === "user"
-                              ? "bg-primary-foreground/20 text-primary-foreground"
+                              ? "bg-primary/20 text-primary"
                               : "bg-accent text-accent-foreground hover:bg-primary/10"
                           )}
                         >
