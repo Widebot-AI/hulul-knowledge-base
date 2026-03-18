@@ -42,7 +42,7 @@ export function ChatPanel() {
     <div className="flex flex-col h-full relative">
       {/* Session warnings */}
       {sessionWarning && (
-        <div className="mx-4 mt-3 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
           <span>This conversation is getting long. Consider resetting to maintain response quality.</span>
           <Button
             size="sm" variant="ghost"
@@ -54,7 +54,7 @@ export function ChatPanel() {
         </div>
       )}
       {sessionCeiling && (
-        <div className="mx-4 mt-3 px-3 py-2 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
           <span>Session limit reached. Please reset your conversation to continue chatting.</span>
           <Button
             size="sm" variant="ghost"
@@ -129,7 +129,7 @@ export function ChatPanel() {
                     </div>
                   )}
                   {msg.isError && (
-                    <div className="mt-2 flex items-center gap-1 text-[10px] text-destructive">
+                    <div className="mt-2 flex items-center gap-1 text-xs text-destructive">
                       <AlertTriangle className="w-3 h-3" />
                       <span>Response interrupted — partial content shown</span>
                       <button className="underline ml-1 font-medium">Retry</button>
@@ -175,7 +175,7 @@ export function ChatPanel() {
               </div>
             </div>
             {citationDrawer.deleted && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-[11px] text-warning">
+              <div role="alert" className="flex items-center gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning">
                 <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                 This source is no longer available.
               </div>

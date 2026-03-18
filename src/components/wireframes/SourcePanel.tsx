@@ -158,7 +158,7 @@ export function SourcePanel() {
                       {/* Pending cleanup */}
                       {source.status === "pending_cleanup" && (
                         <div className="mt-1.5 space-y-1">
-                          <p className="text-[10px] text-warning">No longer queryable — partial deletion</p>
+                          <p className="text-xs text-warning">No longer queryable — partial deletion</p>
                           {source.retryLocked ? (
                             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                               <Lock className="w-2.5 h-2.5" />
