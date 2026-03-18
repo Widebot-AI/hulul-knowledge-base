@@ -65,7 +65,7 @@ export function SourcePanel() {
           </div>
           <Progress value={storagePercent} className="h-1.5" />
         </div>
-        <div className="flex justify-between text-[11px]">
+        <div className="flex justify-between text-xs">
           <span className="text-muted-foreground">Files Added</span>
           <span className="font-medium text-foreground">{totalFiles} / 50</span>
         </div>
