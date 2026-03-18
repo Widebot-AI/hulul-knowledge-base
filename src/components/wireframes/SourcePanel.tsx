@@ -149,7 +149,7 @@ export function SourcePanel() {
                         <div className="flex items-center gap-2 mt-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); retrySource(source.id); }}
-                            className="text-[10px] text-primary hover:underline flex items-center gap-1"
+                            className="text-xs text-primary hover:underline flex items-center gap-1"
                           >
                             <RotateCcw className="w-2.5 h-2.5" /> Retry
                           </button>
