@@ -135,6 +135,23 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           </div>
         )}
 
+        {/* Sources pill — mobile only */}
+        {isMobile && (
+          <button
+            onClick={() => setSourcesOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border hover:bg-accent transition-colors active:scale-[0.98]"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-foreground" />
+            <span className="text-xs font-semibold text-foreground">
+              {t("sources.title", lang)}
+            </span>
+            <span className="bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+              {readySelected}
+            </span>
+            <ChevronDown className="w-3 h-3 text-muted-foreground" />
+          </button>
+        )}
+
         {/* Header actions */}
         <div className="flex items-center gap-1">
           {/* Language toggle — desktop only */}
