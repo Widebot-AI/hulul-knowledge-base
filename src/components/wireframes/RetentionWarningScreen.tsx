@@ -27,12 +27,12 @@ export function RetentionWarningScreen({ variant }: Props) {
         </div>
       )}
       {variant === "dual-trigger" && (
-        <div className="space-y-0">
-          <div role="alert" className="bg-destructive/10 border-b border-destructive/20 px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
+        <div className="mx-4 mt-3 space-y-2">
+          <div role="alert" className="bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span><strong>Subscription expired:</strong> Sources will be archived on <strong>March 25, 2026</strong>.</span>
           </div>
-          <div role="alert" className="bg-warning/10 border-b border-warning/20 px-4 py-2.5 flex items-center gap-2 text-xs text-warning">
+          <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-warning">
             <Clock className="w-4 h-4 shrink-0" />
             <span><strong>Also active:</strong> Inactivity countdown — archival on April 15, 2026.</span>
           </div>
