@@ -2,8 +2,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
-  Bell, Folder, Bookmark, Puzzle, Settings, Sun, Moon, Code2,
-  Search, Home, Inbox, MessageSquare, Menu as MenuIcon,
+  Home, Search, BookOpen, Plus, Settings, Sun, Moon, Code2,
+  Menu as MenuIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -21,20 +21,20 @@ import {
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
-  { icon: Bell, label: "Notifications", badge: true },
-  { icon: Folder, label: "Files" },
-  { icon: Bookmark, label: "Saved" },
-  { icon: Puzzle, label: "Integrations" },
+  { icon: Home, label: "Home" },
+  { icon: Search, label: "Search" },
+  { icon: BookOpen, label: "Notebook", active: true },
+  { icon: Plus, label: "Create" },
   { icon: Settings, label: "Settings" },
 ];
 
 /* ─── Mobile bottom-nav items ─── */
 const bottomNavItems = [
   { icon: Home, label: "Home", id: "home" as const },
-  { icon: Inbox, label: "Inbox", id: "inbox" as const },
   { icon: Search, label: "Search", id: "search" as const },
-  { icon: MessageSquare, label: "KB", id: "kb" as const },
-  { icon: MenuIcon, label: "Menu", id: "menu" as const },
+  { icon: BookOpen, label: "KB", id: "kb" as const },
+  { icon: Plus, label: "New", id: "new" as const },
+  { icon: Settings, label: "Settings", id: "settings" as const },
 ];
 
 /* ─── Breadcrumb helper ─── */
@@ -191,16 +191,18 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         {/* Icon sidebar — desktop only */}
         {!isMobile && (
           <aside className="w-12 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-1">
-            {sidebarIcons.map(({ icon: Icon, label, badge }) => (
+            {sidebarIcons.map(({ icon: Icon, label, active }) => (
               <button
                 key={label}
-                className="relative w-8 h-8 flex items-center justify-center rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                className={cn(
+                  "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
+                  active
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
                 title={label}
               >
                 <Icon className="w-4 h-4" />
-                {badge && (
-                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-destructive" />
-                )}
               </button>
             ))}
 
