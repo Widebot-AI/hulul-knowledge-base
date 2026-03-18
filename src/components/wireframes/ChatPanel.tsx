@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, RotateCcw, Loader2, AlertTriangle, AlertCircle } from "lucide-react";
+import { Send, RotateCcw, Loader2, AlertTriangle, AlertCircle, BookmarkPlus, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useKB } from "./KBContext";
@@ -82,7 +82,7 @@ export function ChatPanel() {
         ) : (
           <div className="max-w-2xl mx-auto space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}>
+              <div key={msg.id} className={cn("flex flex-col", msg.role === "user" ? "items-end" : "items-start")}>
                 <div
                   className={cn(
                     "max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed",
@@ -92,8 +92,19 @@ export function ChatPanel() {
                     msg.isError && "border border-destructive/30"
                   )}
                 >
-                  <div className="whitespace-pre-line">{msg.content}</div>
-                  {msg.isStreaming && (
+                  {/* Thinking indicator before content appears */}
+                  {msg.role === "assistant" && msg.isStreaming && !msg.content && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <div className="flex gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:0ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:150ms]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:300ms]" />
+                      </div>
+                      <span className="text-xs">Thinking...</span>
+                    </div>
+                  )}
+                  {msg.content && <div className="whitespace-pre-line">{msg.content}</div>}
+                  {msg.isStreaming && msg.content && (
                     <span className="inline-block w-1.5 h-4 bg-primary/60 animate-pulse ml-0.5 align-middle" />
                   )}
                   {msg.citations && msg.citations.length > 0 && !msg.isStreaming && (
@@ -125,6 +136,23 @@ export function ChatPanel() {
                     </div>
                   )}
                 </div>
+                {/* Action buttons for completed assistant messages */}
+                {msg.role === "assistant" && !msg.isStreaming && msg.content && (
+                  <div className="flex items-center gap-1 mt-1.5 ml-1">
+                    <button className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground px-2 py-1 rounded-md hover:bg-secondary transition-colors">
+                      <BookmarkPlus className="w-3.5 h-3.5" /> Add note
+                    </button>
+                    <button className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                      <Copy className="w-3.5 h-3.5" />
+                    </button>
+                    <button className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                      <ThumbsUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                      <ThumbsDown className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />
