@@ -9,7 +9,7 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export function KBMainInterface() {
   const isMobile = useIsMobile();
-  const { sources, lang } = useKB();
+  const { sources, lang, modal } = useKB();
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const [sheetExpanded, setSheetExpanded] = useState(false);
 
