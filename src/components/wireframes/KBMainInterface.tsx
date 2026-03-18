@@ -11,9 +11,15 @@ export function KBMainInterface() {
   const isMobile = useIsMobile();
   const { sources, lang } = useKB();
   const [sourcesOpen, setSourcesOpen] = useState(false);
+  const [sheetExpanded, setSheetExpanded] = useState(false);
 
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
-  const totalSources = sources.length;
+
+  // Reset expanded state when sheet closes
+  const handleSheetChange = (open: boolean) => {
+    setSourcesOpen(open);
+    if (!open) setSheetExpanded(false);
+  };
 
   if (isMobile) {
     return (
@@ -23,7 +29,7 @@ export function KBMainInterface() {
           <ChatPanel />
         </div>
 
-        {/* Floating pill bar — inspired by Lovable queue */}
+        {/* Floating pill bar */}
         <div className="absolute bottom-[76px] inset-x-0 flex justify-center z-10 pointer-events-none">
           <button
             onClick={() => setSourcesOpen(true)}
@@ -43,11 +49,16 @@ export function KBMainInterface() {
         </div>
 
         {/* Bottom sheet for sources */}
-        <Sheet open={sourcesOpen} onOpenChange={setSourcesOpen}>
-          <SheetContent side="bottom" className="h-[75vh] data-[state=open]:has-[:scrolled]:h-[100dvh] p-0 rounded-t-2xl transition-[height] duration-300">
+        <Sheet open={sourcesOpen} onOpenChange={handleSheetChange}>
+          <SheetContent
+            side="bottom"
+            className={`p-0 rounded-t-2xl transition-[height] duration-300 ease-in-out ${
+              sheetExpanded ? "h-[100dvh] rounded-t-none" : "h-[75vh]"
+            }`}
+          >
             <SheetTitle className="sr-only">{t("sources.title", lang)}</SheetTitle>
             <div className="h-full">
-              <SourcePanel isMobileSheet />
+              <SourcePanel isMobileSheet onExpand={() => setSheetExpanded(true)} />
             </div>
           </SheetContent>
         </Sheet>
