@@ -1,0 +1,182 @@
+export type Lang = "en" | "ar";
+
+const translations = {
+  // AppShell
+  "nav.home": { en: "Home", ar: "الرئيسية" },
+  "nav.inbox": { en: "Inbox", ar: "البريد" },
+  "nav.crm": { en: "CRM", ar: "إدارة العملاء" },
+  "nav.agent": { en: "AI Agent", ar: "الوكيل الذكي" },
+  "nav.kb": { en: "Knowledge Base", ar: "قاعدة المعرفة" },
+  "nav.settings": { en: "Settings", ar: "الإعدادات" },
+  "nav.kb.short": { en: "KB", ar: "المعرفة" },
+  "header.search": { en: "Search...", ar: "بحث..." },
+  "header.energy": { en: "Energy", ar: "الطاقة" },
+  "header.devScreens": { en: "Dev — Wireframe Screens", ar: "المطور — شاشات العرض" },
+  "header.kbWireframes": { en: "KB Wireframes", ar: "شاشات قاعدة المعرفة" },
+
+  // Sources
+  "sources.title": { en: "Sources", ar: "المصادر" },
+  "sources.add": { en: "Add sources", ar: "إضافة مصادر" },
+  "sources.addSource": { en: "Add Source", ar: "إضافة مصدر" },
+  "sources.storageUsed": { en: "Storage Used", ar: "التخزين المستخدم" },
+  "sources.filesAdded": { en: "Files Added", ar: "الملفات المضافة" },
+  "sources.noSources": { en: "No sources yet", ar: "لا توجد مصادر بعد" },
+  "sources.noSourcesDesc": { en: "Add your first source to start asking questions.", ar: "أضف مصدرك الأول لبدء طرح الأسئلة." },
+  "sources.filter": { en: "Filter sources...", ar: "تصفية المصادر..." },
+  "sources.preview": { en: "Preview", ar: "معاينة" },
+  "sources.rename": { en: "Rename", ar: "إعادة تسمية" },
+  "sources.delete": { en: "Delete", ar: "حذف" },
+  "sources.retry": { en: "Retry", ar: "إعادة المحاولة" },
+  "sources.retryCleanup": { en: "Retry cleanup", ar: "إعادة التنظيف" },
+  "sources.maxRetries": { en: "Max retries reached — contact support", ar: "تم الوصول للحد الأقصى — تواصل مع الدعم" },
+  "sources.notQueryable": { en: "No longer queryable — partial deletion", ar: "لم يعد قابلاً للاستعلام — حذف جزئي" },
+  "sources.attempts": { en: "attempts", ar: "محاولات" },
+  "sources.selected": { en: "sources selected", ar: "مصادر محددة" },
+  "sources.viewAll": { en: "View all sources", ar: "عرض كل المصادر" },
+
+  // Status labels
+  "status.fetching": { en: "Fetching", ar: "جلب" },
+  "status.uploading": { en: "Uploading", ar: "رفع" },
+  "status.pending": { en: "Pending", ar: "قيد الانتظار" },
+  "status.indexing": { en: "Indexing", ar: "فهرسة" },
+  "status.ready": { en: "Ready", ar: "جاهز" },
+  "status.failed": { en: "Failed", ar: "فشل" },
+  "status.archived": { en: "Archived", ar: "مؤرشف" },
+  "status.cleanupPending": { en: "Cleanup Pending", ar: "بانتظار التنظيف" },
+
+  // Chat
+  "chat.askQuestion": { en: "Ask a question about your sources...", ar: "اطرح سؤالاً حول مصادرك..." },
+  "chat.addSourcesToStart": { en: "Add sources to start chatting", ar: "أضف مصادر لبدء المحادثة" },
+  "chat.askAboutSources": { en: "Ask a question about your sources", ar: "اطرح سؤالاً حول مصادرك" },
+  "chat.sourcesGroundAI": { en: "Your selected sources will be used to ground AI responses", ar: "سيتم استخدام المصادر المحددة لتأسيس إجابات الذكاء الاصطناعي" },
+  "chat.uploadFilesOrUrls": { en: "Upload files or add URLs to your Knowledge Base", ar: "ارفع ملفات أو أضف روابط إلى قاعدة المعرفة" },
+  "chat.sessionWarning": { en: "This conversation is getting long. Consider resetting to maintain response quality.", ar: "المحادثة أصبحت طويلة. فكر في إعادة التعيين للحفاظ على جودة الإجابات." },
+  "chat.sessionLimit": { en: "Session limit reached. Please reset your conversation to continue chatting.", ar: "تم الوصول لحد الجلسة. يرجى إعادة تعيين المحادثة للمتابعة." },
+  "chat.sessionLimitShort": { en: "Session limit reached. Reset to continue.", ar: "تم الوصول للحد. أعد التعيين للمتابعة." },
+  "chat.addAndSelect": { en: "Add and select sources to start chatting.", ar: "أضف وحدد المصادر لبدء المحادثة." },
+  "chat.reset": { en: "Reset", ar: "إعادة تعيين" },
+  "chat.resetSession": { en: "Reset Session", ar: "إعادة تعيين الجلسة" },
+  "chat.resetConversation": { en: "Reset Conversation", ar: "إعادة تعيين المحادثة" },
+  "chat.resetConfirmMsg": { en: "Your conversation history will be cleared and a fresh session will begin. Selected sources will remain unchanged.", ar: "سيتم مسح سجل المحادثة وبدء جلسة جديدة. ستبقى المصادر المحددة كما هي." },
+  "chat.cancel": { en: "Cancel", ar: "إلغاء" },
+  "chat.thinking": { en: "Thinking...", ar: "جارٍ التفكير..." },
+  "chat.addNote": { en: "Add note", ar: "إضافة ملاحظة" },
+  "chat.interrupted": { en: "Response interrupted — partial content shown", ar: "تم مقاطعة الإجابة — يُعرض محتوى جزئي" },
+  "chat.citation": { en: "Citation", ar: "اقتباس" },
+  "chat.source": { en: "Source", ar: "المصدر" },
+  "chat.type": { en: "Type", ar: "النوع" },
+  "chat.status": { en: "Status", ar: "الحالة" },
+  "chat.uploaded": { en: "Uploaded", ar: "تاريخ الرفع" },
+  "chat.excerpt": { en: "Excerpt", ar: "مقتطف" },
+  "chat.sourceDeleted": { en: "This source is no longer available.", ar: "هذا المصدر لم يعد متاحاً." },
+  "chat.deleted": { en: "Deleted", ar: "محذوف" },
+
+  // Activation
+  "activation.title": { en: "Knowledge Base", ar: "قاعدة المعرفة" },
+  "activation.desc": { en: "Add sources to create a knowledge base AI can reference.", ar: "أضف مصادر لإنشاء قاعدة معرفة يمكن للذكاء الاصطناعي الرجوع إليها." },
+  "activation.dropOrClick": { en: "Drop files here or click to upload", ar: "اسحب الملفات هنا أو انقر للرفع" },
+  "activation.dropHere": { en: "Drop files here", ar: "اسحب الملفات هنا" },
+  "activation.supported": { en: "Supported: PDF, DOCX, PPTX, TXT, MD, and more", ar: "المدعوم: PDF, DOCX, PPTX, TXT, MD, والمزيد" },
+  "activation.indexed": { en: "Sources are indexed for AI-powered search and citation", ar: "تتم فهرسة المصادر للبحث والاقتباس بالذكاء الاصطناعي" },
+  "activation.pdf": { en: "PDF", ar: "PDF" },
+  "activation.website": { en: "Website", ar: "موقع ويب" },
+  "activation.pasteText": { en: "Paste text", ar: "لصق نص" },
+
+  // No Access
+  "noAccess.title": { en: "Access Restricted", ar: "الوصول مقيد" },
+  "noAccess.desc": { en: "You don't have permission to access the Knowledge Base. Please contact your workspace administrator to request access.", ar: "ليس لديك صلاحية الوصول إلى قاعدة المعرفة. يرجى التواصل مع مسؤول مساحة العمل لطلب الوصول." },
+
+  // Add Source Modal
+  "addSource.title": { en: "Add Source", ar: "إضافة مصدر" },
+  "addSource.fileUpload": { en: "File Upload", ar: "رفع ملف" },
+  "addSource.url": { en: "URL", ar: "رابط" },
+  "addSource.dropOrBrowse": { en: "Drop files here or click to browse", ar: "اسحب الملفات هنا أو انقر للتصفح" },
+  "addSource.fileFormats": { en: "PDF, DOCX, PPTX, XLSX, TXT, MD, HTML, code files — up to 10 files, 10 MB each", ar: "PDF, DOCX, PPTX, XLSX, TXT, MD, HTML, ملفات برمجية — حتى 10 ملفات، 10 ميجابايت لكل ملف" },
+  "addSource.unsupported": { en: "Unsupported file type", ar: "نوع ملف غير مدعوم" },
+  "addSource.upload": { en: "Upload", ar: "رفع" },
+  "addSource.uploadFiles": { en: "Upload Files", ar: "رفع الملفات" },
+  "addSource.uploadDemo": { en: "Upload Demo File", ar: "رفع ملف تجريبي" },
+  "addSource.urlLabel": { en: "Web Page URL", ar: "رابط صفحة الويب" },
+  "addSource.urlPlaceholder": { en: "https://example.com/docs/guide", ar: "https://example.com/docs/guide" },
+  "addSource.urlRequired": { en: "Please enter a URL", ar: "يرجى إدخال رابط" },
+  "addSource.urlInvalid": { en: "Please enter a valid URL starting with http:// or https://", ar: "يرجى إدخال رابط صحيح يبدأ بـ http:// أو https://" },
+  "addSource.urlNote": { en: "Only publicly accessible pages are supported.", ar: "يتم دعم الصفحات العامة فقط." },
+  "addSource.addUrl": { en: "Add URL", ar: "إضافة رابط" },
+
+  // Delete Confirm
+  "delete.title": { en: "Delete Source", ar: "حذف المصدر" },
+  "delete.confirm": { en: "Are you sure you want to delete", ar: "هل أنت متأكد من حذف" },
+  "delete.permanent": { en: "This action is permanent and cannot be undone.", ar: "هذا الإجراء دائم ولا يمكن التراجع عنه." },
+
+  // Source Preview
+  "preview.added": { en: "Added", ar: "تمت الإضافة" },
+  "preview.notAvailable": { en: "Preview Not Available", ar: "المعاينة غير متاحة" },
+  "preview.notAvailableDesc": { en: "This file type cannot be previewed in the browser. Download the file to view its contents.", ar: "لا يمكن معاينة هذا النوع من الملفات في المتصفح. حمّل الملف لعرض محتوياته." },
+  "preview.download": { en: "Download File", ar: "تحميل الملف" },
+  "preview.pdfArea": { en: "PDF preview rendering area", ar: "منطقة معاينة PDF" },
+  "preview.pdfViewer": { en: "Inline PDF viewer for browser-renderable files", ar: "عارض PDF مدمج للملفات القابلة للعرض" },
+
+  // Stack Settings
+  "stack.title": { en: "Conversational AI Models", ar: "نماذج الذكاء الاصطناعي للمحادثات" },
+  "stack.desc": { en: "Configure AI stacks for your workspace channels.", ar: "اضبط حزم الذكاء الاصطناعي لقنوات مساحة العمل." },
+  "stack.readOnly": { en: "You have view-only access. Contact your workspace Owner or Admin to make changes.", ar: "لديك صلاحية العرض فقط. تواصل مع مالك أو مسؤول مساحة العمل لإجراء تغييرات." },
+  "stack.kbTitle": { en: "Knowledge Base", ar: "قاعدة المعرفة" },
+  "stack.kbDesc": { en: "Ground responses in your indexed sources", ar: "اربط الإجابات بمصادرك المفهرسة" },
+  "stack.active": { en: "Active", ar: "نشط" },
+  "stack.channels": { en: "Connected Channels", ar: "القنوات المتصلة" },
+  "stack.channelHint": { en: "All enabled channels are auto-connected. Per-channel opt-out coming soon.", ar: "جميع القنوات المفعلة متصلة تلقائياً. إلغاء الاشتراك لكل قناة قريباً." },
+  "stack.streaming": { en: "Streaming", ar: "البث المباشر" },
+  "stack.streamingDesc": { en: "In-app KB chat always uses streaming. Channel streaming depends on capability.", ar: "محادثة قاعدة المعرفة تستخدم البث دائماً. بث القنوات يعتمد على القدرة." },
+  "stack.perChannel": { en: "Per-channel", ar: "لكل قناة" },
+  "stack.prompt": { en: "Custom System Prompt", ar: "رسالة النظام المخصصة" },
+  "stack.promptHint": { en: "A platform-level system prompt is always prepended and cannot be edited.", ar: "يتم دائماً إضافة رسالة نظام على مستوى المنصة ولا يمكن تعديلها." },
+  "stack.disableWarning": { en: "Disabling the KB stack will route subsequent channel queries to the previously active stack. If no fallback stack exists, channels will stop receiving AI responses.", ar: "تعطيل حزمة قاعدة المعرفة سيحول استعلامات القنوات إلى الحزمة النشطة السابقة. إذا لم توجد حزمة بديلة، ستتوقف القنوات عن تلقي إجابات الذكاء الاصطناعي." },
+
+  // Token Reporting
+  "token.breadcrumb": { en: "Settings → Subscription → Billing", ar: "الإعدادات → الاشتراك → الفوترة" },
+  "token.title": { en: "AI Services", ar: "خدمات الذكاء الاصطناعي" },
+  "token.desc": { en: "Knowledge Base usage against your workspace plan.", ar: "استخدام قاعدة المعرفة مقابل خطة مساحة العمل." },
+  "token.errorTitle": { en: "Failed to Load Usage Data", ar: "فشل تحميل بيانات الاستخدام" },
+  "token.errorDesc": { en: "We couldn't retrieve your usage data. Please try again.", ar: "لم نتمكن من استرداد بيانات الاستخدام. يرجى المحاولة مرة أخرى." },
+  "token.usage": { en: "Token Usage", ar: "استخدام التوكنات" },
+  "token.storage": { en: "Storage", ar: "التخزين" },
+  "token.files": { en: "Files", ar: "الملفات" },
+  "token.consumed": { en: "consumed this billing cycle", ar: "مستهلك هذه الدورة" },
+  "token.ofCapacity": { en: "Of total storage capacity", ar: "من إجمالي سعة التخزين" },
+  "token.fileLimit": { en: "of file limit used", ar: "من حد الملفات مستخدم" },
+  "token.breakdown": { en: "Token Consumption Breakdown", ar: "تفصيل استهلاك التوكنات" },
+  "token.sourceCol": { en: "Source", ar: "المصدر" },
+  "token.inputTokens": { en: "Input Tokens", ar: "توكنات الإدخال" },
+  "token.outputTokens": { en: "Output Tokens", ar: "توكنات الإخراج" },
+  "token.totalTokens": { en: "Total Tokens", ar: "إجمالي التوكنات" },
+  "token.inAppChat": { en: "In-App KB Chat", ar: "محادثة قاعدة المعرفة" },
+  "token.channelSessions": { en: "Channel Sessions", ar: "جلسات القنوات" },
+  "token.summarization": { en: "Summarization", ar: "التلخيص" },
+  "token.total": { en: "Total", ar: "الإجمالي" },
+
+  // Retention
+  "retention.inactivity": { en: "Inactivity notice:", ar: "إشعار عدم النشاط:" },
+  "retention.archiveDate": { en: "Your Knowledge Base sources will be archived on", ar: "سيتم أرشفة مصادر قاعدة المعرفة في" },
+  "retention.dueToInactivity": { en: "due to inactivity.", ar: "بسبب عدم النشاط." },
+  "retention.finalReminder": { en: "Final reminder:", ar: "تذكير أخير:" },
+  "retention.archiveIn": { en: "Your sources will be archived in", ar: "سيتم أرشفة مصادرك خلال" },
+  "retention.3days": { en: "3 days", ar: "3 أيام" },
+  "retention.subExpired": { en: "Subscription expired:", ar: "انتهى الاشتراك:" },
+  "retention.archiveOnDate": { en: "Sources will be archived on", ar: "سيتم أرشفة المصادر في" },
+  "retention.alsoActive": { en: "Also active:", ar: "نشط أيضاً:" },
+  "retention.inactivityCountdown": { en: "Inactivity countdown — archival on April 15, 2026.", ar: "العد التنازلي لعدم النشاط — الأرشفة في 15 أبريل 2026." },
+  "retention.sourcesArchived": { en: "Sources archived.", ar: "تم أرشفة المصادر." },
+  "retention.renewDesc": { en: "Renew your subscription and reactivate sources to resume querying.", ar: "جدد اشتراكك وأعد تفعيل المصادر لاستئناف الاستعلام." },
+  "retention.upgradePlan": { en: "Upgrade plan", ar: "ترقية الخطة" },
+
+  // Common
+  "common.note": { en: "Note:", ar: "ملاحظة:" },
+} as const;
+
+export type TranslationKey = keyof typeof translations;
+
+export function t(key: TranslationKey, lang: Lang): string {
+  return translations[key]?.[lang] ?? translations[key]?.en ?? key;
+}
+
+export default translations;
