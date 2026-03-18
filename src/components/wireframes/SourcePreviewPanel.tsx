@@ -1,6 +1,7 @@
 import { X, Download, ExternalLink, FileText, Globe, RotateCcw, AlertTriangle, AlertCircle, FileWarning } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SourceAvatar } from "@/components/wireframes/SourcePanel";
 
 type Props = {
   type: "file" | "url" | "failed" | "fallback" | "unavailable";
@@ -14,7 +15,7 @@ export function SourcePreviewPanel({ type }: Props) {
         <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
           <div className="flex items-center justify-between px-5 py-3 border-b border-border">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-muted-foreground" />
+              <SourceAvatar type="PDF" size="md" />
               <h3 className="text-sm font-semibold text-foreground">Old Policy.pdf</h3>
               <Badge variant="secondary" className="text-[10px] h-4">PDF</Badge>
               <span className="text-[10px] bg-destructive/10 text-destructive px-1.5 py-0.5 rounded-full font-medium">Failed</span>
@@ -49,7 +50,7 @@ export function SourcePreviewPanel({ type }: Props) {
         <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
           <div className="flex items-center justify-between px-5 py-3 border-b border-border">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-muted-foreground" />
+              <SourceAvatar avatar="https://upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg" type="DOCX" size="md" />
               <h3 className="text-sm font-semibold text-foreground">Employee Handbook.docx</h3>
               <Badge variant="secondary" className="text-[10px] h-4">DOCX</Badge>
               <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
@@ -95,7 +96,7 @@ export function SourcePreviewPanel({ type }: Props) {
         <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl">
           <div className="flex items-center justify-between px-5 py-3 border-b border-border">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-muted-foreground" />
+              <SourceAvatar avatar="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" type="PDF" size="md" />
               <h3 className="text-sm font-semibold text-foreground">Q3 Strategy Deck.pdf</h3>
               <Badge variant="secondary" className="text-[10px] h-4">PDF</Badge>
               <span className="text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-medium">Ready</span>
@@ -129,13 +130,17 @@ export function SourcePreviewPanel({ type }: Props) {
   }
 
   // US-009 S1, S6: Normal file/URL preview
+  const previewAvatar = type === "url"
+    ? undefined
+    : "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg";
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-foreground/30 p-4">
       <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-2xl max-h-[80vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
           <div className="flex items-center gap-2">
-            {type === "url" ? <Globe className="w-4 h-4 text-muted-foreground" /> : <FileText className="w-4 h-4 text-muted-foreground" />}
+            <SourceAvatar avatar={previewAvatar} type={type === "url" ? "URL" : "PDF"} size="md" />
             <h3 className="text-sm font-semibold text-foreground">
               {type === "url" ? "Getting Started Guide" : "Q3 Strategy Deck.pdf"}
             </h3>
