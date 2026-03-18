@@ -212,7 +212,10 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         {/* Icon sidebar — desktop only */}
         {!isMobile && (
           <aside className="w-12 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-1">
-            {sidebarIcons.map(({ icon: Icon, label, active }) => (
+            {/* Hulul icon logo */}
+            <div className="w-8 h-8 flex items-center justify-center mb-1">
+              <img src={hululLogoIcon} alt="Hulul" className="w-7 h-7" />
+            </div>
               <button
                 key={label}
                 className={cn(
