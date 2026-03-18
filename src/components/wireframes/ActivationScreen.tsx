@@ -13,14 +13,13 @@ export function ActivationScreen() {
     // Simulate adding dropped files as sources
     const files = Array.from(e.dataTransfer.files);
     files.forEach(file => {
-      addSource({ name: file.name, type: "file" });
+      addMockSource(file.name, "file", []);
     });
     if (files.length > 0) setPhase("active");
-  }, [addSource, setPhase]);
+  }, [addMockSource, setPhase]);
 
   const handleFileSelect = () => {
-    // Simulate file picker
-    addSource({ name: "uploaded-document.pdf", type: "file" });
+    addMockSource("uploaded-document.pdf", "file", []);
     setPhase("active");
   };
 
