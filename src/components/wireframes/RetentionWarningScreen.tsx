@@ -39,7 +39,7 @@ export function RetentionWarningScreen({ variant }: Props) {
         </div>
       )}
       {variant === "archived" && (
-        <div role="alert" className="bg-destructive/10 border-b border-destructive/20 px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
+        <div role="alert" className="mx-4 mt-3 bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
           <Archive className="w-4 h-4 shrink-0" />
           <span>
             <strong>Sources archived.</strong> Renew your subscription and reactivate sources to resume querying.{" "}

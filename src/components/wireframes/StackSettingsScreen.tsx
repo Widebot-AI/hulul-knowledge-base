@@ -87,8 +87,8 @@ export function StackSettingsScreen({ readOnly }: Props) {
       </div>
 
       {/* Disable warning */}
-      <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 text-xs text-muted-foreground">
-        <strong className="text-warning">Note:</strong> Disabling the KB stack will route subsequent channel queries to the previously active stack. If no fallback stack exists, channels will stop receiving AI responses.
+      <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 text-xs text-warning">
+        <strong>Note:</strong> Disabling the KB stack will route subsequent channel queries to the previously active stack. If no fallback stack exists, channels will stop receiving AI responses.
       </div>
     </div>
   );
