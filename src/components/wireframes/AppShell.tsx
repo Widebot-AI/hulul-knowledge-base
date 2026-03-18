@@ -127,25 +127,29 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
         {/* Header actions */}
         <div className="flex items-center gap-1">
-          {/* Language toggle */}
-          <button
-            onClick={() => setLang(lang === "en" ? "ar" : "en")}
-            className="p-1.5 rounded-md hover:bg-accent transition-colors"
-            title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
-          >
-            <Languages className="w-3.5 h-3.5 text-foreground" />
-          </button>
+          {/* Language toggle — desktop only */}
+          {!isMobile && (
+            <button
+              onClick={() => setLang(lang === "en" ? "ar" : "en")}
+              className="p-1.5 rounded-md hover:bg-accent transition-colors"
+              title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
+            >
+              <Languages className="w-3.5 h-3.5 text-foreground" />
+            </button>
+          )}
 
-          {/* Dark mode toggle */}
-          <button
-            onClick={onToggleTheme}
-            className="p-1.5 rounded-md hover:bg-accent transition-colors"
-            title={isDark ? "Light mode" : "Dark mode"}
-          >
-            {isDark
-              ? <Sun className="w-3.5 h-3.5 text-foreground" />
-              : <Moon className="w-3.5 h-3.5 text-foreground" />}
-          </button>
+          {/* Dark mode toggle — desktop only */}
+          {!isMobile && (
+            <button
+              onClick={onToggleTheme}
+              className="p-1.5 rounded-md hover:bg-accent transition-colors"
+              title={isDark ? "Light mode" : "Dark mode"}
+            >
+              {isDark
+                ? <Sun className="w-3.5 h-3.5 text-foreground" />
+                : <Moon className="w-3.5 h-3.5 text-foreground" />}
+            </button>
+          )}
 
           {/* Dev screens drawer (desktop) */}
           {!isMobile && (
