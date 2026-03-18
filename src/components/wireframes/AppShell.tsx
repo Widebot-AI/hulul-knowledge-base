@@ -58,6 +58,7 @@ type Props = {
 export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleTheme, children }: Props) {
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [devDrawerOpen, setDevDrawerOpen] = useState(false);
   const breadcrumb = getBreadcrumb(activeScreen, screens);
 
   const groups = screens.reduce<Record<string, typeof screens>>((acc, s) => {
