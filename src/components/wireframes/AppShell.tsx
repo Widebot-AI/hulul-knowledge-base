@@ -3,13 +3,21 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Bell, Folder, Bookmark, Puzzle, Settings, Sun, Moon, Code2,
-  Search, Home, Inbox, MessageSquare, Menu as MenuIcon, ChevronRight,
+  Search, Home, Inbox, MessageSquare, Menu as MenuIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
@@ -108,21 +116,31 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         )}
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1 text-xs text-muted-foreground flex-1 min-w-0 overflow-hidden">
-          {breadcrumb.map((part, i) => (
-            <span key={i} className="flex items-center gap-1 shrink-0">
-              {i > 0 && <ChevronRight className="w-3 h-3 text-border" />}
-              <span className={cn(
-                "truncate",
-                i === breadcrumb.length - 1
-                  ? "text-foreground font-medium max-w-[200px]"
-                  : "hover:text-foreground cursor-pointer"
-              )}>
-                {part}
-              </span>
-            </span>
-          ))}
-        </nav>
+        <Breadcrumb className="flex-1 min-w-0 overflow-hidden">
+          <BreadcrumbList className="text-xs flex-nowrap">
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
+                Hulul
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#" className="text-muted-foreground hover:text-foreground">
+                Knowledge Base
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {breadcrumb.length > 2 && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="text-foreground font-medium truncate max-w-[200px]">
+                    {breadcrumb[2]}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            )}
+          </BreadcrumbList>
+        </Breadcrumb>
 
         {/* Search (desktop only) */}
         {!isMobile && (
