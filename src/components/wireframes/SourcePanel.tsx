@@ -160,7 +160,7 @@ export function SourcePanel() {
                         <div className="mt-1.5 space-y-1">
                           <p className="text-xs text-warning">No longer queryable — partial deletion</p>
                           {source.retryLocked ? (
-                            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <Lock className="w-2.5 h-2.5" />
                               <span>Max retries reached — contact support</span>
                             </div>
