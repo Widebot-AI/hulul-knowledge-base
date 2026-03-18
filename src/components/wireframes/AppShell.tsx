@@ -211,6 +211,14 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             {/* Spacer */}
             <div className="flex-1" />
 
+            {/* Consumption / Energy */}
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              title="Energy consumption"
+            >
+              <Zap className="w-4 h-4" />
+            </button>
+
             {/* User avatar */}
             <Avatar className="w-7 h-7 rounded-md cursor-pointer">
               <AvatarFallback className="rounded-md bg-primary text-primary-foreground text-xs font-medium">
