@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Search, BatteryMedium,
+  Menu as MenuIcon, Search, BatteryMedium, Languages,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +17,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import hululLogoIcon from "@/assets/hulul-logo-icon.svg";
+import hululLogoEng from "@/assets/hulul-logo-eng.svg";
+import hululLogoAr from "@/assets/hulul-logo-ar.svg";
 
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
