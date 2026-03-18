@@ -122,6 +122,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [sessionTokenPercent, setSessionTokenPercent] = useState(0);
   const [isDark, setIsDark] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
   const streamRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleSourceSelection = useCallback((id: string) => {
