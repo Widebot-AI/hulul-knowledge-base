@@ -2,8 +2,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
-  Home, Search, BookOpen, Plus, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon,
+  Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
+  Menu as MenuIcon, Zap, Search,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -22,18 +22,20 @@ import {
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
   { icon: Home, label: "Home" },
-  { icon: Search, label: "Search" },
-  { icon: BookOpen, label: "Notebook", active: true },
-  { icon: Plus, label: "Create" },
+  { icon: Inbox, label: "Inbox" },
+  { icon: Users, label: "CRM" },
+  { icon: Bot, label: "AI Agent" },
+  { icon: BookOpen, label: "Knowledge Base", active: true },
   { icon: Settings, label: "Settings" },
 ];
 
 /* ─── Mobile bottom-nav items ─── */
 const bottomNavItems = [
   { icon: Home, label: "Home", id: "home" as const },
-  { icon: Search, label: "Search", id: "search" as const },
+  { icon: Inbox, label: "Inbox", id: "inbox" as const },
+  { icon: Users, label: "CRM", id: "crm" as const },
+  { icon: Bot, label: "AI Agent", id: "agent" as const },
   { icon: BookOpen, label: "KB", id: "kb" as const },
-  { icon: Plus, label: "New", id: "new" as const },
   { icon: Settings, label: "Settings", id: "settings" as const },
 ];
 
@@ -208,6 +210,14 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
             {/* Spacer */}
             <div className="flex-1" />
+
+            {/* Consumption / Energy */}
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              title="Energy consumption"
+            >
+              <Zap className="w-4 h-4" />
+            </button>
 
             {/* User avatar */}
             <Avatar className="w-7 h-7 rounded-md cursor-pointer">
