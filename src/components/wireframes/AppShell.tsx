@@ -56,6 +56,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [menuDevView, setMenuDevView] = useState(false);
   const { lang, setLang } = useKB();
   const isRtl = lang === "ar";
 
