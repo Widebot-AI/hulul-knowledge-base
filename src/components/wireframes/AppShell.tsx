@@ -237,7 +237,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                       <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
                     </button>
                   </SheetTrigger>
-                  <SheetContent side={isRtl ? "right" : "left"} className="w-72 p-0">
+                  <SheetContent side="bottom" className="rounded-t-2xl p-0 max-h-[75vh]">
                     <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
                       {menuDevView ? t("menu.devScreens", lang) : t("nav.menu", lang)}
                     </SheetTitle>
