@@ -62,6 +62,8 @@ type KBState = {
   addMockSource: (name: string, type: string, tags: { key: string; value: string }[]) => void;
   isDark: boolean;
   toggleTheme: () => void;
+  lang: Lang;
+  setLang: (l: Lang) => void;
   // dev drawer
   devDrawerOpen: boolean;
   setDevDrawerOpen: (v: boolean) => void;
