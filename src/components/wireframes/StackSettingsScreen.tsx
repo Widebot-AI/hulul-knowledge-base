@@ -16,7 +16,7 @@ export function StackSettingsScreen({ readOnly }: Props) {
 
       {/* US-010 S2: Non-admin read-only banner */}
       {readOnly && (
-        <div className="flex items-center gap-2 px-4 py-3 bg-accent border border-accent-foreground/10 rounded-lg text-xs text-muted-foreground">
+        <div role="alert" className="flex items-center gap-2 px-4 py-2.5 bg-accent border border-accent-foreground/10 rounded-lg text-xs text-muted-foreground">
           <Lock className="w-4 h-4 shrink-0" />
           <span>You have view-only access. Contact your workspace Owner or Admin to make changes.</span>
         </div>

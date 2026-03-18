@@ -175,7 +175,7 @@ export function ChatPanel() {
               </div>
             </div>
             {citationDrawer.deleted && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-[11px] text-warning">
+              <div role="alert" className="flex items-center gap-2 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning">
                 <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                 This source is no longer available.
               </div>
