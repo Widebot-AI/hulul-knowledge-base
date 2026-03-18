@@ -31,9 +31,6 @@ export function SourcePreviewPanel() {
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             )}
-            <Button size="icon" variant="ghost" className="h-7 w-7">
-              <Download className="w-3.5 h-3.5" />
-            </Button>
             <Button size="icon" variant="ghost" className="h-7 w-7" onClick={closeModal}>
               <X className="w-3.5 h-3.5" />
             </Button>
