@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type SourceStatus = "fetching" | "uploading" | "pending" | "indexing" | "ready" | "failed" | "archived" | "pending_cleanup";
 
@@ -15,29 +16,46 @@ type Source = {
   tags?: { key: string; value: string }[];
   retryCount?: number;
   retryLocked?: boolean;
+  avatar?: string;
 };
 
+/** Reusable source avatar — renders an image if provided, otherwise falls back to an icon */
+export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; type: string; size?: "sm" | "md" }) {
+  const dim = size === "sm" ? "w-5 h-5" : "w-6 h-6";
+  const iconDim = size === "sm" ? "w-3 h-3" : "w-3.5 h-3.5";
+  const FallbackIcon = type === "URL" ? Globe : FileText;
+
+  return (
+    <Avatar className={cn(dim, "rounded shrink-0")}>
+      {avatar && <AvatarImage src={avatar} alt={type} className="object-cover rounded" />}
+      <AvatarFallback className="rounded bg-accent text-muted-foreground">
+        <FallbackIcon className={iconDim} />
+      </AvatarFallback>
+    </Avatar>
+  );
+}
+
 const mockSources: Source[] = [
-  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "ready", selected: true, tags: [{ key: "department", value: "strategy" }] },
+  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "ready", selected: true, tags: [{ key: "department", value: "strategy" }], avatar: "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" },
   { name: "API Documentation.md", type: "MD", status: "ready", selected: true },
-  { name: "Employee Handbook.docx", type: "DOCX", status: "ready", selected: false },
-  { name: "Sales Pipeline.xlsx", type: "XLSX", status: "indexing" },
+  { name: "Employee Handbook.docx", type: "DOCX", status: "ready", selected: false, avatar: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg" },
+  { name: "Sales Pipeline.xlsx", type: "XLSX", status: "indexing", avatar: "https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg" },
   { name: "Release Notes v2.1.txt", type: "TXT", status: "pending" },
   { name: "https://docs.example.com/guide", type: "URL", status: "fetching" },
   { name: "Old Policy.pdf", type: "PDF", status: "failed" },
 ];
 
 const pendingCleanupSources: Source[] = [
-  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "ready", selected: true },
+  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "ready", selected: true, avatar: "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" },
   { name: "API Documentation.md", type: "MD", status: "ready", selected: true },
   { name: "Outdated Report.pdf", type: "PDF", status: "pending_cleanup", retryCount: 2 },
   { name: "Broken Data.csv", type: "CSV", status: "pending_cleanup", retryCount: 3, retryLocked: true },
 ];
 
 const archivedSources: Source[] = [
-  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "archived", tags: [{ key: "department", value: "strategy" }] },
+  { name: "Q3 Strategy Deck.pdf", type: "PDF", status: "archived", tags: [{ key: "department", value: "strategy" }], avatar: "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" },
   { name: "API Documentation.md", type: "MD", status: "archived" },
-  { name: "Employee Handbook.docx", type: "DOCX", status: "archived" },
+  { name: "Employee Handbook.docx", type: "DOCX", status: "archived", avatar: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg" },
 ];
 
 const statusConfig: Record<SourceStatus, { label: string; color: string; icon: React.ReactNode }> = {
@@ -117,7 +135,7 @@ export function SourcePanel({ variant = "normal", storagePercent = 65, fileCount
             {[1, 2, 3].map((i) => (
               <div key={i} className="rounded-lg px-3 py-2.5 border border-transparent">
                 <div className="flex items-start gap-2">
-                  <Skeleton className="w-4 h-4 rounded mt-0.5" />
+                  <Skeleton className="w-5 h-5 rounded mt-0.5" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-3.5 w-3/4" />
                     <div className="flex gap-2">
@@ -146,7 +164,6 @@ export function SourcePanel({ variant = "normal", storagePercent = 65, fileCount
           <div className="p-2 space-y-1">
             {sources.map((source, i) => {
               const sc = statusConfig[source.status];
-              const isNonSelectable = ["archived", "pending_cleanup", "fetching", "uploading", "pending", "indexing", "failed"].includes(source.status);
               return (
                 <div
                   key={i}
@@ -173,11 +190,7 @@ export function SourcePanel({ variant = "normal", storagePercent = 65, fileCount
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        {source.type === "URL" ? (
-                          <Globe className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        ) : (
-                          <FileText className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        )}
+                        <SourceAvatar avatar={source.avatar} type={source.type} size="sm" />
                         <span className="text-xs font-medium text-foreground truncate">{source.name}</span>
                       </div>
                       <div className="flex items-center gap-2 mt-1">
