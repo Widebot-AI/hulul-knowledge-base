@@ -46,7 +46,7 @@ export function ChatPanel() {
           <span>This conversation is getting long. Consider resetting to maintain response quality.</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-[10px] text-warning hover:text-warning gap-1"
+            className="h-6 text-xs text-warning hover:text-warning gap-1"
             onClick={() => openModal({ kind: "reset-confirm" })}
           >
             <RotateCcw className="w-3 h-3" /> Reset
