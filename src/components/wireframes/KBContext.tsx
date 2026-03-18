@@ -260,10 +260,15 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
     return () => { clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3); clearTimeout(timer4); clearTimeout(timer5); };
   }, []);
 
-  // Theme
+  // Theme + dir
   React.useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
+
+  React.useEffect(() => {
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   return (
     <KBContext.Provider value={{
