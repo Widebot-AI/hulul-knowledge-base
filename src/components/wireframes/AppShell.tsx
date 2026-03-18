@@ -191,16 +191,18 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         {/* Icon sidebar — desktop only */}
         {!isMobile && (
           <aside className="w-12 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-1">
-            {sidebarIcons.map(({ icon: Icon, label, badge }) => (
+            {sidebarIcons.map(({ icon: Icon, label, active }) => (
               <button
                 key={label}
-                className="relative w-8 h-8 flex items-center justify-center rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                className={cn(
+                  "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
+                  active
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
                 title={label}
               >
                 <Icon className="w-4 h-4" />
-                {badge && (
-                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-destructive" />
-                )}
               </button>
             ))}
 
