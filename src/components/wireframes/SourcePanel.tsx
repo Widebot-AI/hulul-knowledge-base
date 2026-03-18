@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useKB, type SourceStatus } from "./KBContext";
+import { t } from "./translations";
 
 /** Reusable source avatar */
 export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; type: string; size?: "sm" | "md" }) {
@@ -24,35 +24,37 @@ export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; t
   );
 }
 
-const statusConfig: Record<SourceStatus, { label: string; color: string; icon: React.ReactNode }> = {
-  fetching: { label: "Fetching", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
-  uploading: { label: "Uploading", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
-  pending: { label: "Pending", color: "bg-warning/10 text-warning", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
-  indexing: { label: "Indexing", color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
-  ready: { label: "Ready", color: "bg-success/10 text-success", icon: <Check className="w-3 h-3" /> },
-  failed: { label: "Failed", color: "bg-destructive/10 text-destructive", icon: <AlertTriangle className="w-3 h-3" /> },
-  archived: { label: "Archived", color: "bg-muted text-muted-foreground", icon: <Archive className="w-3 h-3" /> },
-  pending_cleanup: { label: "Cleanup Pending", color: "bg-warning/10 text-warning", icon: <AlertTriangle className="w-3 h-3" /> },
-};
+function getStatusConfig(lang: "en" | "ar"): Record<SourceStatus, { label: string; color: string; icon: React.ReactNode }> {
+  return {
+    fetching: { label: t("status.fetching", lang), color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
+    uploading: { label: t("status.uploading", lang), color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
+    pending: { label: t("status.pending", lang), color: "bg-warning/10 text-warning", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
+    indexing: { label: t("status.indexing", lang), color: "bg-primary/10 text-primary", icon: <Loader2 className="w-3 h-3 animate-spin" /> },
+    ready: { label: t("status.ready", lang), color: "bg-success/10 text-success", icon: <Check className="w-3 h-3" /> },
+    failed: { label: t("status.failed", lang), color: "bg-destructive/10 text-destructive", icon: <AlertTriangle className="w-3 h-3" /> },
+    archived: { label: t("status.archived", lang), color: "bg-muted text-muted-foreground", icon: <Archive className="w-3 h-3" /> },
+    pending_cleanup: { label: t("status.cleanupPending", lang), color: "bg-warning/10 text-warning", icon: <AlertTriangle className="w-3 h-3" /> },
+  };
+}
 
 export function SourcePanel() {
-  const { sources, toggleSourceSelection, openModal, retrySource } = useKB();
+  const { sources, toggleSourceSelection, openModal, retrySource, lang } = useKB();
+  const statusConfig = getStatusConfig(lang);
 
-  const readySources = sources.filter(s => s.status === "ready");
   const totalFiles = sources.length;
   const storagePercent = Math.min(100, Math.round((totalFiles / 50) * 100) * 4.6);
 
   return (
-    <div className="w-full h-full flex flex-col bg-panel border-r border-border">
+    <div className="w-full h-full flex flex-col bg-panel border-e border-border">
       {/* Header */}
       <div className="px-4 py-3 border-b border-border space-y-2">
-        <h2 className="text-sm font-semibold text-foreground">Sources</h2>
+        <h2 className="text-sm font-semibold text-foreground">{t("sources.title", lang)}</h2>
         <Button
           size="sm"
           className="w-full h-8 text-xs gap-1.5 font-medium bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={() => openModal({ kind: "add-source", tab: "file" })}
         >
-          <Plus className="w-3.5 h-3.5" /> Add sources
+          <Plus className="w-3.5 h-3.5" /> {t("sources.add", lang)}
         </Button>
       </div>
 
@@ -60,13 +62,13 @@ export function SourcePanel() {
       <div className="px-4 py-3 border-b border-border space-y-2.5">
         <div>
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-muted-foreground">Storage Used</span>
+            <span className="text-muted-foreground">{t("sources.storageUsed", lang)}</span>
             <span className="font-medium text-foreground">{Math.round(storagePercent)}%</span>
           </div>
           <Progress value={storagePercent} className="h-1.5" />
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Files Added</span>
+          <span className="text-muted-foreground">{t("sources.filesAdded", lang)}</span>
           <span className="font-medium text-foreground">{totalFiles} / 50</span>
         </div>
       </div>
@@ -78,12 +80,12 @@ export function SourcePanel() {
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-3">
               <Upload className="w-5 h-5 text-accent-foreground" />
             </div>
-            <p className="text-sm font-medium text-foreground mb-1">No sources yet</p>
+            <p className="text-sm font-medium text-foreground mb-1">{t("sources.noSources", lang)}</p>
             <p className="text-xs text-muted-foreground mb-4">
-              Add your first source to start asking questions.
+              {t("sources.noSourcesDesc", lang)}
             </p>
             <Button size="sm" className="gap-1 text-xs" onClick={() => openModal({ kind: "add-source", tab: "file" })}>
-              <Plus className="w-3 h-3" /> Add Source
+              <Plus className="w-3 h-3" /> {t("sources.addSource", lang)}
             </Button>
           </div>
         ) : (
@@ -151,25 +153,25 @@ export function SourcePanel() {
                             onClick={(e) => { e.stopPropagation(); retrySource(source.id); }}
                             className="text-xs text-primary hover:underline flex items-center gap-1"
                           >
-                            <RotateCcw className="w-2.5 h-2.5" /> Retry
+                            <RotateCcw className="w-2.5 h-2.5" /> {t("sources.retry", lang)}
                           </button>
                         </div>
                       )}
                       {/* Pending cleanup */}
                       {source.status === "pending_cleanup" && (
                         <div className="mt-1.5 space-y-1">
-                          <p className="text-xs text-warning">No longer queryable — partial deletion</p>
+                          <p className="text-xs text-warning">{t("sources.notQueryable", lang)}</p>
                           {source.retryLocked ? (
                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
                               <Lock className="w-2.5 h-2.5" />
-                              <span>Max retries reached — contact support</span>
+                              <span>{t("sources.maxRetries", lang)}</span>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
                               <button onClick={(e) => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
-                                <RotateCcw className="w-2.5 h-2.5" /> Retry cleanup
+                                <RotateCcw className="w-2.5 h-2.5" /> {t("sources.retryCleanup", lang)}
                               </button>
-                              <span className="text-xs text-muted-foreground">({source.retryCount}/3 attempts)</span>
+                              <span className="text-xs text-muted-foreground">({source.retryCount}/3 {t("sources.attempts", lang)})</span>
                             </div>
                           )}
                         </div>
@@ -188,19 +190,19 @@ export function SourcePanel() {
                             onClick={(e) => { e.stopPropagation(); openModal({ kind: "source-preview", sourceId: source.id }); }}
                             className="text-xs gap-2"
                           >
-                            <Eye className="w-3.5 h-3.5" /> Preview
+                            <Eye className="w-3.5 h-3.5" /> {t("sources.preview", lang)}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={(e) => e.stopPropagation()}
                             className="text-xs gap-2"
                           >
-                            <Pencil className="w-3.5 h-3.5" /> Rename
+                            <Pencil className="w-3.5 h-3.5" /> {t("sources.rename", lang)}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={(e) => { e.stopPropagation(); openModal({ kind: "delete-confirm", sourceId: source.id, sourceName: source.name }); }}
                             className="text-xs gap-2 text-destructive focus:text-destructive"
                           >
-                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                            <Trash2 className="w-3.5 h-3.5" /> {t("sources.delete", lang)}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

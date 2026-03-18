@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useRef } from "react";
+import type { Lang } from "./translations";
 
 /* ─── Source Model ─── */
 export type SourceStatus = "fetching" | "uploading" | "pending" | "indexing" | "ready" | "failed" | "archived" | "pending_cleanup";
@@ -61,6 +62,8 @@ type KBState = {
   addMockSource: (name: string, type: string, tags: { key: string; value: string }[]) => void;
   isDark: boolean;
   toggleTheme: () => void;
+  lang: Lang;
+  setLang: (l: Lang) => void;
   // dev drawer
   devDrawerOpen: boolean;
   setDevDrawerOpen: (v: boolean) => void;
@@ -119,6 +122,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [sessionTokenPercent, setSessionTokenPercent] = useState(0);
   const [isDark, setIsDark] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
   const streamRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleSourceSelection = useCallback((id: string) => {
@@ -256,10 +260,15 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
     return () => { clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3); clearTimeout(timer4); clearTimeout(timer5); };
   }, []);
 
-  // Theme
+  // Theme + dir
   React.useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
+
+  React.useEffect(() => {
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   return (
     <KBContext.Provider value={{
@@ -274,6 +283,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       resetChat, sessionTokenPercent,
       retrySource, deleteSource, addMockSource,
       isDark, toggleTheme: () => setIsDark(!isDark),
+      lang, setLang,
       devDrawerOpen, setDevDrawerOpen,
     }}>
       {children}

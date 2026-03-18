@@ -1,12 +1,18 @@
 import { AlertTriangle, Archive, Clock } from "lucide-react";
 import { SourcePanel } from "./SourcePanel";
 import { ChatPanel } from "./ChatPanel";
+import { useKB } from "./KBContext";
+import { t } from "./translations";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
   variant: "warning" | "final-reminder" | "dual-trigger" | "archived";
 };
 
 export function RetentionWarningScreen({ variant }: Props) {
+  const { lang } = useKB();
+  const isMobile = useIsMobile();
+
   return (
     <div className="flex flex-col h-full">
       {/* Retention Banners */}
@@ -14,7 +20,7 @@ export function RetentionWarningScreen({ variant }: Props) {
         <div role="alert" className="mx-4 mt-3 bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-warning">
           <Clock className="w-4 h-4 shrink-0" />
           <span>
-            <strong>Inactivity notice:</strong> Your Knowledge Base sources will be archived on <strong>April 15, 2026</strong> due to inactivity.
+            <strong>{t("retention.inactivity", lang)}</strong> {t("retention.archiveDate", lang)} <strong>April 15, 2026</strong> {t("retention.dueToInactivity", lang)}
           </span>
         </div>
       )}
@@ -22,7 +28,7 @@ export function RetentionWarningScreen({ variant }: Props) {
         <div role="alert" className="mx-4 mt-3 bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
           <AlertTriangle className="w-4 h-4 shrink-0 animate-pulse" />
           <span>
-            <strong>Final reminder:</strong> Your sources will be archived in <strong>3 days</strong> due to inactivity.
+            <strong>{t("retention.finalReminder", lang)}</strong> {t("retention.archiveIn", lang)} <strong>{t("retention.3days", lang)}</strong> {t("retention.dueToInactivity", lang)}
           </span>
         </div>
       )}
@@ -30,11 +36,11 @@ export function RetentionWarningScreen({ variant }: Props) {
         <div className="mx-4 mt-3 space-y-2">
           <div role="alert" className="bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
             <AlertTriangle className="w-4 h-4 shrink-0" />
-            <span><strong>Subscription expired:</strong> Sources will be archived on <strong>March 25, 2026</strong>.</span>
+            <span><strong>{t("retention.subExpired", lang)}</strong> {t("retention.archiveOnDate", lang)} <strong>March 25, 2026</strong>.</span>
           </div>
           <div role="alert" className="bg-warning/10 border border-warning/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-warning">
             <Clock className="w-4 h-4 shrink-0" />
-            <span><strong>Also active:</strong> Inactivity countdown — archival on April 15, 2026.</span>
+            <span><strong>{t("retention.alsoActive", lang)}</strong> {t("retention.inactivityCountdown", lang)}</span>
           </div>
         </div>
       )}
@@ -42,17 +48,19 @@ export function RetentionWarningScreen({ variant }: Props) {
         <div role="alert" className="mx-4 mt-3 bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs text-destructive">
           <Archive className="w-4 h-4 shrink-0" />
           <span>
-            <strong>Sources archived.</strong> Renew your subscription and reactivate sources to resume querying.{" "}
-            <button className="underline font-medium">Upgrade plan</button>
+            <strong>{t("retention.sourcesArchived", lang)}</strong> {t("retention.renewDesc", lang)}{" "}
+            <button className="underline font-medium">{t("retention.upgradePlan", lang)}</button>
           </span>
         </div>
       )}
 
       {/* Split Layout */}
       <div className="flex flex-1 overflow-hidden">
-        <div className="w-[30%] shrink-0">
-          <SourcePanel />
-        </div>
+        {!isMobile && (
+          <div className="w-[30%] shrink-0">
+            <SourcePanel />
+          </div>
+        )}
         <div className="flex-1 relative">
           <ChatPanel />
         </div>
