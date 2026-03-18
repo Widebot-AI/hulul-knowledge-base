@@ -129,7 +129,7 @@ export function ChatPanel() {
                     </div>
                   )}
                   {msg.isError && (
-                    <div className="mt-2 flex items-center gap-1 text-[10px] text-destructive">
+                    <div className="mt-2 flex items-center gap-1 text-xs text-destructive">
                       <AlertTriangle className="w-3 h-3" />
                       <span>Response interrupted — partial content shown</span>
                       <button className="underline ml-1 font-medium">Retry</button>
