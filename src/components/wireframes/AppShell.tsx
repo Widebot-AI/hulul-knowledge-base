@@ -22,9 +22,10 @@ import {
 /* ─── Icon sidebar items ─── */
 const sidebarIcons = [
   { icon: Home, label: "Home" },
-  { icon: Search, label: "Search" },
-  { icon: BookOpen, label: "Notebook", active: true },
-  { icon: Plus, label: "Create" },
+  { icon: Inbox, label: "Inbox" },
+  { icon: Users, label: "CRM" },
+  { icon: Bot, label: "AI Agent" },
+  { icon: BookOpen, label: "Knowledge Base", active: true },
   { icon: Settings, label: "Settings" },
 ];
 
