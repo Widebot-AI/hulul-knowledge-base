@@ -27,7 +27,7 @@ export function SourceAvatar({ avatar, type, size = "sm" }: { avatar?: string; t
 
   return (
     <Avatar className={cn(dim, "rounded shrink-0")}>
-      {avatar && <AvatarImage src={avatar} alt={type} className="object-cover rounded" />}
+      {avatar && <AvatarImage src={avatar} alt={type} className="object-contain rounded p-0.5" />}
       <AvatarFallback className="rounded bg-accent text-muted-foreground">
         <FallbackIcon className={iconDim} />
       </AvatarFallback>
