@@ -190,11 +190,18 @@ export function SourcePreviewPanel({ type }: Props) {
               <p>Connect your existing tools from the Integrations panel. Supported integrations include Slack, Jira, and GitHub.</p>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-64 bg-secondary rounded-lg">
-              <div className="text-center">
-                <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">PDF preview rendering area</p>
-                <p className="text-xs text-muted-foreground mt-1">Inline PDF viewer for browser-renderable files</p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-center h-64 bg-secondary rounded-lg">
+                <div className="text-center">
+                  <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">PDF preview rendering area</p>
+                  <p className="text-xs text-muted-foreground mt-1">Inline PDF viewer for browser-renderable files</p>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button size="sm" variant="outline" className="gap-1.5">
+                  <Download className="w-3.5 h-3.5" /> Download File
+                </Button>
               </div>
             </div>
           )}
