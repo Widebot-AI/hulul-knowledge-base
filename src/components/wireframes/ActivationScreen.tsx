@@ -1,13 +1,29 @@
 import { BookOpen, Sparkles, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useKB } from "./KBContext";
+import { useState } from "react";
 
-type Props = {
-  variant?: "default" | "error";
-};
+export function ActivationScreen() {
+  const { setPhase, activationError, setActivationError } = useKB();
+  const [loading, setLoading] = useState(false);
 
-export function ActivationScreen({ variant = "default" }: Props) {
+  const handleActivate = () => {
+    setLoading(true);
+    // Simulate activation — 20% chance of error for testing
+    setTimeout(() => {
+      if (Math.random() < 0.2) {
+        setActivationError(true);
+        setLoading(false);
+      } else {
+        setActivationError(false);
+        setPhase("empty");
+        setLoading(false);
+      }
+    }, 1200);
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="flex items-center justify-center h-full bg-background">
       <div className="max-w-md text-center space-y-6 px-6">
         <div className="mx-auto w-16 h-16 rounded-2xl bg-accent flex items-center justify-center">
           <BookOpen className="w-8 h-8 text-accent-foreground" />
@@ -32,16 +48,15 @@ export function ActivationScreen({ variant = "default" }: Props) {
           </div>
         </div>
 
-        {/* US-002 S2: Activation failure with retry */}
-        {variant === "error" && (
+        {activationError && (
           <div className="flex items-center gap-2 px-4 py-3 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>Activation failed. Please try again. If the problem persists, contact support.</span>
           </div>
         )}
 
-        <Button size="lg" className="w-full">
-          {variant === "error" ? "Retry Activation" : "Activate Knowledge Base"}
+        <Button size="lg" className="w-full" onClick={handleActivate} disabled={loading}>
+          {loading ? "Activating..." : activationError ? "Retry Activation" : "Activate Knowledge Base"}
         </Button>
         <p className="text-[11px] text-muted-foreground">
           One-time activation for your workspace. All team members will gain access.
