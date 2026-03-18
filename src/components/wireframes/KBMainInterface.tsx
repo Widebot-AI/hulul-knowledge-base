@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronUp, BookOpen } from "lucide-react";
 import { SourcePanel } from "./SourcePanel";
 import { ChatPanel } from "./ChatPanel";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -13,23 +13,34 @@ export function KBMainInterface() {
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
+  const totalSources = sources.length;
 
   if (isMobile) {
     return (
-      <div className="flex flex-col h-full">
-        {/* Compact source bar */}
-        <button
-          onClick={() => setSourcesOpen(true)}
-          className="shrink-0 flex items-center justify-between px-4 py-2.5 border-b border-border bg-panel hover:bg-accent/50 transition-colors"
-        >
-          <span className="text-xs font-medium text-foreground">
-            {readySelected} {t("sources.selected", lang)}
-          </span>
-          <div className="flex items-center gap-1 text-xs text-primary font-medium">
-            <span>{t("sources.viewAll", lang)}</span>
-            <ChevronUp className="w-3.5 h-3.5" />
-          </div>
-        </button>
+      <div className="flex flex-col h-full relative">
+        {/* Chat Panel — full height */}
+        <div className="flex-1 overflow-hidden relative">
+          <ChatPanel />
+        </div>
+
+        {/* Floating pill bar — inspired by Lovable queue */}
+        <div className="absolute bottom-[72px] inset-x-0 flex justify-center z-10 pointer-events-none">
+          <button
+            onClick={() => setSourcesOpen(true)}
+            className="pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-card border border-border shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+          >
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-foreground" />
+              <span className="text-sm font-semibold text-foreground">
+                {t("sources.title", lang)}
+              </span>
+              <span className="bg-primary text-primary-foreground text-[11px] font-bold rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1.5">
+                {readySelected}
+              </span>
+            </div>
+            <ChevronUp className="w-4 h-4 text-muted-foreground" />
+          </button>
+        </div>
 
         {/* Bottom sheet for sources */}
         <Sheet open={sourcesOpen} onOpenChange={setSourcesOpen}>
@@ -40,11 +51,6 @@ export function KBMainInterface() {
             </div>
           </SheetContent>
         </Sheet>
-
-        {/* Chat Panel — full width */}
-        <div className="flex-1 overflow-hidden relative">
-          <ChatPanel />
-        </div>
       </div>
     );
   }
