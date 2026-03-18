@@ -59,7 +59,7 @@ export function SourcePanel() {
       {/* Storage Metrics */}
       <div className="px-4 py-3 border-b border-border space-y-2.5">
         <div>
-          <div className="flex justify-between text-[11px] mb-1">
+          <div className="flex justify-between text-xs mb-1">
             <span className="text-muted-foreground">Storage Used</span>
             <span className="font-medium text-foreground">{Math.round(storagePercent)}%</span>
           </div>
