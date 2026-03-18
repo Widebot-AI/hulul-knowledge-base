@@ -51,7 +51,7 @@ export function TokenReportingScreen({ variant = "normal" }: Props) {
               <div className="text-xs text-muted-foreground mb-1">Storage</div>
               <div className="text-2xl font-semibold text-foreground">{variant === "empty" ? "0" : "65"}%</div>
               <Progress value={variant === "empty" ? 0 : 65} className="h-1.5 mt-2" />
-              <div className="text-[10px] text-muted-foreground mt-1">Of total storage capacity</div>
+              <div className="text-xs text-muted-foreground mt-1">Of total storage capacity</div>
             </div>
             <div className="border border-border rounded-xl p-4">
               <div className="text-xs text-muted-foreground mb-1">Files</div>
