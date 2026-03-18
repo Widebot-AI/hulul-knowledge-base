@@ -42,7 +42,7 @@ export function ChatPanel() {
     <div className="flex flex-col h-full relative">
       {/* Session warnings */}
       {sessionWarning && (
-        <div className="mx-4 mt-3 px-3 py-2 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
           <span>This conversation is getting long. Consider resetting to maintain response quality.</span>
           <Button
             size="sm" variant="ghost"
