@@ -216,7 +216,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             <div className="w-8 h-8 flex items-center justify-center mb-1">
               <img src={hululLogoIcon} alt="Hulul" className="w-7 h-7" />
             </div>
+            {sidebarIcons.map(({ icon: Icon, label, active }) => (
               <button
+
                 key={label}
                 className={cn(
                   "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
