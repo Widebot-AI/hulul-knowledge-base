@@ -9,14 +9,15 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export function KBMainInterface() {
   const isMobile = useIsMobile();
-  const { sources, lang } = useKB();
+  const { sources, lang, modal } = useKB();
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const [sheetExpanded, setSheetExpanded] = useState(false);
 
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
 
-  // Reset expanded state when sheet closes
+  // Prevent sheet close when preview is open
   const handleSheetChange = (open: boolean) => {
+    if (!open && modal?.kind === "source-preview") return;
     setSourcesOpen(open);
     if (!open) setSheetExpanded(false);
   };
