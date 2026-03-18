@@ -86,11 +86,11 @@ export function SourcePanel({ variant = "normal", storagePercent = 65, fileCount
   return (
     <div className="w-full h-full flex flex-col bg-panel border-r border-border">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-border space-y-2">
         <h2 className="text-sm font-semibold text-foreground">Sources</h2>
         {variant !== "archived" && (
-          <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
-            <Plus className="w-3 h-3" /> Add Source
+          <Button size="sm" className="w-full h-8 text-xs gap-1.5 font-medium bg-primary text-primary-foreground hover:bg-primary/90">
+            <Plus className="w-3.5 h-3.5" /> Add sources
           </Button>
         )}
       </div>
