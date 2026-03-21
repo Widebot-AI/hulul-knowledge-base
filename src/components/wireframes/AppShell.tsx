@@ -25,21 +25,6 @@ import { SourcePanel } from "./SourcePanel";
 import { t } from "./translations";
 import { useSearch } from "@/hooks/useSearch";
 import { SearchOverlay } from "@/components/search/SearchOverlay";
-import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import hululLogoIcon from "@/assets/hulul-logo-icon.svg";
-import hululLogoEng from "@/assets/hulul-logo-eng.svg";
-import hululLogoAr from "@/assets/hulul-logo-ar.svg";
-import { useKB } from "./KBContext";
-import { SourcePanel } from "./SourcePanel";
-import { t } from "./translations";
 
 /* ─── Icon sidebar items ─── */
 const sidebarKeys = [
