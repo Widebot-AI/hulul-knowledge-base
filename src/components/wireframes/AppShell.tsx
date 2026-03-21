@@ -55,8 +55,7 @@ const sidebarKeys = [
 const bottomNavKeys = [
   { icon: Home, labelKey: "nav.home" as const, id: "home" as const },
   { icon: Inbox, labelKey: "nav.inbox" as const, id: "inbox" as const },
-  { icon: Users, labelKey: "nav.crm" as const, id: "crm" as const },
-  { icon: Bot, labelKey: "nav.agent" as const, id: "agent" as const },
+  { icon: Search, labelKey: "nav.search" as const, id: "search" as const },
   { icon: BookOpen, labelKey: "nav.kb.short" as const, id: "kb" as const },
   { icon: MenuIcon, labelKey: "nav.menu" as const, id: "menu" as const },
 ];
