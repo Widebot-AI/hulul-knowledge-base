@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import type { Screen } from "@/pages/Index";
 import {
   Home, Inbox, Users, Bot, BookOpen, Settings, Sun, Moon, Code2,
-  Menu as MenuIcon, Search, BatteryMedium, Languages, User, ChevronRight, ChevronDown,
-} from "lucide-react";
+  Menu as MenuIcon, Search, BatteryMedium, Languages, User, ChevronRight, ChevronDown } from
+"lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -15,8 +15,8 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+  BreadcrumbSeparator } from
+"@/components/ui/breadcrumb";
 import hululLogoIcon from "@/assets/hulul-logo-icon.svg";
 import hululLogoEng from "@/assets/hulul-logo-eng.svg";
 import hululLogoAr from "@/assets/hulul-logo-ar.svg";
@@ -28,25 +28,25 @@ import { SearchOverlay } from "@/components/search/SearchOverlay";
 
 /* ─── Icon sidebar items ─── */
 const sidebarKeys = [
-  { icon: Home, labelKey: "nav.home" as const },
-  { icon: Inbox, labelKey: "nav.inbox" as const },
-  { icon: Users, labelKey: "nav.crm" as const },
-  { icon: Bot, labelKey: "nav.agent" as const },
-  { icon: BookOpen, labelKey: "nav.kb" as const, active: true },
-  { icon: Settings, labelKey: "nav.settings" as const },
-];
+{ icon: Home, labelKey: "nav.home" as const },
+{ icon: Inbox, labelKey: "nav.inbox" as const },
+{ icon: Users, labelKey: "nav.crm" as const },
+{ icon: Bot, labelKey: "nav.agent" as const },
+{ icon: BookOpen, labelKey: "nav.kb" as const, active: true },
+{ icon: Settings, labelKey: "nav.settings" as const }];
+
 
 /* ─── Mobile bottom-nav items ─── */
 const bottomNavKeys = [
-  { icon: Home, labelKey: "nav.home" as const, id: "home" as const },
-  { icon: Inbox, labelKey: "nav.inbox" as const, id: "inbox" as const },
-  { icon: Search, labelKey: "nav.search" as const, id: "search" as const },
-  { icon: BookOpen, labelKey: "nav.kb.short" as const, id: "kb" as const },
-  { icon: MenuIcon, labelKey: "nav.menu" as const, id: "menu" as const },
-];
+{ icon: Home, labelKey: "nav.home" as const, id: "home" as const },
+{ icon: Inbox, labelKey: "nav.inbox" as const, id: "inbox" as const },
+{ icon: Search, labelKey: "nav.search" as const, id: "search" as const },
+{ icon: BookOpen, labelKey: "nav.kb.short" as const, id: "kb" as const },
+{ icon: MenuIcon, labelKey: "nav.menu" as const, id: "menu" as const }];
+
 
 type Props = {
-  screens: { id: Screen; label: string; group: string }[];
+  screens: {id: Screen;label: string;group: string;}[];
   activeScreen: Screen;
   onSelect: (s: Screen) => void;
   isDark: boolean;
@@ -63,7 +63,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const { lang, setLang, sources, modal } = useKB();
   const isRtl = lang === "ar";
-  const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
+  const readySelected = sources.filter((s) => s.status === "ready" && s.selected).length;
   const search = useSearch();
 
   const handleSourceSheetChange = (open: boolean) => {
@@ -78,33 +78,33 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   }, {});
 
   /* Shared dev screen list */
-  const DevScreenList = (
-    <ScrollArea className="max-h-[70vh]">
+  const DevScreenList =
+  <ScrollArea className="max-h-[70vh]">
       <div className="p-2 space-y-3">
-        {Object.entries(groups).map(([group, items]) => (
-          <div key={group}>
+        {Object.entries(groups).map(([group, items]) =>
+      <div key={group}>
             <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
               {group}
             </p>
-            {items.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => onSelect(s.id)}
-                className={cn(
-                  "w-full text-start px-3 py-1.5 rounded-md text-xs transition-colors",
-                  activeScreen === s.id
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                )}
-              >
+            {items.map((s) =>
+        <button
+          key={s.id}
+          onClick={() => onSelect(s.id)}
+          className={cn(
+            "w-full text-start px-3 py-1.5 rounded-md text-xs transition-colors",
+            activeScreen === s.id ?
+            "bg-accent text-accent-foreground font-medium" :
+            "text-muted-foreground hover:bg-secondary hover:text-foreground"
+          )}>
+          
                 {s.label}
               </button>
-            ))}
+        )}
           </div>
-        ))}
+      )}
       </div>
-    </ScrollArea>
-  );
+    </ScrollArea>;
+
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background">
@@ -115,8 +115,8 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           <img
             src={lang === "ar" ? hululLogoAr : hululLogoEng}
             alt="Hulul"
-            className="h-6 shrink-0"
-          />
+            className="h-6 shrink-0" />
+          
           <span className="text-border mx-1">|</span>
           <Breadcrumb className="min-w-0 overflow-hidden">
             <BreadcrumbList className="text-xs flex-nowrap">
@@ -130,22 +130,22 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
         </div>
 
         {/* Search (desktop only) */}
-        {!isMobile && (
-          <button
-            onClick={() => search.open()}
-            className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60 hover:bg-accent transition-colors cursor-pointer"
-          >
+        {!isMobile &&
+        <button
+          onClick={() => search.open()}
+          className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60 hover:bg-accent transition-colors cursor-pointer">
+          
             <Search className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">{t("header.search", lang)}</span>
           </button>
-        )}
+        }
 
         {/* Sources pill — mobile only */}
-        {isMobile && (
-          <button
-            onClick={() => setSourcesOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border hover:bg-accent transition-colors active:scale-[0.98]"
-          >
+        {isMobile &&
+        <button
+          onClick={() => setSourcesOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary border border-border hover:bg-accent transition-colors active:scale-[0.98]">
+          
             <BookOpen className="w-3.5 h-3.5 text-foreground" />
             <span className="text-xs font-semibold text-foreground">
               {t("sources.title", lang)}
@@ -155,42 +155,42 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             </span>
             <ChevronDown className="w-3 h-3 text-muted-foreground" />
           </button>
-        )}
+        }
 
         {/* Header actions */}
         <div className="flex items-center gap-1">
           {/* Language toggle — desktop only */}
-          {!isMobile && (
-            <button
-              onClick={() => setLang(lang === "en" ? "ar" : "en")}
-              className="p-1.5 rounded-md hover:bg-accent transition-colors"
-              title={lang === "en" ? "Switch to Arabic" : "Switch to English"}
-            >
+          {!isMobile &&
+          <button
+            onClick={() => setLang(lang === "en" ? "ar" : "en")}
+            className="p-1.5 rounded-md hover:bg-accent transition-colors"
+            title={lang === "en" ? "Switch to Arabic" : "Switch to English"}>
+            
               <Languages className="w-3.5 h-3.5 text-foreground" />
             </button>
-          )}
+          }
 
           {/* Dark mode toggle — desktop only */}
-          {!isMobile && (
-            <button
-              onClick={onToggleTheme}
-              className="p-1.5 rounded-md hover:bg-accent transition-colors"
-              title={isDark ? "Light mode" : "Dark mode"}
-            >
-              {isDark
-                ? <Sun className="w-3.5 h-3.5 text-foreground" />
-                : <Moon className="w-3.5 h-3.5 text-foreground" />}
+          {!isMobile &&
+          <button
+            onClick={onToggleTheme}
+            className="p-1.5 rounded-md hover:bg-accent transition-colors"
+            title={isDark ? "Light mode" : "Dark mode"}>
+            
+              {isDark ?
+            <Sun className="w-3.5 h-3.5 text-foreground" /> :
+            <Moon className="w-3.5 h-3.5 text-foreground" />}
             </button>
-          )}
+          }
 
           {/* Dev screens drawer (desktop) */}
-          {!isMobile && (
-            <Sheet open={devDrawerOpen} onOpenChange={setDevDrawerOpen}>
+          {!isMobile &&
+          <Sheet open={devDrawerOpen} onOpenChange={setDevDrawerOpen}>
               <SheetTrigger asChild>
                 <button
-                  className="p-1.5 rounded-md hover:bg-accent transition-colors border border-dashed border-border"
-                  title="Dev: Switch wireframe screen"
-                >
+                className="p-1.5 rounded-md hover:bg-accent transition-colors border border-dashed border-border"
+                title="Dev: Switch wireframe screen">
+                
                   <Code2 className="w-3.5 h-3.5 text-muted-foreground" />
                 </button>
               </SheetTrigger>
@@ -204,33 +204,33 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                 </div>
               </SheetContent>
             </Sheet>
-          )}
+          }
         </div>
       </header>
 
       {/* ─── Body: Icon sidebar + content ─── */}
       <div className="flex flex-1 overflow-hidden">
         {/* Icon sidebar — desktop only */}
-        {!isMobile && (
-          <aside className="w-12 shrink-0 border-e border-border bg-card flex flex-col items-center py-3 gap-1">
+        {!isMobile &&
+        <aside className="w-12 shrink-0 border-e border-border bg-card flex flex-col items-center py-3 gap-1">
             {/* Hulul icon logo */}
-            <div className="w-8 h-8 flex items-center justify-center mb-1">
-              <img src={hululLogoIcon} alt="Hulul" className="w-7 h-7" />
-            </div>
-            {sidebarKeys.map(({ icon: Icon, labelKey, active }) => (
-              <button
-                key={labelKey}
-                className={cn(
-                  "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                )}
-                title={t(labelKey, lang)}
-              >
+            
+
+          
+            {sidebarKeys.map(({ icon: Icon, labelKey, active }) =>
+          <button
+            key={labelKey}
+            className={cn(
+              "relative w-8 h-8 flex items-center justify-center rounded-md transition-colors",
+              active ?
+              "bg-accent text-foreground" :
+              "text-muted-foreground hover:bg-accent hover:text-foreground"
+            )}
+            title={t(labelKey, lang)}>
+            
                 <Icon className="w-4 h-4" />
               </button>
-            ))}
+          )}
 
             {/* Spacer */}
             <div className="flex-1" />
@@ -248,7 +248,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
               </AvatarFallback>
             </Avatar>
           </aside>
-        )}
+        }
 
         {/* Main content */}
         <main className="flex-1 overflow-hidden">
@@ -257,12 +257,12 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
       </div>
 
       {/* ─── Mobile bottom nav ─── */}
-      {isMobile && (
-        <nav className="h-14 shrink-0 border-t border-border bg-card flex items-stretch">
+      {isMobile &&
+      <nav className="h-14 shrink-0 border-t border-border bg-card flex items-stretch">
           {bottomNavKeys.map(({ icon: Icon, labelKey, id }) => {
-            if (id === "menu") {
-              return (
-                <Sheet key={id} open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          if (id === "menu") {
+            return (
+              <Sheet key={id} open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                   <SheetTrigger asChild>
                     <button className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground">
                       <Icon className="w-5 h-5" />
@@ -273,21 +273,21 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                     <SheetTitle className="px-4 py-3 border-b border-border text-sm font-semibold">
                       {menuDevView ? t("menu.devScreens", lang) : t("nav.menu", lang)}
                     </SheetTitle>
-                    {menuDevView ? (
-                      <div>
+                    {menuDevView ?
+                  <div>
                         <button
-                          onClick={() => setMenuDevView(false)}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-accent transition-colors border-b border-border"
-                        >
+                      onClick={() => setMenuDevView(false)}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-accent transition-colors border-b border-border">
+                      
                           <ChevronRight className={cn("w-3.5 h-3.5", isRtl ? "" : "rotate-180")} />
                           {t("nav.menu", lang)}
                         </button>
-                        <div onClick={() => { setMobileMenuOpen(false); setMenuDevView(false); }}>
+                        <div onClick={() => {setMobileMenuOpen(false);setMenuDevView(false);}}>
                           {DevScreenList}
                         </div>
-                      </div>
-                    ) : (
-                      <div className="p-3 space-y-0.5">
+                      </div> :
+
+                  <div className="p-3 space-y-0.5">
                         {/* Profile */}
                         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors">
                           <User className="w-4 h-4 text-muted-foreground" />
@@ -295,9 +295,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                         </button>
                         {/* Language */}
                         <button
-                          onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                          className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors"
-                        >
+                      onClick={() => setLang(lang === "en" ? "ar" : "en")}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors">
+                      
                           <span className="flex items-center gap-3">
                             <Languages className="w-4 h-4 text-muted-foreground" />
                             {t("menu.language", lang)}
@@ -306,13 +306,13 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                         </button>
                         {/* Dark mode */}
                         <button
-                          onClick={onToggleTheme}
-                          className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors"
-                        >
+                      onClick={onToggleTheme}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-foreground hover:bg-accent transition-colors">
+                      
                           <span className="flex items-center gap-3">
-                            {isDark
-                              ? <Sun className="w-4 h-4 text-muted-foreground" />
-                              : <Moon className="w-4 h-4 text-muted-foreground" />}
+                            {isDark ?
+                        <Sun className="w-4 h-4 text-muted-foreground" /> :
+                        <Moon className="w-4 h-4 text-muted-foreground" />}
                             {isDark ? t("menu.lightMode", lang) : t("menu.darkMode", lang)}
                           </span>
                         </button>
@@ -324,9 +324,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                         {/* Dev screens */}
                         <div className="border-t border-border mt-2 pt-2">
                           <button
-                            onClick={() => setMenuDevView(true)}
-                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                          >
+                        onClick={() => setMenuDevView(true)}
+                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
+                        
                             <span className="flex items-center gap-3">
                               <Code2 className="w-4 h-4" />
                               {t("menu.devScreens", lang)}
@@ -335,58 +335,58 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                           </button>
                         </div>
                       </div>
-                    )}
+                  }
                   </SheetContent>
-                </Sheet>
-              );
-            }
-            if (id === "search") {
-              return (
-                <button
-                  key={id}
-                  onClick={() => search.open()}
-                  className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground"
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
-                </button>
-              );
-            }
+                </Sheet>);
+
+          }
+          if (id === "search") {
             return (
               <button
                 key={id}
-                className={cn(
-                  "flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors",
-                  id === "kb" ? "text-primary" : "text-muted-foreground"
-                )}
-              >
+                onClick={() => search.open()}
+                className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground">
+                
+                  <Icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
+                </button>);
+
+          }
+          return (
+            <button
+              key={id}
+              className={cn(
+                "flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors",
+                id === "kb" ? "text-primary" : "text-muted-foreground"
+              )}>
+              
                 <Icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
-              </button>
-            );
-          })}
+              </button>);
+
+        })}
         </nav>
-      )}
+      }
 
       {/* Sources bottom sheet — mobile */}
-      {isMobile && (
-        <Sheet open={sourcesOpen} onOpenChange={handleSourceSheetChange}>
+      {isMobile &&
+      <Sheet open={sourcesOpen} onOpenChange={handleSourceSheetChange}>
           <SheetContent
-            side="bottom"
-            className={`p-0 rounded-t-2xl transition-[height] duration-300 ease-in-out ${
-              sheetExpanded ? "h-[100dvh] rounded-t-none" : "h-[75vh]"
-            }`}
-          >
+          side="bottom"
+          className={`p-0 rounded-t-2xl transition-[height] duration-300 ease-in-out ${
+          sheetExpanded ? "h-[100dvh] rounded-t-none" : "h-[75vh]"}`
+          }>
+          
             <SheetTitle className="sr-only">{t("sources.title", lang)}</SheetTitle>
             <div className="h-full">
               <SourcePanel isMobileSheet onExpand={() => setSheetExpanded(true)} />
             </div>
           </SheetContent>
         </Sheet>
-      )}
+      }
 
       {/* Search overlay */}
       <SearchOverlay search={search} lang={lang} />
-    </div>
-  );
+    </div>);
+
 }
