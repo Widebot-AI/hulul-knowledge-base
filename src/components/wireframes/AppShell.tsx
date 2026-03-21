@@ -23,6 +23,8 @@ import hululLogoAr from "@/assets/hulul-logo-ar.svg";
 import { useKB } from "./KBContext";
 import { SourcePanel } from "./SourcePanel";
 import { t } from "./translations";
+import { useSearch } from "@/hooks/useSearch";
+import { SearchOverlay } from "@/components/search/SearchOverlay";
 
 /* ─── Icon sidebar items ─── */
 const sidebarKeys = [
@@ -38,8 +40,7 @@ const sidebarKeys = [
 const bottomNavKeys = [
   { icon: Home, labelKey: "nav.home" as const, id: "home" as const },
   { icon: Inbox, labelKey: "nav.inbox" as const, id: "inbox" as const },
-  { icon: Users, labelKey: "nav.crm" as const, id: "crm" as const },
-  { icon: Bot, labelKey: "nav.agent" as const, id: "agent" as const },
+  { icon: Search, labelKey: "nav.search" as const, id: "search" as const },
   { icon: BookOpen, labelKey: "nav.kb.short" as const, id: "kb" as const },
   { icon: MenuIcon, labelKey: "nav.menu" as const, id: "menu" as const },
 ];
@@ -63,6 +64,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const { lang, setLang, sources, modal } = useKB();
   const isRtl = lang === "ar";
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
+  const search = useSearch();
 
   const handleSourceSheetChange = (open: boolean) => {
     if (!open && modal?.kind === "source-preview") return;
@@ -129,10 +131,13 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
         {/* Search (desktop only) */}
         {!isMobile && (
-          <div className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60">
+          <button
+            onClick={() => search.open()}
+            className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60 hover:bg-accent transition-colors cursor-pointer"
+          >
             <Search className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">{t("header.search", lang)}</span>
-          </div>
+          </button>
         )}
 
         {/* Sources pill — mobile only */}
@@ -335,6 +340,18 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                 </Sheet>
               );
             }
+            if (id === "search") {
+              return (
+                <button
+                  key={id}
+                  onClick={() => search.open()}
+                  className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground"
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
+                </button>
+              );
+            }
             return (
               <button
                 key={id}
@@ -367,6 +384,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           </SheetContent>
         </Sheet>
       )}
+
+      {/* Search overlay */}
+      <SearchOverlay search={search} lang={lang} />
     </div>
   );
 }
