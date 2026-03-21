@@ -384,6 +384,9 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
           </SheetContent>
         </Sheet>
       )}
+
+      {/* Search overlay */}
+      <SearchOverlay search={search} lang={lang} />
     </div>
   );
 }
