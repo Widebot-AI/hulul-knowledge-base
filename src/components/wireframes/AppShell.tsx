@@ -337,6 +337,18 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
                 </Sheet>
               );
             }
+            if (id === "search") {
+              return (
+                <button
+                  key={id}
+                  onClick={() => search.open()}
+                  className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted-foreground"
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium">{t(labelKey, lang)}</span>
+                </button>
+              );
+            }
             return (
               <button
                 key={id}
