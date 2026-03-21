@@ -131,10 +131,13 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
 
         {/* Search (desktop only) */}
         {!isMobile && (
-          <div className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60">
+          <button
+            onClick={() => search.open()}
+            className="flex items-center gap-2 bg-secondary rounded-md px-3 py-1.5 w-60 hover:bg-accent transition-colors cursor-pointer"
+          >
             <Search className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">{t("header.search", lang)}</span>
-          </div>
+          </button>
         )}
 
         {/* Sources pill — mobile only */}
