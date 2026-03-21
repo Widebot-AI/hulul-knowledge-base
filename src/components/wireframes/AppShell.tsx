@@ -79,6 +79,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const { lang, setLang, sources, modal } = useKB();
   const isRtl = lang === "ar";
   const readySelected = sources.filter(s => s.status === "ready" && s.selected).length;
+  const search = useSearch();
 
   const handleSourceSheetChange = (open: boolean) => {
     if (!open && modal?.kind === "source-preview") return;
