@@ -219,6 +219,139 @@ const translations = {
   "search.shortcutPeople": { en: "People", ar: "الأشخاص" },
   "search.shortcutIdLookup": { en: "ID Lookup", ar: "بحث بالمعرف" },
   "search.shortcuts": { en: "Shortcuts", ar: "اختصارات" },
+
+  // Activation Error
+  "activation.errorMsg": { en: "Something went wrong. Please try again.", ar: "حدث خطأ. يرجى المحاولة مرة أخرى." },
+  "activation.retry": { en: "Retry", ar: "إعادة المحاولة" },
+
+  // Upload & Validation
+  "upload.unsupportedType": { en: "Unsupported file type", ar: "نوع ملف غير مدعوم" },
+  "upload.fileTooLarge": { en: "Exceeds 10 MB limit", ar: "يتجاوز حد 10 ميجابايت" },
+  "upload.duplicateName": { en: "File already exists — delete or rename", ar: "الملف موجود بالفعل — احذفه أو أعد تسميته" },
+  "upload.storageCapExceeded": { en: "Would exceed storage cap. Manage sources or upgrade.", ar: "سيتجاوز حد التخزين. أدِر المصادر أو قم بالترقية." },
+  "upload.fileLimitExceeded": { en: "Would exceed 50 file limit. Delete sources or upgrade.", ar: "سيتجاوز حد 50 ملفاً. احذف مصادر أو قم بالترقية." },
+  "upload.batchMixed": { en: "Some files have validation errors", ar: "بعض الملفات بها أخطاء تحقق" },
+  "upload.validFile": { en: "Ready to upload", ar: "جاهز للرفع" },
+  "upload.processingFailed": { en: "Processing failed", ar: "فشلت المعالجة" },
+  "upload.firstSourceReady": { en: "First source ready — chat is now available", ar: "المصدر الأول جاهز — المحادثة متاحة الآن" },
+  "upload.storeExhausted": { en: "Unable to process upload. Please contact support.", ar: "تعذر معالجة الرفع. يرجى التواصل مع الدعم." },
+  "upload.storeExhaustedDesc": { en: "Our storage infrastructure is temporarily at capacity.", ar: "البنية التحتية للتخزين في حالة امتلاء مؤقت." },
+
+  // Plan Limits
+  "warn.storageApproaching": { en: "Storage usage is approaching your plan limit. Manage sources or upgrade.", ar: "استخدام التخزين يقترب من حد خطتك. أدِر المصادر أو قم بالترقية." },
+  "warn.filecountApproaching": { en: "File count is approaching your plan limit. Delete sources or upgrade.", ar: "عدد الملفات يقترب من حد خطتك. احذف مصادر أو قم بالترقية." },
+  "warn.tokenApproaching": { en: "Token usage is approaching your plan limit. Consider upgrading.", ar: "استخدام التوكنات يقترب من حد خطتك. فكر في الترقية." },
+  "warn.multiLimit": { en: "Multiple plan limits are approaching. Manage sources or upgrade.", ar: "عدة حدود للخطة تقترب. أدِر المصادر أو قم بالترقية." },
+  "warn.storageDepleted": { en: "Storage limit reached. New uploads are blocked until you free space or upgrade.", ar: "تم الوصول لحد التخزين. الرفع محظور حتى تحرر مساحة أو تقوم بالترقية." },
+  "warn.filecountDepleted": { en: "File limit reached. New uploads are blocked until you delete sources or upgrade.", ar: "تم الوصول لحد الملفات. الرفع محظور حتى تحذف مصادر أو تقوم بالترقية." },
+  "warn.tokenDepleted": { en: "Token quota exhausted. All KB querying is disabled. Upgrade to continue.", ar: "نفدت حصة التوكنات. تم تعطيل جميع استعلامات قاعدة المعرفة. قم بالترقية للمتابعة." },
+  "warn.dismiss": { en: "Dismiss", ar: "إخفاء" },
+  "warn.upgrade": { en: "Upgrade", ar: "ترقية" },
+  "warn.quotaRestored": { en: "Quota restored. KB querying is available again.", ar: "تم استعادة الحصة. استعلامات قاعدة المعرفة متاحة مرة أخرى." },
+
+  // Source Selection
+  "select.deselectBlocked": { en: "At least one source must be selected", ar: "يجب تحديد مصدر واحد على الأقل" },
+  "select.autoSelected": { en: "Auto-selected next available source", ar: "تم تحديد المصدر المتاح التالي تلقائياً" },
+  "select.noReady": { en: "No ready sources available", ar: "لا توجد مصادر جاهزة" },
+
+  // Plan Data Loading
+  "plan.loading": { en: "Loading plan data...", ar: "جارٍ تحميل بيانات الخطة..." },
+  "plan.stripeFailed": { en: "Unable to load plan data. Retrying in background.", ar: "تعذر تحميل بيانات الخطة. إعادة المحاولة في الخلفية." },
+
+  // Deletion States
+  "delete.blockedProcessing": { en: "Cannot delete while source is processing", ar: "لا يمكن الحذف أثناء معالجة المصدر" },
+  "delete.failed": { en: "Deletion failed. Please try again.", ar: "فشل الحذف. يرجى المحاولة مرة أخرى." },
+  "delete.pendingCleanup": { en: "No longer queryable — partial deletion", ar: "لم يعد قابلاً للاستعلام — حذف جزئي" },
+  "delete.retryCleanup": { en: "Retry cleanup", ar: "إعادة التنظيف" },
+  "delete.cleanupLocked": { en: "Max retries reached — contact support", ar: "تم الوصول للحد الأقصى — تواصل مع الدعم" },
+  "delete.attempts": { en: "attempts", ar: "محاولات" },
+
+  // Chat Errors
+  "chatError.aiServiceError": { en: "Something went wrong. Please try again.", ar: "حدث خطأ. يرجى المحاولة مرة أخرى." },
+  "chatError.sessionCreateFailed": { en: "Unable to start session.", ar: "تعذر بدء الجلسة." },
+  "chatError.resetFailed": { en: "Reset failed. Your conversation is unchanged.", ar: "فشل إعادة التعيين. محادثتك لم تتغير." },
+  "chatError.retryReset": { en: "Retry Reset", ar: "إعادة محاولة التعيين" },
+
+  // Token Quota
+  "quota.exhausted": { en: "Token quota exhausted", ar: "نفدت حصة التوكنات" },
+  "quota.upgradePrompt": { en: "Upgrade your plan to continue querying.", ar: "قم بترقية خطتك لمتابعة الاستعلام." },
+  "quota.midSession": { en: "Your workspace token quota has been fully exhausted during this session.", ar: "تم استنفاد حصة التوكنات الخاصة بمساحة العمل بالكامل خلال هذه الجلسة." },
+  "quota.preSession": { en: "Your workspace token quota was exhausted before this session.", ar: "تم استنفاد حصة التوكنات قبل هذه الجلسة." },
+
+  // Citation Edge Cases
+  "citationEdge.deletedSource": { en: "Source no longer available", ar: "المصدر لم يعد متاحاً" },
+  "citationEdge.noGrounding": { en: "Response generated without source citations", ar: "تم إنشاء الإجابة بدون اقتباسات من المصادر" },
+  "citationEdge.snapshotData": { en: "Showing data from when this citation was created", ar: "عرض البيانات من وقت إنشاء هذا الاقتباس" },
+
+  // Tagging
+  "tag.addTag": { en: "Add tag", ar: "إضافة وسم" },
+  "tag.removeTag": { en: "Remove", ar: "إزالة" },
+  "tag.key": { en: "Key", ar: "المفتاح" },
+  "tag.value": { en: "Value", ar: "القيمة" },
+  "tag.limitReached": { en: "Maximum 10 tags per source", ar: "الحد الأقصى 10 وسوم لكل مصدر" },
+  "tag.duplicateKey": { en: "Tag key already exists", ar: "مفتاح الوسم موجود بالفعل" },
+  "tag.immutableNotice": { en: "Tags cannot be edited after upload", ar: "لا يمكن تعديل الوسوم بعد الرفع" },
+  "tag.locked": { en: "Tags (locked)", ar: "الوسوم (مقفلة)" },
+
+  // URL Ingestion Errors
+  "url.success": { en: "URL source added successfully", ar: "تمت إضافة مصدر الرابط بنجاح" },
+  "url.notFound": { en: "Page not found (404). Check the URL and try again.", ar: "الصفحة غير موجودة (404). تحقق من الرابط وحاول مرة أخرى." },
+  "url.blocked": { en: "This page could not be accessed. It may be blocked or behind a firewall.", ar: "تعذر الوصول لهذه الصفحة. قد تكون محظورة أو خلف جدار حماية." },
+  "url.noContent": { en: "No readable content could be extracted from this page. JavaScript-heavy or dynamically loaded pages may not be supported.", ar: "تعذر استخراج محتوى قابل للقراءة من هذه الصفحة. الصفحات المعتمدة على JavaScript أو المحملة ديناميكياً قد لا تكون مدعومة." },
+  "url.authRequired": { en: "This page requires login or a subscription. Only publicly accessible pages are supported.", ar: "هذه الصفحة تتطلب تسجيل دخول أو اشتراك. يتم دعم الصفحات العامة فقط." },
+  "url.rateLimited": { en: "Too many requests. Please try again in a moment.", ar: "طلبات كثيرة جداً. يرجى المحاولة بعد لحظة." },
+  "url.timeout": { en: "The page took too long to load. Try again or use a different URL.", ar: "استغرقت الصفحة وقتاً طويلاً للتحميل. حاول مرة أخرى أو استخدم رابطاً مختلفاً." },
+  "url.serviceUnavailable": { en: "Our URL processing service is temporarily unavailable. Please try again shortly.", ar: "خدمة معالجة الروابط غير متاحة مؤقتاً. يرجى المحاولة قريباً." },
+  "url.contentTooLarge": { en: "The extracted content from this URL exceeds the 10 MB file size limit.", ar: "المحتوى المستخرج من هذا الرابط يتجاوز حد حجم الملف 10 ميجابايت." },
+  "url.duplicate": { en: "This URL has already been added as a source.", ar: "تمت إضافة هذا الرابط كمصدر بالفعل." },
+
+  // Preview States
+  "previewState.textPreview": { en: "Text Preview", ar: "معاينة النص" },
+  "previewState.loadFailed": { en: "Preview unavailable", ar: "المعاينة غير متاحة" },
+  "previewState.loadFailedDesc": { en: "Unable to load preview. Source indexing and queryability are unaffected.", ar: "تعذر تحميل المعاينة. فهرسة المصدر وقابلية الاستعلام لم تتأثر." },
+  "previewState.failedSource": { en: "Source failed to process", ar: "فشلت معالجة المصدر" },
+  "previewState.failedSourceDesc": { en: "This source could not be indexed. Try uploading again.", ar: "تعذر فهرسة هذا المصدر. حاول الرفع مرة أخرى." },
+
+  // Stack Settings Variants
+  "stack.customPromptLabel": { en: "Custom System Prompt (Active)", ar: "رسالة النظام المخصصة (نشطة)" },
+  "stack.disableConfirmTitle": { en: "Disable Knowledge Base Stack?", ar: "تعطيل حزمة قاعدة المعرفة؟" },
+  "stack.disableConfirmDesc": { en: "Disabling will route subsequent channel queries to the previously active stack.", ar: "التعطيل سيحول استعلامات القنوات إلى الحزمة النشطة السابقة." },
+  "stack.noFallbackTitle": { en: "No Fallback Stack Available", ar: "لا توجد حزمة بديلة" },
+  "stack.noFallbackDesc": { en: "No other stack is configured. Channels will stop receiving AI responses until a new stack is set up.", ar: "لم يتم إعداد حزمة أخرى. ستتوقف القنوات عن تلقي إجابات الذكاء الاصطناعي حتى يتم إعداد حزمة جديدة." },
+  "stack.disable": { en: "Disable", ar: "تعطيل" },
+  "stack.keepEnabled": { en: "Keep Enabled", ar: "إبقاء مُفعّل" },
+
+  // Channel Query States
+  "channel.title": { en: "Channel Query Preview", ar: "معاينة استعلام القناة" },
+  "channel.noSourcesContext": { en: "Responding from workspace customer context (no KB sources available)", ar: "الرد من سياق عملاء مساحة العمل (لا توجد مصادر قاعدة معرفة)" },
+  "channel.noSourcesBare": { en: "Responding with base instructions only (no KB sources or customer context)", ar: "الرد بالتعليمات الأساسية فقط (لا مصادر أو سياق عملاء)" },
+  "channel.quotaDepleted": { en: "No response sent — token quota exhausted", ar: "لم يتم إرسال رد — نفدت حصة التوكنات" },
+  "channel.quotaAdmin": { en: "Channels are not receiving AI responses. Upgrade your plan.", ar: "القنوات لا تتلقى إجابات الذكاء الاصطناعي. قم بترقية خطتك." },
+  "channel.whatsappUser": { en: "WhatsApp User", ar: "مستخدم واتساب" },
+  "channel.botReply": { en: "Bot Reply", ar: "رد البوت" },
+
+  // Retention New Variants
+  "retention.renewed": { en: "Subscription renewed. All sources retained.", ar: "تم تجديد الاشتراك. تم الاحتفاظ بجميع المصادر." },
+  "retention.activityResumed": { en: "Activity detected. Archival cancelled.", ar: "تم اكتشاف نشاط. تم إلغاء الأرشفة." },
+  "retention.reactivating": { en: "Reactivating...", ar: "جارٍ إعادة التفعيل..." },
+  "retention.reactivationFailed": { en: "Reactivation failed. Please try again.", ar: "فشلت إعادة التفعيل. يرجى المحاولة مرة أخرى." },
+  "retention.reactivate": { en: "Reactivate", ar: "إعادة التفعيل" },
+
+  // Activation
+  "activation.activate": { en: "Activate Knowledge Base", ar: "تفعيل قاعدة المعرفة" },
+
+  // Phase 1: Warning Banner
+  "kb.warn.storageApproaching": { en: "Storage usage is approaching your plan limit.", ar: "استخدام التخزين يقترب من حد خطتك." },
+  "kb.warn.filecountApproaching": { en: "File count is approaching your plan limit.", ar: "عدد الملفات يقترب من حد خطتك." },
+  "kb.warn.tokenApproaching": { en: "Token usage is approaching your plan limit.", ar: "استخدام التوكنات يقترب من حد خطتك." },
+  "kb.warn.multiApproaching": { en: "Multiple plan limits are approaching.", ar: "عدة حدود للخطة تقترب." },
+  "kb.warn.storageDepleted": { en: "Storage limit reached. New uploads are blocked until you free space or upgrade.", ar: "تم الوصول لحد التخزين. الرفع محظور حتى تحرر مساحة أو تقوم بالترقية." },
+  "kb.warn.filecountDepleted": { en: "File limit reached. New uploads are blocked until you delete sources or upgrade.", ar: "تم الوصول لحد الملفات. الرفع محظور حتى تحذف مصادر أو تقوم بالترقية." },
+  "kb.warn.tokenDepleted": { en: "Token quota exhausted. All KB querying is disabled. Upgrade to continue.", ar: "نفدت حصة التوكنات. تم تعطيل جميع استعلامات قاعدة المعرفة. قم بالترقية للمتابعة." },
+  "kb.warn.manageOrUpgrade": { en: "Manage sources or upgrade.", ar: "أدِر المصادر أو قم بالترقية." },
+  "kb.warn.upgrade": { en: "Upgrade", ar: "ترقية" },
+  "kb.warn.dismiss": { en: "Dismiss", ar: "إخفاء" },
+  "kb.warn.quotaDepleted": { en: "Upgrade your plan to continue querying.", ar: "قم بترقية خطتك لمتابعة الاستعلام." },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

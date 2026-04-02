@@ -1,27 +1,25 @@
-import { BookOpen, Sparkles, Upload, FileText, Globe, ClipboardPaste } from "lucide-react";
+import { BookOpen, Sparkles, FileText, Globe, ClipboardPaste, AlertTriangle, RotateCcw, CheckCircle } from "lucide-react";
 import { useKB } from "./KBContext";
-import { useState, useCallback } from "react";
 import { KBMainInterface } from "./KBMainInterface";
 import { t } from "./translations";
+import { Button } from "@/components/ui/button";
 
-export function ActivationScreen() {
-  const { setPhase, addMockSource, lang } = useKB();
-  const [isDragging, setIsDragging] = useState(false);
+type Props = {
+  variant?: "default" | "error";
+};
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    files.forEach(file => {
-      addMockSource(file.name, "file", []);
-    });
-    if (files.length > 0) setPhase("active");
-  }, [addMockSource, setPhase]);
+export function ActivationScreen({ variant = "default" }: Props) {
+  const { setPhase, lang } = useKB();
 
-  const handleFileSelect = () => {
-    addMockSource("uploaded-document.pdf", "file", []);
-    setPhase("active");
+  const handleActivate = () => {
+    setPhase("empty");
   };
+
+  const valueProps = [
+    "Upload documents",
+    "Get AI-powered answers",
+    "Source-cited responses",
+  ];
 
   const sourceTypes = [
     { icon: FileText, labelKey: "activation.pdf" as const },
@@ -53,48 +51,47 @@ export function ActivationScreen() {
             </p>
           </div>
 
-          {/* Drop zone */}
-          <div
-            className={`relative rounded-xl border-2 border-dashed transition-colors cursor-pointer py-8 sm:py-10 px-6 text-center ${
-              isDragging
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50 hover:bg-accent/30"
-            }`}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            onDrop={handleDrop}
-            onClick={handleFileSelect}
-          >
-            <div className="flex flex-col items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                isDragging ? "bg-primary/15" : "bg-muted"
-              }`}>
-                <Upload className={`w-5 h-5 ${isDragging ? "text-primary" : "text-muted-foreground"}`} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground">
-                  {isDragging ? t("activation.dropHere", lang) : t("activation.dropOrClick", lang)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("activation.supported", lang)}
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* Value propositions */}
+          <ul className="space-y-2">
+            {valueProps.map((prop) => (
+              <li key={prop} className="flex items-center gap-2.5 text-sm text-foreground">
+                <CheckCircle className="w-4 h-4 text-primary shrink-0" />
+                {prop}
+              </li>
+            ))}
+          </ul>
 
           {/* Source type shortcuts */}
           <div className="grid grid-cols-3 gap-2">
             {sourceTypes.map(({ icon: Icon, labelKey }) => (
-              <button
+              <div
                 key={labelKey}
-                onClick={handleFileSelect}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-border bg-background hover:bg-accent/50 hover:border-primary/30 transition-colors text-center group"
+                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-border bg-background text-center"
               >
-                <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <Icon className="w-5 h-5 text-muted-foreground" />
                 <span className="text-xs font-medium text-foreground">{t(labelKey, lang)}</span>
-              </button>
+              </div>
             ))}
           </div>
+
+          {/* Primary CTA */}
+          <Button className="w-full" size="lg" onClick={handleActivate}>
+            {t("activation.activate", lang)}
+          </Button>
+
+          {/* Error alert — only shown in error variant, placed below CTA */}
+          {variant === "error" && (
+            <div role="alert" className="flex items-center justify-between gap-3 rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
+              <div className="flex items-center gap-2 text-xs text-destructive">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>{t("activation.errorMsg", lang)}</span>
+              </div>
+              <Button size="sm" variant="outline" className="h-7 text-xs shrink-0 border-destructive/30 text-destructive hover:bg-destructive/10">
+                <RotateCcw className="w-3 h-3 me-1" />
+                {t("activation.retry", lang)}
+              </Button>
+            </div>
+          )}
 
           {/* Footer hint */}
           <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">

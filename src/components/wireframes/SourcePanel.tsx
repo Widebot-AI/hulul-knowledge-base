@@ -44,7 +44,7 @@ interface SourcePanelProps {
 }
 
 export function SourcePanel({ isMobileSheet = false, onExpand }: SourcePanelProps) {
-  const { sources, toggleSourceSelection, openModal, retrySource, lang } = useKB();
+  const { sources, toggleSourceSelection, openModal, retrySource, retryCleanup, flags, lang } = useKB();
   const statusConfig = getStatusConfig(lang);
   const [expanded, setExpanded] = useState(false);
 
@@ -76,6 +76,12 @@ export function SourcePanel({ isMobileSheet = false, onExpand }: SourcePanelProp
 
       {/* Source List */}
       <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }} onScroll={handleScroll}>
+        {flags.deletionFailed && (
+          <div className="mx-2 mt-2 px-3 py-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2 text-xs text-red-950 dark:text-red-100">
+            <AlertTriangle className="w-3.5 h-3.5 text-red-600 dark:text-red-400 shrink-0" />
+            {t("delete.failed", lang)}
+          </div>
+        )}
         {sources.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full px-6 text-center">
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-3">
@@ -169,7 +175,7 @@ export function SourcePanel({ isMobileSheet = false, onExpand }: SourcePanelProp
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <button onClick={(e) => e.stopPropagation()} className="text-xs text-primary hover:underline flex items-center gap-1">
+                              <button onClick={(e) => { e.stopPropagation(); retryCleanup(source.id); }} className="text-xs text-primary hover:underline flex items-center gap-1">
                                 <RotateCcw className="w-2.5 h-2.5" /> {t("sources.retryCleanup", lang)}
                               </button>
                               <span className="text-xs text-muted-foreground">({source.retryCount}/3 {t("sources.attempts", lang)})</span>
