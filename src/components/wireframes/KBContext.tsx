@@ -103,6 +103,7 @@ type KBState = {
   dismissFilecountWarning: () => void;
   dismissTokenWarning: () => void;
   retrySource: (id: string) => void;
+  retryCleanup: (id: string) => void;
   deleteSource: (id: string) => void;
   addMockSource: (name: string, type: string, tags: { key: string; value: string }[]) => void;
   isDark: boolean;
@@ -154,7 +155,6 @@ const aiResponses = [
 ];
 
 let nextSourceId = 100;
-let responseIndex = 0;
 
 export function KBProvider({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState<KBPhase>("activation");
@@ -177,6 +177,11 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("en");
   const streamRef = useRef<NodeJS.Timeout | null>(null);
+  const messageCountRef = useRef(0);
+  const responseIndexRef = useRef(0);
+  const uploadCountRef = useRef(0);
+  const deleteCountRef = useRef(0);
+  const resetAttemptRef = useRef(0);
 
   const toggleSourceSelection = useCallback((id: string) => {
     setSources(prev => {
@@ -195,14 +200,34 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
     const hasSelectedReady = sources.some(s => s.selected && s.status === "ready");
     if (!hasSelectedReady) return;
 
+    // Handle retry after stream interruption
+    const isRetry = flags.streamInterrupted;
+    if (isRetry) {
+      setFlag("streamInterrupted", false);
+      // Remove the error message (the partial one)
+      setMessages(prev => {
+        const last = prev[prev.length - 1];
+        if (last && last.isError) return prev.slice(0, -1);
+        return prev;
+      });
+      // Don't increment messageCountRef for retry
+    } else {
+      messageCountRef.current += 1;
+      setMessageCount(c => c + 1);
+    }
+
+    const currentCount = messageCountRef.current;
+
     const userMsg: ChatMessage = { id: `u-${Date.now()}`, role: "user", content: text.trim() };
     setMessages(prev => [...prev, userMsg]);
     setIsStreaming(true);
 
-    const response = aiResponses[responseIndex % aiResponses.length];
-    responseIndex++;
+    const response = aiResponses[responseIndexRef.current % aiResponses.length];
+    // For message 3 (interrupt), don't increment responseIndex so retry reuses it
+    if (currentCount !== 3) {
+      responseIndexRef.current++;
+    }
 
-    // Simulate streaming
     const assistantId = `a-${Date.now()}`;
     const fullText = response.content;
     let charIndex = 0;
@@ -211,6 +236,19 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
 
     streamRef.current = setInterval(() => {
       charIndex += 3 + Math.floor(Math.random() * 5);
+
+      // Message 3: interrupt at 60%
+      if (currentCount === 3 && !isRetry && charIndex >= fullText.length * 0.6) {
+        if (streamRef.current) clearInterval(streamRef.current);
+        const partialText = fullText.slice(0, Math.floor(fullText.length * 0.6));
+        setMessages(prev =>
+          prev.map(m => m.id === assistantId ? { ...m, content: partialText, isStreaming: false, isError: true } : m)
+        );
+        setIsStreaming(false);
+        setFlag("streamInterrupted", true);
+        return;
+      }
+
       if (charIndex >= fullText.length) {
         setMessages(prev =>
           prev.map(m => m.id === assistantId ? { ...m, content: fullText, isStreaming: false, citations: response.citations } : m)
@@ -219,13 +257,34 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
         setSessionTokenPercent(p => Math.min(100, p + 40));
         setWorkspaceQuotaPercent(p => Math.min(120, p + 10));
         if (streamRef.current) clearInterval(streamRef.current);
+
+        // After message 1 & 2: evaluate thresholds
+        if (currentCount <= 2) {
+          setWorkspaceQuotaPercent(prev => {
+            const newVal = prev; // already incremented above
+            if (newVal >= 80) setFlag("quotaWarning", true);
+            return prev;
+          });
+          setSessionTokenPercent(prev => {
+            if (prev >= 80 && prev < 100) setFlag("sessionWarning", true);
+            return prev;
+          });
+        }
+
+        // After retry (message 4 effectively): set quotaDepleted and sessionCeiling
+        if (isRetry) {
+          setFlag("quotaDepleted", true);
+          setFlag("sessionCeiling", true);
+          // Increment responseIndex now since we deferred it during message 3
+          responseIndexRef.current++;
+        }
       } else {
         setMessages(prev =>
           prev.map(m => m.id === assistantId ? { ...m, content: fullText.slice(0, charIndex) } : m)
         );
       }
     }, 30);
-  }, [isStreaming, sources]);
+  }, [isStreaming, sources, flags.streamInterrupted, setFlag]);
 
   const setFlag = useCallback((flag: keyof KBFlags, value: boolean) => {
     setFlags(prev => ({ ...prev, [flag]: value }));
@@ -240,11 +299,33 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const dismissTokenWarning = useCallback(() => setTokenWarningDismissed(true), []);
 
   const resetChat = useCallback(() => {
-    setMessages([]);
-    setSessionTokenPercent(0);
-    setCitationDrawer(null);
-    setModal(null);
-  }, []);
+    const attempt = resetAttemptRef.current;
+    if (attempt === 0) {
+      // Attempt 1: normal reset
+      setMessages([]);
+      setSessionTokenPercent(0);
+      setCitationDrawer(null);
+      setModal(null);
+      clearFlag("sessionWarning");
+      clearFlag("sessionCeiling");
+      resetAttemptRef.current = 1;
+    } else if (attempt === 1) {
+      // Attempt 2: fail
+      setFlag("resetFailed", true);
+      setModal(null);
+      resetAttemptRef.current = 2;
+    } else {
+      // Attempt 3+: recover
+      clearFlag("resetFailed");
+      setMessages([]);
+      setSessionTokenPercent(0);
+      setCitationDrawer(null);
+      setModal(null);
+      clearFlag("sessionWarning");
+      clearFlag("sessionCeiling");
+      resetAttemptRef.current = 0;
+    }
+  }, [setFlag, clearFlag]);
 
   const retrySource = useCallback((id: string) => {
     setSources(prev => prev.map(s => {
@@ -267,40 +348,94 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const deleteSource = useCallback((id: string) => {
-    setSources(prev => {
-      const remaining = prev.filter(s => s.id !== id);
-      // Auto-select if the deleted source was selected and no others are
-      const hasSelected = remaining.some(s => s.selected && s.status === "ready");
-      if (!hasSelected) {
-        const firstReady = remaining.find(s => s.status === "ready");
-        if (firstReady) {
-          return remaining.map(s => s.id === firstReady.id ? { ...s, selected: true } : s);
+    deleteCountRef.current += 1;
+    setDeleteCount(c => c + 1);
+    const currentCount = deleteCountRef.current;
+
+    if (currentCount === 1) {
+      // Normal deletion
+      setSources(prev => {
+        const remaining = prev.filter(s => s.id !== id);
+        const hasSelected = remaining.some(s => s.selected && s.status === "ready");
+        if (!hasSelected) {
+          const firstReady = remaining.find(s => s.status === "ready");
+          if (firstReady) {
+            return remaining.map(s => s.id === firstReady.id ? { ...s, selected: true } : s);
+          }
         }
+        return remaining;
+      });
+      setModal(null);
+    } else if (currentCount === 2) {
+      // Deletion fails
+      setFlag("deletionFailed", true);
+      setModal(null);
+      setTimeout(() => {
+        clearFlag("deletionFailed");
+      }, 5000);
+      // Reset counter so next delete works normally
+      deleteCountRef.current = 0;
+      setDeleteCount(0);
+    } else if (currentCount === 3) {
+      // Stuck in pending_cleanup
+      setSources(prev => prev.map(s => s.id === id ? { ...s, status: "pending_cleanup" as const, retryCount: 0 } : s));
+      setModal(null);
+    } else {
+      // Default: normal deletion for subsequent calls
+      setSources(prev => {
+        const remaining = prev.filter(s => s.id !== id);
+        const hasSelected = remaining.some(s => s.selected && s.status === "ready");
+        if (!hasSelected) {
+          const firstReady = remaining.find(s => s.status === "ready");
+          if (firstReady) {
+            return remaining.map(s => s.id === firstReady.id ? { ...s, selected: true } : s);
+          }
+        }
+        return remaining;
+      });
+      setModal(null);
+    }
+  }, [setFlag, clearFlag]);
+
+  const retryCleanup = useCallback((id: string) => {
+    setSources(prev => {
+      const source = prev.find(s => s.id === id);
+      if (!source || source.status !== "pending_cleanup" || source.retryLocked) return prev;
+      const newRetryCount = (source.retryCount ?? 0) + 1;
+      if (newRetryCount >= 3) {
+        return prev.map(s => s.id === id ? { ...s, retryCount: newRetryCount, retryLocked: true } : s);
       }
-      return remaining;
+      return prev.map(s => s.id === id ? { ...s, retryCount: newRetryCount } : s);
     });
-    setModal(null);
   }, []);
 
   const addMockSource = useCallback((name: string, type: string, tags: { key: string; value: string }[]) => {
+    uploadCountRef.current += 1;
+    setUploadCount(c => c + 1);
+    const currentUpload = uploadCountRef.current;
+
     const id = `src-${nextSourceId++}`;
     const newSource: Source = { id, name, type, status: "uploading", selected: false, tags };
     setSources(prev => [...prev, newSource]);
     setModal(null);
 
-    // Simulate pipeline: uploading → pending → indexing → ready
+    // Simulate pipeline: uploading → pending → indexing → ready/failed
     setTimeout(() => setSources(prev => prev.map(s => s.id === id ? { ...s, status: "pending" } : s)), 1000);
     setTimeout(() => setSources(prev => prev.map(s => s.id === id ? { ...s, status: "indexing" } : s)), 2000);
     setTimeout(() => {
-      setSources(prev => {
-        const updated = prev.map(s => s.id === id ? { ...s, status: "ready" as const } : s);
-        // Auto-select if first ready source
-        const readySelected = updated.filter(s => s.status === "ready" && s.selected);
-        if (readySelected.length === 0) {
-          return updated.map(s => s.id === id ? { ...s, selected: true } : s);
-        }
-        return updated;
-      });
+      if (currentUpload === 3) {
+        // 3rd upload fails
+        setSources(prev => prev.map(s => s.id === id ? { ...s, status: "failed" as const } : s));
+      } else {
+        setSources(prev => {
+          const updated = prev.map(s => s.id === id ? { ...s, status: "ready" as const } : s);
+          const readySelected = updated.filter(s => s.status === "ready" && s.selected);
+          if (readySelected.length === 0) {
+            return updated.map(s => s.id === id ? { ...s, selected: true } : s);
+          }
+          return updated;
+        });
+      }
       // If phase was empty, transition to active
       setPhase("active");
     }, 3500);
@@ -351,7 +486,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       flags, messageCount, uploadCount, deleteCount, setFlag, clearFlag,
       storageWarningDismissed, filecountWarningDismissed, tokenWarningDismissed,
       dismissStorageWarning, dismissFilecountWarning, dismissTokenWarning,
-      retrySource, deleteSource, addMockSource,
+      retrySource, retryCleanup, deleteSource, addMockSource,
       isDark, toggleTheme: () => setIsDark(!isDark),
       lang, setLang,
       devDrawerOpen, setDevDrawerOpen,
