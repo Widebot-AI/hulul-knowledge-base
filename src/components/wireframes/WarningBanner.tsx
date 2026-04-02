@@ -1,4 +1,4 @@
-import { AlertTriangle, X, ArrowUpCircle } from "lucide-react";
+import { AlertTriangle, X, ArrowUpCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useKB } from "./KBContext";
 import { t } from "./translations";
@@ -13,6 +13,8 @@ export function WarningBanner() {
     dismissStorageWarning,
     dismissFilecountWarning,
     dismissTokenWarning,
+    flags,
+    clearFlag,
     lang,
   } = useKB();
 
@@ -35,7 +37,19 @@ export function WarningBanner() {
   if (storagePercent >= 80 && storagePercent < 100 && !storageWarningDismissed) warning.push("storage");
   if (filecountPercent >= 80 && filecountPercent < 100 && !filecountWarningDismissed) warning.push("filecount");
 
-  // 100% takes priority — render non-dismissable red banner
+  // Priority 1: retentionFinal — non-dismissable red banner
+  if (flags.retentionFinal) {
+    return (
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-red-50 dark:bg-red-950/30 border-b border-red-200 dark:border-red-800 text-sm">
+        <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+        <span className="flex-1 text-red-950 dark:text-red-100 font-medium">
+          {t("retention.finalReminder", lang)} {t("retention.archiveIn", lang)} {t("retention.3days", lang)} {t("retention.dueToInactivity", lang)}
+        </span>
+      </div>
+    );
+  }
+
+  // Priority 2: quotaDepleted — non-dismissable red banner
   if (depleted.length > 0) {
     // Priority order: token > storage > filecount
     const primary = depleted.includes("token")
@@ -65,7 +79,28 @@ export function WarningBanner() {
     );
   }
 
-  // 80% warning — render dismissable yellow banner
+  // Priority 3: retentionWarning — dismissable amber banner
+  if (flags.retentionWarning) {
+    return (
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800 text-sm">
+        <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+        <span className="flex-1 text-amber-950 dark:text-amber-100">
+          {t("retention.inactivity", lang)} {t("retention.archiveDate", lang)} April 15, 2026 {t("retention.dueToInactivity", lang)}
+        </span>
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-amber-950 dark:text-amber-100 hover:text-amber-950 px-2 shrink-0"
+          onClick={() => clearFlag("retentionWarning")}
+          aria-label={t("kb.warn.dismiss", lang)}
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+    );
+  }
+
+  // Priority 4: 80% quota/storage/filecount warnings — dismissable amber banner
   if (warning.length > 0) {
     const messageText =
       warning.length === 1

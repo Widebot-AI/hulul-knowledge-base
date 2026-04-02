@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, RotateCcw, Loader2, AlertTriangle, BookmarkPlus, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, RotateCcw, Loader2, AlertTriangle, AlertCircle, BookmarkPlus, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useKB } from "./KBContext";
@@ -10,7 +10,7 @@ export function ChatPanel() {
     messages, sendMessage, isStreaming, sources,
     openCitation,
     sessionTokenPercent, resetChat, openModal, modal,
-    lang, workspaceQuotaDepleted, flags,
+    lang, workspaceQuotaDepleted, flags, setFlag, clearFlag,
   } = useKB();
 
   const [input, setInput] = useState("");
@@ -21,7 +21,7 @@ export function ChatPanel() {
   const isEmpty = messages.length === 0;
   const sessionWarning = sessionTokenPercent >= 80 && sessionTokenPercent < 100;
   const sessionCeiling = sessionTokenPercent >= 100;
-  const disabled = !hasSelectedReady || sessionCeiling || workspaceQuotaDepleted;
+  const disabled = !hasSelectedReady || sessionCeiling || flags.quotaDepleted;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -79,7 +79,17 @@ export function ChatPanel() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
-        {isEmpty ? (
+        {isEmpty && flags.sessionCreateFail ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center space-y-3">
+              <div className="mx-auto w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center">
+                <AlertCircle className="w-6 h-6 text-destructive" />
+              </div>
+              <p className="text-sm text-foreground">{t("chatError.sessionCreateFailed", lang)}</p>
+              <Button onClick={() => { clearFlag("sessionCreateFail"); sendMessage("init"); }}>Retry</Button>
+            </div>
+          </div>
+        ) : isEmpty ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
@@ -143,7 +153,7 @@ export function ChatPanel() {
                     <div className="mt-2 flex items-center gap-1 text-xs text-destructive">
                       <AlertTriangle className="w-3 h-3" />
                       <span>{t("chat.interrupted", lang)}</span>
-                      <button className="underline ms-1 font-medium">{t("sources.retry", lang)}</button>
+                      <button className="underline ms-1 font-medium" onClick={() => sendMessage("retry")}>{t("sources.retry", lang)}</button>
                     </div>
                   )}
                 </div>
@@ -176,19 +186,23 @@ export function ChatPanel() {
         <div className="absolute inset-0 bg-foreground/30 flex items-center justify-center z-20 p-4">
           <div className="bg-background rounded-xl shadow-xl border border-border w-full max-w-sm">
             <div className="p-6 text-center space-y-4">
-              <div className="mx-auto w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
-                <RotateCcw className="w-6 h-6 text-warning" />
+              <div className={cn("mx-auto w-12 h-12 rounded-full flex items-center justify-center", flags.resetFailed ? "bg-destructive/10" : "bg-warning/10")}>
+                <RotateCcw className={cn("w-6 h-6", flags.resetFailed ? "text-destructive" : "text-warning")} />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-foreground">{t("chat.resetConversation", lang)}</h3>
-                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                  {t("chat.resetConfirmMsg", lang)}
-                </p>
+                <h3 className="text-base font-semibold text-foreground">
+                  {flags.resetFailed ? t("chatError.resetFailed", lang) : t("chat.resetConversation", lang)}
+                </h3>
+                {!flags.resetFailed && (
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                    {t("chat.resetConfirmMsg", lang)}
+                  </p>
+                )}
               </div>
               <div className="flex gap-2 pt-2">
                 <Button variant="outline" className="flex-1" onClick={() => openModal(null)}>{t("chat.cancel", lang)}</Button>
                 <Button className="flex-1 gap-1" onClick={resetChat}>
-                  <RotateCcw className="w-3.5 h-3.5" /> {t("chat.reset", lang)}
+                  <RotateCcw className="w-3.5 h-3.5" /> {flags.resetFailed ? t("chatError.retryReset", lang) : t("chat.reset", lang)}
                 </Button>
               </div>
             </div>
@@ -202,13 +216,13 @@ export function ChatPanel() {
           {disabled ? (
             <div className="flex items-center gap-2 px-4 py-3 bg-secondary rounded-xl">
               <span className="text-xs text-muted-foreground flex-1">
-                {workspaceQuotaDepleted
+                {flags.quotaDepleted
                   ? t("kb.warn.quotaDepleted", lang)
                   : sessionCeiling
                   ? t("chat.sessionLimitShort", lang)
                   : t("chat.addAndSelect", lang)}
               </span>
-              {workspaceQuotaDepleted ? (
+              {flags.quotaDepleted ? (
                 <Button size="sm" variant="outline" className="h-7 text-xs">
                   Upgrade
                 </Button>
