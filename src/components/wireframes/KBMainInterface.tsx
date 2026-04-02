@@ -1,6 +1,7 @@
 import { SourcePanel } from "./SourcePanel";
 import { ChatPanel } from "./ChatPanel";
 import { CitationPanel } from "./CitationPanel";
+import { WarningBanner } from "./WarningBanner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useKB } from "./KBContext";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -31,6 +32,7 @@ export function KBMainInterface() {
 
   return (
     <div className="flex flex-col h-full">
+      <WarningBanner />
       <div className="flex flex-1 overflow-hidden">
         {/* Sources column */}
         <div className={`${citationDrawer ? "w-[22%]" : "w-[30%]"} shrink-0 transition-all duration-300`}>
