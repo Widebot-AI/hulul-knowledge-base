@@ -1,6 +1,6 @@
 import { BookOpen, Sparkles, Upload, FileText, Globe, ClipboardPaste, AlertTriangle, RotateCcw } from "lucide-react";
 import { useKB } from "./KBContext";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { KBMainInterface } from "./KBMainInterface";
 import { t } from "./translations";
 import { Button } from "@/components/ui/button";
@@ -10,22 +10,11 @@ type Props = {
 };
 
 export function ActivationScreen({ variant = "default" }: Props) {
-  const { setPhase, addMockSource, lang } = useKB();
+  const { setPhase, lang } = useKB();
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    files.forEach(file => {
-      addMockSource(file.name, "file", []);
-    });
-    if (files.length > 0) setPhase("active");
-  }, [addMockSource, setPhase]);
-
-  const handleFileSelect = () => {
-    addMockSource("uploaded-document.pdf", "file", []);
-    setPhase("active");
+  const handleActivate = () => {
+    setPhase("empty");
   };
 
   const sourceTypes = [
@@ -58,17 +47,16 @@ export function ActivationScreen({ variant = "default" }: Props) {
             </p>
           </div>
 
-          {/* Drop zone */}
+          {/* Drop zone — visual only, no click/drop upload */}
           <div
-            className={`relative rounded-xl border-2 border-dashed transition-colors cursor-pointer py-8 sm:py-10 px-6 text-center ${
+            className={`relative rounded-xl border-2 border-dashed transition-colors py-8 sm:py-10 px-6 text-center ${
               isDragging
                 ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50 hover:bg-accent/30"
+                : "border-border"
             }`}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
-            onDrop={handleDrop}
-            onClick={handleFileSelect}
+            onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
           >
             <div className="flex flex-col items-center gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
@@ -78,7 +66,7 @@ export function ActivationScreen({ variant = "default" }: Props) {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {isDragging ? t("activation.dropHere", lang) : t("activation.dropOrClick", lang)}
+                  {t("activation.dropOrClick", lang)}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {t("activation.supported", lang)}
@@ -92,7 +80,7 @@ export function ActivationScreen({ variant = "default" }: Props) {
             {sourceTypes.map(({ icon: Icon, labelKey }) => (
               <button
                 key={labelKey}
-                onClick={handleFileSelect}
+                onClick={handleActivate}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg border border-border bg-background hover:bg-accent/50 hover:border-primary/30 transition-colors text-center group"
               >
                 <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -101,7 +89,12 @@ export function ActivationScreen({ variant = "default" }: Props) {
             ))}
           </div>
 
-          {/* Error alert — only shown in error variant */}
+          {/* Primary CTA */}
+          <Button className="w-full" size="lg" onClick={handleActivate}>
+            {t("activation.activate", lang)}
+          </Button>
+
+          {/* Error alert — only shown in error variant, placed below CTA */}
           {variant === "error" && (
             <div role="alert" className="flex items-center justify-between gap-3 rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
               <div className="flex items-center gap-2 text-xs text-destructive">
