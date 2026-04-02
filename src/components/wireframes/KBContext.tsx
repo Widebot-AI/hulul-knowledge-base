@@ -26,6 +26,37 @@ export type ChatMessage = {
   isStreaming?: boolean;
 };
 
+/* ─── Flags ─── */
+export type KBFlags = {
+  quotaWarning: boolean;
+  quotaDepleted: boolean;
+  sessionWarning: boolean;
+  sessionCeiling: boolean;
+  streaming: boolean;
+  streamInterrupted: boolean;
+  aiError: boolean;
+  sessionCreateFail: boolean;
+  resetFailed: boolean;
+  deletionFailed: boolean;
+  retentionWarning: boolean;
+  retentionFinal: boolean;
+};
+
+const initialFlags: KBFlags = {
+  quotaWarning: false,
+  quotaDepleted: false,
+  sessionWarning: false,
+  sessionCeiling: false,
+  streaming: false,
+  streamInterrupted: false,
+  aiError: false,
+  sessionCreateFail: false,
+  resetFailed: false,
+  deletionFailed: false,
+  retentionWarning: false,
+  retentionFinal: false,
+};
+
 /* ─── Modal Types ─── */
 export type ModalType =
   | null
@@ -59,6 +90,12 @@ type KBState = {
   sessionTokenPercent: number;
   workspaceQuotaPercent: number;
   workspaceQuotaDepleted: boolean;
+  flags: KBFlags;
+  messageCount: number;
+  uploadCount: number;
+  deleteCount: number;
+  setFlag: (flag: keyof KBFlags, value: boolean) => void;
+  clearFlag: (flag: keyof KBFlags) => void;
   storageWarningDismissed: boolean;
   filecountWarningDismissed: boolean;
   tokenWarningDismissed: boolean;
@@ -132,7 +169,10 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [storageWarningDismissed, setStorageWarningDismissed] = useState(false);
   const [filecountWarningDismissed, setFilecountWarningDismissed] = useState(false);
   const [tokenWarningDismissed, setTokenWarningDismissed] = useState(false);
-  const workspaceQuotaDepleted = workspaceQuotaPercent >= 100;
+  const [flags, setFlags] = useState<KBFlags>(initialFlags);
+  const [messageCount, setMessageCount] = useState<number>(0);
+  const [uploadCount, setUploadCount] = useState<number>(0);
+  const [deleteCount, setDeleteCount] = useState<number>(0);
   const [isDark, setIsDark] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("en");
@@ -186,6 +226,14 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       }
     }, 30);
   }, [isStreaming, sources]);
+
+  const setFlag = useCallback((flag: keyof KBFlags, value: boolean) => {
+    setFlags(prev => ({ ...prev, [flag]: value }));
+  }, []);
+
+  const clearFlag = useCallback((flag: keyof KBFlags) => {
+    setFlags(prev => ({ ...prev, [flag]: false }));
+  }, []);
 
   const dismissStorageWarning = useCallback(() => setStorageWarningDismissed(true), []);
   const dismissFilecountWarning = useCallback(() => setFilecountWarningDismissed(true), []);
@@ -299,7 +347,8 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       activationError, setActivationError,
       citationDrawer, openCitation: (id, deleted) => setCitationDrawer({ citationId: id, deleted }), closeCitation: () => setCitationDrawer(null),
       resetChat, sessionTokenPercent,
-      workspaceQuotaPercent, workspaceQuotaDepleted,
+      workspaceQuotaPercent, workspaceQuotaDepleted: flags.quotaDepleted,
+      flags, messageCount, uploadCount, deleteCount, setFlag, clearFlag,
       storageWarningDismissed, filecountWarningDismissed, tokenWarningDismissed,
       dismissStorageWarning, dismissFilecountWarning, dismissTokenWarning,
       retrySource, deleteSource, addMockSource,

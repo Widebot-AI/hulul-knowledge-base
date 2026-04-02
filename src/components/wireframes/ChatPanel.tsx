@@ -10,7 +10,7 @@ export function ChatPanel() {
     messages, sendMessage, isStreaming, sources,
     openCitation,
     sessionTokenPercent, resetChat, openModal, modal,
-    lang, workspaceQuotaDepleted,
+    lang, workspaceQuotaDepleted, flags,
   } = useKB();
 
   const [input, setInput] = useState("");
