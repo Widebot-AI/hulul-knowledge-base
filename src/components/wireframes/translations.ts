@@ -336,6 +336,22 @@ const translations = {
   "retention.reactivating": { en: "Reactivating...", ar: "جارٍ إعادة التفعيل..." },
   "retention.reactivationFailed": { en: "Reactivation failed. Please try again.", ar: "فشلت إعادة التفعيل. يرجى المحاولة مرة أخرى." },
   "retention.reactivate": { en: "Reactivate", ar: "إعادة التفعيل" },
+
+  // Activation
+  "activation.activate": { en: "Activate Knowledge Base", ar: "تفعيل قاعدة المعرفة" },
+
+  // Phase 1: Warning Banner
+  "kb.warn.storageApproaching": { en: "Storage usage is approaching your plan limit.", ar: "استخدام التخزين يقترب من حد خطتك." },
+  "kb.warn.filecountApproaching": { en: "File count is approaching your plan limit.", ar: "عدد الملفات يقترب من حد خطتك." },
+  "kb.warn.tokenApproaching": { en: "Token usage is approaching your plan limit.", ar: "استخدام التوكنات يقترب من حد خطتك." },
+  "kb.warn.multiApproaching": { en: "Multiple plan limits are approaching.", ar: "عدة حدود للخطة تقترب." },
+  "kb.warn.storageDepleted": { en: "Storage limit reached. New uploads are blocked until you free space or upgrade.", ar: "تم الوصول لحد التخزين. الرفع محظور حتى تحرر مساحة أو تقوم بالترقية." },
+  "kb.warn.filecountDepleted": { en: "File limit reached. New uploads are blocked until you delete sources or upgrade.", ar: "تم الوصول لحد الملفات. الرفع محظور حتى تحذف مصادر أو تقوم بالترقية." },
+  "kb.warn.tokenDepleted": { en: "Token quota exhausted. All KB querying is disabled. Upgrade to continue.", ar: "نفدت حصة التوكنات. تم تعطيل جميع استعلامات قاعدة المعرفة. قم بالترقية للمتابعة." },
+  "kb.warn.manageOrUpgrade": { en: "Manage sources or upgrade.", ar: "أدِر المصادر أو قم بالترقية." },
+  "kb.warn.upgrade": { en: "Upgrade", ar: "ترقية" },
+  "kb.warn.dismiss": { en: "Dismiss", ar: "إخفاء" },
+  "kb.warn.quotaDepleted": { en: "Upgrade your plan to continue querying.", ar: "قم بترقية خطتك لمتابعة الاستعلام." },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
