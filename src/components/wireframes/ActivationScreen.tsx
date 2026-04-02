@@ -1,6 +1,5 @@
-import { BookOpen, Sparkles, Upload, FileText, Globe, ClipboardPaste, AlertTriangle, RotateCcw } from "lucide-react";
+import { BookOpen, Sparkles, FileText, Globe, ClipboardPaste, AlertTriangle, RotateCcw, CheckCircle } from "lucide-react";
 import { useKB } from "./KBContext";
-import { useState } from "react";
 import { KBMainInterface } from "./KBMainInterface";
 import { t } from "./translations";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,16 @@ type Props = {
 
 export function ActivationScreen({ variant = "default" }: Props) {
   const { setPhase, lang } = useKB();
-  const [isDragging, setIsDragging] = useState(false);
 
   const handleActivate = () => {
     setPhase("empty");
   };
+
+  const valueProps = [
+    "Upload documents",
+    "Get AI-powered answers",
+    "Source-cited responses",
+  ];
 
   const sourceTypes = [
     { icon: FileText, labelKey: "activation.pdf" as const },
@@ -47,45 +51,26 @@ export function ActivationScreen({ variant = "default" }: Props) {
             </p>
           </div>
 
-          {/* Drop zone — visual only, no click/drop upload */}
-          <div
-            className={`relative rounded-xl border-2 border-dashed transition-colors py-8 sm:py-10 px-6 text-center ${
-              isDragging
-                ? "border-primary bg-primary/5"
-                : "border-border"
-            }`}
-            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-            onDragLeave={() => setIsDragging(false)}
-            onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-          >
-            <div className="flex flex-col items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                isDragging ? "bg-primary/15" : "bg-muted"
-              }`}>
-                <Upload className={`w-5 h-5 ${isDragging ? "text-primary" : "text-muted-foreground"}`} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground">
-                  {t("activation.dropOrClick", lang)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("activation.supported", lang)}
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* Value propositions */}
+          <ul className="space-y-2">
+            {valueProps.map((prop) => (
+              <li key={prop} className="flex items-center gap-2.5 text-sm text-foreground">
+                <CheckCircle className="w-4 h-4 text-primary shrink-0" />
+                {prop}
+              </li>
+            ))}
+          </ul>
 
           {/* Source type shortcuts */}
           <div className="grid grid-cols-3 gap-2">
             {sourceTypes.map(({ icon: Icon, labelKey }) => (
-              <button
+              <div
                 key={labelKey}
-                onClick={handleActivate}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-border bg-background hover:bg-accent/50 hover:border-primary/30 transition-colors text-center group"
+                className="flex flex-col items-center gap-2 p-3 rounded-lg border border-border bg-background text-center"
               >
-                <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <Icon className="w-5 h-5 text-muted-foreground" />
                 <span className="text-xs font-medium text-foreground">{t(labelKey, lang)}</span>
-              </button>
+              </div>
             ))}
           </div>
 

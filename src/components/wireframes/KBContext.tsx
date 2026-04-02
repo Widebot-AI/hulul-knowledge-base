@@ -128,7 +128,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [activationError, setActivationError] = useState(false);
   const [citationDrawer, setCitationDrawer] = useState<{ citationId: number; deleted?: boolean } | null>(null);
   const [sessionTokenPercent, setSessionTokenPercent] = useState(0);
-  const [workspaceQuotaPercent, setWorkspaceQuotaPercent] = useState(45);
+  const [workspaceQuotaPercent, setWorkspaceQuotaPercent] = useState(72);
   const [storageWarningDismissed, setStorageWarningDismissed] = useState(false);
   const [filecountWarningDismissed, setFilecountWarningDismissed] = useState(false);
   const [tokenWarningDismissed, setTokenWarningDismissed] = useState(false);
@@ -176,8 +176,8 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
           prev.map(m => m.id === assistantId ? { ...m, content: fullText, isStreaming: false, citations: response.citations } : m)
         );
         setIsStreaming(false);
-        setSessionTokenPercent(p => Math.min(100, p + 12));
-        setWorkspaceQuotaPercent(p => Math.min(120, p + 8));
+        setSessionTokenPercent(p => Math.min(100, p + 40));
+        setWorkspaceQuotaPercent(p => Math.min(120, p + 10));
         if (streamRef.current) clearInterval(streamRef.current);
       } else {
         setMessages(prev =>

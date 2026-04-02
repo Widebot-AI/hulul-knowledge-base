@@ -52,12 +52,12 @@ export function WarningBanner() {
         : "kb.warn.filecountDepleted";
 
     return (
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-destructive/10 border-b border-destructive/20 text-sm">
-        <AlertTriangle className="h-4 w-4 text-destructive shrink-0" />
-        <span className="flex-1 text-destructive font-medium">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-red-50 dark:bg-red-950/30 border-b border-red-200 dark:border-red-800 text-sm">
+        <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+        <span className="flex-1 text-red-950 dark:text-red-100 font-medium">
           {t(messageKey as Parameters<typeof t>[0], lang)}
         </span>
-        <Button size="sm" variant="outline" className="shrink-0 gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/10">
+        <Button size="sm" variant="outline" className="shrink-0 gap-1.5 border-red-300 dark:border-red-700 text-red-950 dark:text-red-100 hover:bg-red-100 dark:hover:bg-red-900/30">
           <ArrowUpCircle className="h-3.5 w-3.5" />
           {t("kb.warn.upgrade", lang)}
         </Button>
@@ -86,20 +86,20 @@ export function WarningBanner() {
     };
 
     return (
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-warning/10 border-b border-warning/20 text-sm">
-        <AlertTriangle className="h-4 w-4 text-warning shrink-0" />
-        <span className="flex-1 text-warning-foreground">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800 text-sm">
+        <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+        <span className="flex-1 text-amber-950 dark:text-amber-100">
           {messageText}
         </span>
         <div className="flex items-center gap-2 shrink-0">
-          <Button size="sm" variant="outline" className="gap-1.5 border-warning/30 text-warning hover:bg-warning/10">
+          <Button size="sm" variant="outline" className="gap-1.5 border-amber-300 dark:border-amber-700 text-amber-950 dark:text-amber-100 hover:bg-amber-100 dark:hover:bg-amber-900/30">
             <ArrowUpCircle className="h-3.5 w-3.5" />
             {t("kb.warn.upgrade", lang)}
           </Button>
           <Button
             size="sm"
             variant="ghost"
-            className="text-muted-foreground hover:text-foreground px-2"
+            className="text-amber-950 dark:text-amber-100 hover:text-amber-950 px-2"
             onClick={dismissAll}
             aria-label={t("kb.warn.dismiss", lang)}
           >

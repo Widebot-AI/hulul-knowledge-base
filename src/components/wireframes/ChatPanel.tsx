@@ -42,13 +42,22 @@ export function ChatPanel() {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Top header with reset — only visible when there are messages */}
+      {messages.length > 0 && (
+        <div className="flex items-center justify-end px-4 py-1.5 border-b border-border">
+          <Button size="sm" variant="ghost" className="h-7 text-xs text-muted-foreground gap-1" onClick={() => openModal({ kind: "reset-confirm" })}>
+            <RotateCcw className="w-3 h-3" /> Reset
+          </Button>
+        </div>
+      )}
+
       {/* Session warnings */}
       {sessionWarning && (
-        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-warning/10 border border-warning/20 rounded-lg text-xs text-warning flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg text-xs text-amber-950 dark:text-amber-100 flex items-center justify-between">
           <span>{t("chat.sessionWarning", lang)}</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-xs text-warning hover:text-warning gap-1"
+            className="h-6 text-xs text-amber-950 dark:text-amber-100 hover:text-amber-950 gap-1"
             onClick={() => openModal({ kind: "reset-confirm" })}
           >
             <RotateCcw className="w-3 h-3" /> {t("chat.reset", lang)}
@@ -56,11 +65,11 @@ export function ChatPanel() {
         </div>
       )}
       {sessionCeiling && (
-        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-destructive/10 border border-destructive/20 rounded-lg text-xs text-destructive flex items-center justify-between">
+        <div role="alert" className="mx-4 mt-3 px-4 py-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg text-xs text-red-950 dark:text-red-100 flex items-center justify-between">
           <span>{t("chat.sessionLimit", lang)}</span>
           <Button
             size="sm" variant="ghost"
-            className="h-6 text-xs text-destructive hover:text-destructive gap-1"
+            className="h-6 text-xs text-red-950 dark:text-red-100 hover:text-red-950 gap-1"
             onClick={resetChat}
           >
             <RotateCcw className="w-3 h-3" /> {t("chat.resetSession", lang)}
@@ -211,15 +220,6 @@ export function ChatPanel() {
             </div>
           ) : (
             <div className="flex items-center gap-2 border border-border rounded-xl px-4 py-2 bg-background focus-within:ring-2 focus-within:ring-ring/30">
-              {messages.length > 0 && (
-                <button
-                  className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors shrink-0"
-                  onClick={() => openModal({ kind: "reset-confirm" })}
-                  aria-label="Reset conversation"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-              )}
               <input
                 ref={inputRef}
                 type="text"
