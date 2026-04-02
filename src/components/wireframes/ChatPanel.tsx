@@ -253,6 +253,15 @@ export function ChatPanel() {
             </div>
           ) : (
             <div className="flex items-center gap-2 border border-border rounded-xl px-4 py-2 bg-background focus-within:ring-2 focus-within:ring-ring/30">
+              {messages.length > 0 && (
+                <button
+                  className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors shrink-0"
+                  onClick={() => openModal({ kind: "reset-confirm" })}
+                  aria-label="Reset conversation"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              )}
               <input
                 ref={inputRef}
                 type="text"
