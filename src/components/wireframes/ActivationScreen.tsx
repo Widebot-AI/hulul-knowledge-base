@@ -1,10 +1,15 @@
-import { BookOpen, Sparkles, Upload, FileText, Globe, ClipboardPaste } from "lucide-react";
+import { BookOpen, Sparkles, Upload, FileText, Globe, ClipboardPaste, AlertTriangle, RotateCcw } from "lucide-react";
 import { useKB } from "./KBContext";
 import { useState, useCallback } from "react";
 import { KBMainInterface } from "./KBMainInterface";
 import { t } from "./translations";
+import { Button } from "@/components/ui/button";
 
-export function ActivationScreen() {
+type Props = {
+  variant?: "default" | "error";
+};
+
+export function ActivationScreen({ variant = "default" }: Props) {
   const { setPhase, addMockSource, lang } = useKB();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -95,6 +100,20 @@ export function ActivationScreen() {
               </button>
             ))}
           </div>
+
+          {/* Error alert — only shown in error variant */}
+          {variant === "error" && (
+            <div role="alert" className="flex items-center justify-between gap-3 rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
+              <div className="flex items-center gap-2 text-xs text-destructive">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>{t("activation.errorMsg", lang)}</span>
+              </div>
+              <Button size="sm" variant="outline" className="h-7 text-xs shrink-0 border-destructive/30 text-destructive hover:bg-destructive/10">
+                <RotateCcw className="w-3 h-3 me-1" />
+                {t("activation.retry", lang)}
+              </Button>
+            </div>
+          )}
 
           {/* Footer hint */}
           <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
