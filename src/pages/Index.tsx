@@ -254,6 +254,7 @@ function KBApp() {
       {kb.phase === "no-access" && <NoAccessScreen />}
       {kb.phase === "empty" && <KBMainInterface />}
       {kb.phase === "active" && <ScreenRouter />}
+      {(kb.phase as string) === "archived" && <KBMainInterface />}
 
       {/* Onboarding */}
       {(kb.phase as string) === "activation-error" && <ActivationScreen variant="error" />}

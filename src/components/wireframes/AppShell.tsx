@@ -61,7 +61,7 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
   const [menuDevView, setMenuDevView] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const [sheetExpanded, setSheetExpanded] = useState(false);
-  const { lang, setLang, sources, modal } = useKB();
+  const { lang, setLang, sources, modal, simulateRetention } = useKB();
   const isRtl = lang === "ar";
   const readySelected = sources.filter((s) => s.status === "ready" && s.selected).length;
   const search = useSearch();
@@ -96,12 +96,21 @@ export function AppShell({ screens, activeScreen, onSelect, isDark, onToggleThem
             "bg-accent text-accent-foreground font-medium" :
             "text-muted-foreground hover:bg-secondary hover:text-foreground"
           )}>
-          
+
                 {s.label}
               </button>
         )}
           </div>
       )}
+        <div className="border-t border-border mt-3 pt-3 px-2">
+          <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Simulations</p>
+          <button
+            onClick={() => { simulateRetention(); onSelect("kb-main"); }}
+            className="w-full text-start px-3 py-1.5 rounded-md text-xs text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+          >
+            Simulate Retention Countdown
+          </button>
+        </div>
       </div>
     </ScrollArea>;
 

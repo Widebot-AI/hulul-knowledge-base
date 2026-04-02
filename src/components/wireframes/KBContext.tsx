@@ -66,7 +66,7 @@ export type ModalType =
   | { kind: "reset-confirm" };
 
 /* ─── App State ─── */
-export type KBPhase = "activation" | "no-access" | "empty" | "active";
+export type KBPhase = "activation" | "no-access" | "empty" | "active" | "archived";
 
 type KBState = {
   phase: KBPhase;
@@ -96,6 +96,8 @@ type KBState = {
   deleteCount: number;
   setFlag: (flag: keyof KBFlags, value: boolean) => void;
   clearFlag: (flag: keyof KBFlags) => void;
+  simulateRetention: () => void;
+  cancelRetention: () => void;
   storageWarningDismissed: boolean;
   filecountWarningDismissed: boolean;
   tokenWarningDismissed: boolean;
@@ -182,6 +184,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const uploadCountRef = useRef(0);
   const deleteCountRef = useRef(0);
   const resetAttemptRef = useRef(0);
+  const retentionTimersRef = useRef<NodeJS.Timeout[]>([]);
 
   const toggleSourceSelection = useCallback((id: string) => {
     setSources(prev => {
@@ -195,10 +198,53 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const setFlag = useCallback((flag: keyof KBFlags, value: boolean) => {
+    setFlags(prev => ({ ...prev, [flag]: value }));
+  }, []);
+
+  const clearFlag = useCallback((flag: keyof KBFlags) => {
+    setFlags(prev => ({ ...prev, [flag]: false }));
+  }, []);
+
+  const cancelRetention = useCallback(() => {
+    retentionTimersRef.current.forEach(id => clearTimeout(id));
+    retentionTimersRef.current = [];
+    setFlags(prev => ({ ...prev, retentionWarning: false, retentionFinal: false }));
+  }, []);
+
+  const simulateRetention = useCallback(() => {
+    // Clear any existing retention timers
+    retentionTimersRef.current.forEach(id => clearTimeout(id));
+    retentionTimersRef.current = [];
+
+    // Set retentionWarning immediately
+    setFlags(prev => ({ ...prev, retentionWarning: true, retentionFinal: false }));
+
+    // After 10s: set retentionFinal, clear retentionWarning
+    const t1 = setTimeout(() => {
+      setFlags(prev => ({ ...prev, retentionWarning: false, retentionFinal: true }));
+    }, 10000);
+
+    // After 20s (10s after final): archive everything
+    const t2 = setTimeout(() => {
+      setFlags(prev => ({ ...prev, retentionWarning: false, retentionFinal: false }));
+      setPhase("archived");
+      setSources(prev => prev.map(s => ({ ...s, status: "archived" as const })));
+      retentionTimersRef.current = [];
+    }, 20000);
+
+    retentionTimersRef.current = [t1, t2];
+  }, []);
+
   const sendMessage = useCallback((text: string) => {
     if (isStreaming || !text.trim()) return;
     const hasSelectedReady = sources.some(s => s.selected && s.status === "ready");
     if (!hasSelectedReady) return;
+
+    // Cancel retention countdown on user activity
+    if (flags.retentionWarning || flags.retentionFinal) {
+      cancelRetention();
+    }
 
     // Handle retry after stream interruption
     const isRetry = flags.streamInterrupted;
@@ -284,15 +330,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
         );
       }
     }, 30);
-  }, [isStreaming, sources, flags.streamInterrupted, setFlag]);
-
-  const setFlag = useCallback((flag: keyof KBFlags, value: boolean) => {
-    setFlags(prev => ({ ...prev, [flag]: value }));
-  }, []);
-
-  const clearFlag = useCallback((flag: keyof KBFlags) => {
-    setFlags(prev => ({ ...prev, [flag]: false }));
-  }, []);
+  }, [isStreaming, sources, flags.streamInterrupted, setFlag, cancelRetention, flags.retentionWarning, flags.retentionFinal]);
 
   const dismissStorageWarning = useCallback(() => setStorageWarningDismissed(true), []);
   const dismissFilecountWarning = useCallback(() => setFilecountWarningDismissed(true), []);
@@ -483,7 +521,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       citationDrawer, openCitation: (id, deleted) => setCitationDrawer({ citationId: id, deleted }), closeCitation: () => setCitationDrawer(null),
       resetChat, sessionTokenPercent,
       workspaceQuotaPercent, workspaceQuotaDepleted: flags.quotaDepleted,
-      flags, messageCount, uploadCount, deleteCount, setFlag, clearFlag,
+      flags, messageCount, uploadCount, deleteCount, setFlag, clearFlag, simulateRetention, cancelRetention,
       storageWarningDismissed, filecountWarningDismissed, tokenWarningDismissed,
       dismissStorageWarning, dismissFilecountWarning, dismissTokenWarning,
       retrySource, retryCleanup, deleteSource, addMockSource,
