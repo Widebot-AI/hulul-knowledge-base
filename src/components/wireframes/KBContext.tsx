@@ -57,6 +57,14 @@ type KBState = {
   closeCitation: () => void;
   resetChat: () => void;
   sessionTokenPercent: number;
+  workspaceQuotaPercent: number;
+  workspaceQuotaDepleted: boolean;
+  storageWarningDismissed: boolean;
+  filecountWarningDismissed: boolean;
+  tokenWarningDismissed: boolean;
+  dismissStorageWarning: () => void;
+  dismissFilecountWarning: () => void;
+  dismissTokenWarning: () => void;
   retrySource: (id: string) => void;
   deleteSource: (id: string) => void;
   addMockSource: (name: string, type: string, tags: { key: string; value: string }[]) => void;
@@ -120,6 +128,11 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
   const [activationError, setActivationError] = useState(false);
   const [citationDrawer, setCitationDrawer] = useState<{ citationId: number; deleted?: boolean } | null>(null);
   const [sessionTokenPercent, setSessionTokenPercent] = useState(0);
+  const [workspaceQuotaPercent, setWorkspaceQuotaPercent] = useState(45);
+  const [storageWarningDismissed, setStorageWarningDismissed] = useState(false);
+  const [filecountWarningDismissed, setFilecountWarningDismissed] = useState(false);
+  const [tokenWarningDismissed, setTokenWarningDismissed] = useState(false);
+  const workspaceQuotaDepleted = workspaceQuotaPercent >= 100;
   const [isDark, setIsDark] = useState(false);
   const [devDrawerOpen, setDevDrawerOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("en");
@@ -164,6 +177,7 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
         );
         setIsStreaming(false);
         setSessionTokenPercent(p => Math.min(100, p + 12));
+        setWorkspaceQuotaPercent(p => Math.min(120, p + 8));
         if (streamRef.current) clearInterval(streamRef.current);
       } else {
         setMessages(prev =>
@@ -172,6 +186,10 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       }
     }, 30);
   }, [isStreaming, sources]);
+
+  const dismissStorageWarning = useCallback(() => setStorageWarningDismissed(true), []);
+  const dismissFilecountWarning = useCallback(() => setFilecountWarningDismissed(true), []);
+  const dismissTokenWarning = useCallback(() => setTokenWarningDismissed(true), []);
 
   const resetChat = useCallback(() => {
     setMessages([]);
@@ -281,6 +299,9 @@ export function KBProvider({ children }: { children: React.ReactNode }) {
       activationError, setActivationError,
       citationDrawer, openCitation: (id, deleted) => setCitationDrawer({ citationId: id, deleted }), closeCitation: () => setCitationDrawer(null),
       resetChat, sessionTokenPercent,
+      workspaceQuotaPercent, workspaceQuotaDepleted,
+      storageWarningDismissed, filecountWarningDismissed, tokenWarningDismissed,
+      dismissStorageWarning, dismissFilecountWarning, dismissTokenWarning,
       retrySource, deleteSource, addMockSource,
       isDark, toggleTheme: () => setIsDark(!isDark),
       lang, setLang,

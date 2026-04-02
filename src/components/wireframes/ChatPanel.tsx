@@ -10,7 +10,7 @@ export function ChatPanel() {
     messages, sendMessage, isStreaming, sources,
     openCitation,
     sessionTokenPercent, resetChat, openModal, modal,
-    lang,
+    lang, workspaceQuotaDepleted,
   } = useKB();
 
   const [input, setInput] = useState("");
@@ -21,7 +21,7 @@ export function ChatPanel() {
   const isEmpty = messages.length === 0;
   const sessionWarning = sessionTokenPercent >= 80 && sessionTokenPercent < 100;
   const sessionCeiling = sessionTokenPercent >= 100;
-  const disabled = !hasSelectedReady || sessionCeiling;
+  const disabled = !hasSelectedReady || sessionCeiling || workspaceQuotaDepleted;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -193,15 +193,21 @@ export function ChatPanel() {
           {disabled ? (
             <div className="flex items-center gap-2 px-4 py-3 bg-secondary rounded-xl">
               <span className="text-xs text-muted-foreground flex-1">
-                {sessionCeiling
+                {workspaceQuotaDepleted
+                  ? t("kb.warn.quotaDepleted", lang)
+                  : sessionCeiling
                   ? t("chat.sessionLimitShort", lang)
                   : t("chat.addAndSelect", lang)}
               </span>
-              {sessionCeiling && (
+              {workspaceQuotaDepleted ? (
+                <Button size="sm" variant="outline" className="h-7 text-xs">
+                  Upgrade
+                </Button>
+              ) : sessionCeiling ? (
                 <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={resetChat}>
                   <RotateCcw className="w-3 h-3" /> {t("chat.reset", lang)}
                 </Button>
-              )}
+              ) : null}
             </div>
           ) : (
             <div className="flex items-center gap-2 border border-border rounded-xl px-4 py-2 bg-background focus-within:ring-2 focus-within:ring-ring/30">
