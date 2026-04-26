@@ -824,6 +824,430 @@ Support `en` and `ar`.
 
 ## 14. Acceptance Checklist for Claude Code
 
+## 14. Visual HTML and CSS Blueprint for Claude Code
+
+Use this section as the visual implementation reference when recreating the prototype. The final app should be React components, but Claude Code can translate the following semantic HTML structure and CSS rules into JSX + Tailwind classes.
+
+### Design Tokens
+
+All colors must be semantic HSL variables. Do not hard-code component colors.
+
+```css
+:root {
+  --background: 240 20% 99%;
+  --foreground: 240 67% 5%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 67% 5%;
+  --panel-bg: 240 14% 98%;
+  --primary: 240 100% 63%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 240 100% 98%;
+  --accent-foreground: 240 100% 63%;
+  --secondary: 240 14% 96%;
+  --secondary-foreground: 240 17% 23%;
+  --muted: 240 11% 95%;
+  --muted-foreground: 240 7% 42%;
+  --border: 240 11% 91%;
+  --input: 240 11% 91%;
+  --success: 152 83% 28%;
+  --warning: 34 89% 33%;
+  --destructive: 0 97% 60%;
+  --hulul-green: 157 99% 45%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 67% 5%;
+  --foreground: 240 14% 98%;
+  --card: 240 40% 8%;
+  --card-foreground: 240 14% 98%;
+  --panel-bg: 240 50% 7%;
+  --primary: 240 100% 71%;
+  --primary-foreground: 240 67% 5%;
+  --accent: 240 17% 18%;
+  --accent-foreground: 240 100% 71%;
+  --secondary: 240 17% 15%;
+  --secondary-foreground: 240 14% 96%;
+  --muted: 240 17% 15%;
+  --muted-foreground: 240 7% 62%;
+  --border: 240 17% 18%;
+  --input: 240 17% 18%;
+  --success: 152 83% 52%;
+  --warning: 34 89% 62%;
+  --destructive: 0 76% 54%;
+  --hulul-green: 157 99% 40%;
+}
+```
+
+### Global Layout HTML
+
+```html
+<div class="app-shell" dir="ltr">
+  <header class="topbar">
+    <div class="brand-lockup">
+      <img class="brand-logo" alt="Hulul" />
+      <span class="breadcrumb">Knowledge Base</span>
+    </div>
+    <button class="search-trigger">Search</button>
+    <div class="topbar-actions">
+      <button aria-label="Switch language">EN/AR</button>
+      <button aria-label="Toggle theme">Theme</button>
+      <button aria-label="Open dev drawer">&lt;/&gt;</button>
+    </div>
+  </header>
+
+  <div class="workspace-frame">
+    <aside class="icon-sidebar" aria-label="Main navigation">
+      <button>Home</button>
+      <button>Inbox</button>
+      <button>CRM</button>
+      <button class="active">KB</button>
+      <button>Settings</button>
+    </aside>
+
+    <main class="kb-workspace">
+      <section class="warning-banner">Warning message appears here</section>
+      <div class="kb-grid has-citation">
+        <aside class="source-panel"></aside>
+        <section class="chat-panel"></section>
+        <aside class="citation-panel"></aside>
+      </div>
+    </main>
+  </div>
+</div>
+```
+
+### Core CSS Structure
+
+```css
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Rubik, system-ui, sans-serif;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 20px;
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+}
+
+.brand-lockup,
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 96px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.workspace-frame {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+}
+
+.icon-sidebar {
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-block: 16px;
+  border-inline-end: 1px solid hsl(var(--border));
+  background: hsl(var(--panel-bg));
+}
+
+.kb-workspace {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.kb-grid {
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 30% minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.kb-grid.has-citation {
+  grid-template-columns: 22% minmax(0, 1fr) 28%;
+}
+
+.source-panel,
+.chat-panel,
+.citation-panel {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.source-panel,
+.citation-panel {
+  background: hsl(var(--panel-bg));
+  border-inline-end: 1px solid hsl(var(--border));
+}
+
+.citation-panel {
+  border-inline-start: 1px solid hsl(var(--border));
+  border-inline-end: 0;
+}
+```
+
+### Source Panel HTML
+
+```html
+<aside class="source-panel">
+  <header class="panel-header">
+    <div>
+      <h2>Sources</h2>
+      <p>2 ready selected</p>
+    </div>
+    <button class="icon-button" aria-label="Add source">+</button>
+  </header>
+
+  <div class="usage-meter">
+    <div class="usage-row"><span>Storage</span><strong>64%</strong></div>
+    <div class="meter-track"><div class="meter-fill" style="width:64%"></div></div>
+  </div>
+
+  <div class="source-list">
+    <article class="source-card selected">
+      <input type="checkbox" checked aria-label="Select source" />
+      <div class="source-avatar">PDF</div>
+      <div class="source-copy">
+        <h3>Q3 Strategy Deck.pdf</h3>
+        <p>PDF · Ready</p>
+        <div class="tag-row"><span>department: strategy</span></div>
+      </div>
+      <button aria-label="Preview source">Preview</button>
+    </article>
+  </div>
+</aside>
+```
+
+### Chat Panel HTML
+
+```html
+<section class="chat-panel">
+  <header class="chat-header">
+    <h1>Knowledge Base</h1>
+    <button>Reset</button>
+  </header>
+
+  <div class="message-list">
+    <article class="message user-message">What are the Q3 priorities?</article>
+    <article class="message assistant-message">
+      <p>The Q3 priorities focus on operational efficiency and expansion.</p>
+      <div class="citation-row">
+        <button>[1] Q3 Strategy Deck.pdf</button>
+      </div>
+    </article>
+    <article class="message assistant-message streaming">Thinking...</article>
+  </div>
+
+  <footer class="composer">
+    <textarea placeholder="Ask your knowledge base"></textarea>
+    <button>Send</button>
+  </footer>
+</section>
+```
+
+### Interaction Styling CSS
+
+```css
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-height: 36px;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 2px);
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+}
+
+button:hover,
+.source-card:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.panel-header,
+.chat-header,
+.composer {
+  position: sticky;
+  z-index: 2;
+  background: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.panel-header,
+.chat-header {
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.source-list,
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.source-card {
+  display: grid;
+  grid-template-columns: auto 36px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+}
+
+.source-card.selected {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.25);
+}
+
+.source-copy h3,
+.source-copy p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message {
+  max-width: 72%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  line-height: 1.55;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.assistant-message {
+  align-self: flex-start;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+.composer {
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid hsl(var(--border));
+  border-bottom: 0;
+}
+
+.composer textarea {
+  min-height: 44px;
+  max-height: 140px;
+  resize: vertical;
+  border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 10px 12px;
+}
+```
+
+### Mobile CSS
+
+```css
+@media (max-width: 768px) {
+  .icon-sidebar,
+  .search-trigger {
+    display: none;
+  }
+
+  .topbar {
+    height: 56px;
+    padding-inline: 12px;
+  }
+
+  .kb-grid,
+  .kb-grid.has-citation {
+    display: block;
+  }
+
+  .source-panel,
+  .citation-panel {
+    display: none;
+  }
+
+  .chat-panel {
+    height: calc(100vh - 56px - 64px);
+  }
+
+  .message {
+    max-width: 88%;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    height: 64px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: hsl(var(--card));
+    border-top: 1px solid hsl(var(--border));
+  }
+}
+```
+
+### Component Visual Rules
+
+- Use `border-inline-start`, `border-inline-end`, `margin-inline-start`, and `margin-inline-end` equivalents or Tailwind logical utilities where available for RTL.
+- Use cards only for repeated items, modals, dialogs, and framed source/message objects.
+- Keep page sections as full-height layout regions, not nested cards.
+- Buttons with only icons must include `aria-label`.
+- Warning banners must use strong contrast and semantic intent: warning at 80%, destructive at 100%, retention final above all.
+- Empty states must be centered inside the relevant panel, not full-page marketing screens.
+- Source, chat, preview, and citation areas must scroll independently.
+- Citation panel is inline on desktop and a bottom sheet on mobile.
+- Add Source, Delete Confirm, Reset Confirm, Search, Dev Drawer, Source Preview, and Citation Detail must be implemented as modal/sheet overlays with accessible titles.
+
+## 15. Acceptance Checklist for Claude Code
+
 Claude Code is done when:
 
 - The app builds successfully with `npm run build`.
